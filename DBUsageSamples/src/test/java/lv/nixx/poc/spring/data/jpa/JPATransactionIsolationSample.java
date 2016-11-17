@@ -61,9 +61,7 @@ public class JPATransactionIsolationSample {
 		
 	    TypedQuery<Person> query = em1.createQuery("SELECT p FROM Person p", Person.class);
 	    List<Person> resultList = query.getResultList();
-	    for(Person p: resultList){
-	    	System.out.println(p);
-	    }
+	    resultList.forEach(System.out::println);
 	}
 
 
