@@ -1,0 +1,9 @@
+select * from EXTENSION
+select * from CUSTOMER
+select * from ADRESS
+select * from CustomerType
+
+
+delete from EXTENSION
+
+select * from Customer c left join EXTENSION on c.id=EXTENSION.customer_id 
