@@ -26,8 +26,6 @@ public class CustomerPerformanceTest {
 	private CustomerRepository customerRepository;
 	@Autowired
 	private TypeRepository typeRepository;
-	@Autowired
-	private CustomerExtensionRepository customerExtensionRepository;
 
 	@Autowired
 	private EntityManager entityManager;

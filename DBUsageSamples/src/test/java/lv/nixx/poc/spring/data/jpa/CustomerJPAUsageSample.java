@@ -78,8 +78,8 @@ public class CustomerJPAUsageSample {
 		
 		transaction.commit();
 		
-	    Query query = entityManager.createQuery("SELECT e FROM Customer e");
-	    List<Customer> resultList = (List<Customer>) query.getResultList();
+		TypedQuery<Customer> query = entityManager.createQuery("SELECT e FROM Customer e", Customer.class);
+		List<Customer> resultList = query.getResultList();
 	    
 	    assertEquals("Customer count", 4, resultList.size());
 	    

@@ -1,7 +1,5 @@
 package lv.nixx.poc.spring.data;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
 import java.util.List;
 
@@ -49,8 +47,7 @@ public class TransactionIsolationSample {
 		personRepository.save(pers);
 		
 		Long id = pers.getId();
-		System.out.println("!!!! id " + id);
-		
+
 		entityManager.clear();
 		
 		tryFindInAnotherTransaction(id);
@@ -59,16 +56,11 @@ public class TransactionIsolationSample {
 	private void tryFindInAnotherTransaction(Long id) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		
-	    Query query = em.createQuery("SELECT p FROM Person p");
-	    List<Person> resultList = (List<Person>) query.getResultList();
-	    for(Person p: resultList){
+		TypedQuery<Person> lQuery = em.createQuery("SELECT p FROM Person p", Person.class);
+		List<Person> personList = lQuery.getResultList();
+	    for(Person p: personList){
 	    	System.out.println("!!! " + p);
 	    }
-
-		
-//		Person foundPerson = em.find(Person.class, id);
-//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//		System.out.println(foundPerson);
 	}
 
 

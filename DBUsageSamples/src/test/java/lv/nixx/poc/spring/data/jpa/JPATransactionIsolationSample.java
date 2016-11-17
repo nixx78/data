@@ -1,7 +1,5 @@
 package lv.nixx.poc.spring.data.jpa;
 
-import static org.junit.Assert.*;
-
 import java.util.*;
 import javax.persistence.*;
 import lv.nixx.poc.spring.data.domain.Person;
@@ -40,7 +38,8 @@ public class JPATransactionIsolationSample {
 	public void dirtyReadTransactionIsolation(){
 		EntityManager em = emf.createEntityManager();
 		
-		em.getTransaction().begin();
+		final EntityTransaction txn = em.getTransaction();
+		txn.begin();
 		
 			Person pers = new Person("Name1" + new Date(), "Surname1", null);
 			Long id = em.merge(pers).getId();
@@ -54,14 +53,14 @@ public class JPATransactionIsolationSample {
 				System.err.println(ex);
 			}
 			
-		em.getTransaction().commit();
+		txn.commit();
 	}
 	
 	private void tryToSelectAllRecords(Long id) {
 		EntityManager em1 = emf.createEntityManager();
 		
-	    Query query = em1.createQuery("SELECT p FROM Person p");
-	    List<Person> resultList = (List<Person>) query.getResultList();
+	    TypedQuery<Person> query = em1.createQuery("SELECT p FROM Person p", Person.class);
+	    List<Person> resultList = query.getResultList();
 	    for(Person p: resultList){
 	    	System.out.println(p);
 	    }
