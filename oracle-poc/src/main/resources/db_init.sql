@@ -14,7 +14,7 @@ END sandbox_sp;
 CREATE OR REPLACE PACKAGE BODY sandbox_sp IS
      PROCEDURE get_bugs_by_period(start_date DATE, end_date DATE, bugs OUT SYS_REFCURSOR) IS
       BEGIN
-       OPEN BUGS FOR SELECT MONTH_DAY,count(id) count, listagg(id,',') within group (order by id) ids  from
+       OPEN BUGS FOR SELECT month_day,count(id) count, listagg(id,',') within group (order by id) ids  from
         (SELECT MONTH_DAY, T.* FROM (SELECT start_date + ROWNUM-1 MONTH_DAY FROM DUAL CONNECT BY LEVEL<=(end_date-start_date)+1) V
         LEFT JOIN BUGS T ON V.MONTH_DAY BETWEEN OPEN_DATE AND CLOSE_DATE or (CLOSE_DATE IS NULL AND V.MONTH_DAY>=OPEN_DATE)
         )
