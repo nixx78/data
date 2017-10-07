@@ -18,8 +18,8 @@ public class SpWithEntityCall {
 		
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("oracle-poc");
         EntityManager em = factory.createEntityManager();
+        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("sp_get_bugs_by_period");
 
-        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("get_bugs_by_period");
         query.setParameter("start_date", sdf.parse("01.09.2017"));
         query.setParameter("end_date", sdf.parse("10.09.2017"));
 

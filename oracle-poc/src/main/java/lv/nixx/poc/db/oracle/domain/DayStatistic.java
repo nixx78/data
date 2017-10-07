@@ -6,7 +6,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-@NamedStoredProcedureQuery(name = "get_bugs_by_period", procedureName = "sandbox_sp.get_bugs_by_period", resultClasses = {
+@NamedStoredProcedureQuery(name = "sp_get_bugs_by_period", procedureName = "sandbox_sp.get_bugs_by_period", resultClasses = {
 		DayStatistic.class }, parameters = {
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "start_date", type = Date.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "end_date", type = Date.class),
