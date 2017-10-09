@@ -5,20 +5,22 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import org.junit.Test;
 
 import oracle.jdbc.OracleTypes;
 
 public class SimpleSpCall {
 
-	public static void main(String[] args) {
+	@Test
+	public void createSpCall() {
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String url = "jdbc:oracle:thin:@localhost:1521/sanbox_db"; // sanbox_db == service name NOT SID
-			Connection con = DriverManager.getConnection(url, "nixx", "nixx");
-			System.out.println("Connected to database");
+			Connection con = createConnection();
 
 			final DateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -41,6 +43,29 @@ public class SimpleSpCall {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	@Test
+	public void functionCall() throws Exception {
+		Connection con = createConnection();
+		
+		try (CallableStatement cstmt = con.prepareCall("{? = call sandbox_sp.get_bugs_count(?)}")) {
+			cstmt.registerOutParameter(1, Types.INTEGER);
+			cstmt.registerOutParameter(2, Types.INTEGER);
+			cstmt.setInt(2, 1);
+			cstmt.executeUpdate();
+			int count= cstmt.getInt(1);
+			System.out.println(count);
+		}
+
+	}
+
+	private Connection createConnection() throws ClassNotFoundException, SQLException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		String url = "jdbc:oracle:thin:@localhost:1521/sanbox_db"; // sanbox_db == service name NOT SID
+		Connection con = DriverManager.getConnection(url, "nixx", "nixx");
+		System.out.println("Connected to database");
+		return con;
 	}
 
 }
