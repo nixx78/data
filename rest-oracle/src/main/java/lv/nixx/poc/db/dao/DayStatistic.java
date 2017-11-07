@@ -1,4 +1,4 @@
-package lv.nixx.poc.db.oracle.domain;
+package lv.nixx.poc.db.dao;
 
 import javax.persistence.Entity;
 
@@ -16,6 +16,7 @@ public class DayStatistic {
 
 	@Id
 	@Column(name ="month_day")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
 	@Column(name="count")
