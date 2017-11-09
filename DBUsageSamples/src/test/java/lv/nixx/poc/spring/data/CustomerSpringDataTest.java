@@ -68,7 +68,7 @@ public class CustomerSpringDataTest {
 		typeRepository.save(test1Type);
 		entityManager.flush();
 
-		CustomerType t = typeRepository.findOne(testId);
+		CustomerType t = typeRepository.findById(testId).get();
 		assertNotNull(t);
 		assertEquals(testId, t.getId());
 		assertEquals("Last TestType description", t.getDescription());
@@ -116,11 +116,11 @@ public class CustomerSpringDataTest {
 		Long c2ID = c2.getId();
 		assertNotNull(c2ID);
 
-		Customer exC1Customer = customerRepository.findOne(c1ID);
+		Customer exC1Customer = customerRepository.findById(c1ID).get();
 		assertNotNull(exC1Customer);
 		assertEquals(new CustomerType("simple", "Simple Customer"), exC1Customer.getType());
 
-		Customer exC2Customer = customerRepository.findOne(c2ID);
+		Customer exC2Customer = customerRepository.findById(c2ID).get();
 		assertNotNull(exC2Customer);
 		assertEquals(new CustomerType("simple", "Simple Customer"), exC2Customer.getType());
 
@@ -155,17 +155,17 @@ public class CustomerSpringDataTest {
 		Long c2ID = c2.getId();
 		Long c3ID = c3.getId();
 
-		Customer expCustomer1 = customerRepository.findOne(c1ID);
+		Customer expCustomer1 = customerRepository.findById(c1ID).get();
 		CustomerExtension c1Extension = expCustomer1.getExtension();
 		assertNotNull(expCustomer1);
 		assertNotNull(c1Extension);
 		assertEquals("Jack's additional data", c1Extension.getAdditionalData());
 
-		Customer expCustomer2 = customerRepository.findOne(c2ID);
+		Customer expCustomer2 = customerRepository.findById(c2ID).get();
 		assertNotNull(expCustomer2);
 		assertNull(expCustomer2.getExtension());
 
-		Customer expCustomer3 = customerRepository.findOne(c3ID);
+		Customer expCustomer3 = customerRepository.findById(c3ID).get();
 		CustomerExtension c3Extension = expCustomer3.getExtension();
 		Set<Adress> adress = expCustomer3.getAdress();
 
@@ -182,7 +182,7 @@ public class CustomerSpringDataTest {
 		entityManager.flush();
 
 		// Проверим, что он действительно удалился
-		expCustomer3 = customerRepository.findOne(c3ID);
+		expCustomer3 = customerRepository.findById(c3ID).get();
 		assertNotNull(expCustomer3);
 		adress = expCustomer3.getAdress();
 
@@ -209,7 +209,7 @@ public class CustomerSpringDataTest {
 		printCustomers();
 		Long c3ID = c1.getId();
 
-		Customer expCustomer3 = customerRepository.findOne(c3ID);
+		Customer expCustomer3 = customerRepository.findById(c3ID).get();
 		CustomerExtension c3Extension = expCustomer3.getExtension();
 		Set<Adress> adress = expCustomer3.getAdress();
 

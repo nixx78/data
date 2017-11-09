@@ -83,17 +83,17 @@ public class PersonTest {
 		Long p1Id = p1.getId();
 		Long p3Id = p3.getId();
 
-		p1 = personRepository.findOne(p1Id);
+		p1 = personRepository.findById(p1Id).get();
 		assertNotNull(p1);
 		assertNotNull(p1.getExtension());
 		Set<PersonAdditionalField> additionalFields = p1.getAdditionalFields();
 		assertNotNull(additionalFields);
 		assertEquals(2, additionalFields.size());
 		
-		p2 = personRepository.findOne(p2Id);
+		p2 = personRepository.findById(p2Id).get();
 		assertNull(p2);
 
-		p3 = personRepository.findOne(p3Id);
+		p3 = personRepository.findById(p3Id).get();
 		assertNotNull(p3);
 		assertNull(p3.getExtension());
 

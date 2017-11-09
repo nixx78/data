@@ -3,7 +3,8 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
   version="2.1">
   <persistence-unit name="test.unit">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    
     <class>lv.nixx.poc.spring.data.domain.Adress</class>
     <class>lv.nixx.poc.spring.data.domain.Customer</class>
     <class>lv.nixx.poc.spring.data.domain.CustomerExtension</class>
@@ -39,19 +40,18 @@
     
       <!--
         if you don't have a database already created append ;create=true to end of the jdbc url
-      -->
+      
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby:derbyDB;create=true"/>
       <property name="javax.persistence.jdbc.user" value=""/>
       <property name="javax.persistence.jdbc.password" value=""/>
+      -->
  
-      <!--  Settings for network Derby on standart port -->
-      <!-- 
+      <!--  Settings for network Derby on standart port:1527 -->
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/derbyDB;create=true"/>
       <property name="javax.persistence.jdbc.user" value=""/>
       <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
- 	   -->
  	   
       <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
 	  
@@ -65,7 +65,8 @@
         you want hibernate to create a schema for you
         <property name="hibernate.hbm2ddl.auto" value="create"/> 
       -->
-      <!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
+      
+      <property name="hibernate.hbm2ddl.auto" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>

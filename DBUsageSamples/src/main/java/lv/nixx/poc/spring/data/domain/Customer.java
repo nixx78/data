@@ -6,8 +6,34 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="Customer")
-@NamedQueries( {@NamedQuery(name="Customer.selectAllCustomersQuery", query="Select c from Customer c"),
-				@NamedQuery(name="Customer.findCustomerByLastName", query="Select c from Customer c where lastName=:lastName")})
+@NamedQueries( 
+		{
+			@NamedQuery(name="Customer.selectAllCustomersQuery", query="Select c from Customer c"),
+			@NamedQuery(name="Customer.findCustomerByLastName", query="Select c from Customer c where lastName=:lastName")
+		}
+)
+@NamedNativeQuery(
+		resultSetMapping = "resultSetMapping", 
+		name="customersWithType", 
+		query = " SELECT c.ID, FIRSTNAME, LASTNAME, SEGMENT, TYPE_ID, DESCRIPTION "
+				+ "FROM app.CUSTOMER C, app.CUSTOMERTYPE CT "
+				+ "WHERE C.TYPE_ID =  CT.ID"
+)
+@SqlResultSetMapping(name = "resultSetMapping",
+classes = {
+		 @ConstructorResult(
+           targetClass=CustomerWithType.class,
+             columns={
+                @ColumnResult(name="ID", type = Long.class),
+                @ColumnResult(name="FIRSTNAME"),
+                @ColumnResult(name="LASTNAME"),
+                @ColumnResult(name="SEGMENT"),
+                @ColumnResult(name="TYPE_ID"),
+                @ColumnResult(name="DESCRIPTION")
+            }
+         )
+})
+
 public class Customer {
 
     @Id

@@ -58,7 +58,7 @@ public class CustomerPerformanceTest {
 		for (int i = 0; i < recordCount; i++) {
 			customers.add(new Customer("name", "surname", simpleCustomer, new CustomerExtension("additionalData")));
 		}
-		customerRepository.save(customers ); 
+		customerRepository.saveAll(customers); 
 		System.out.println("[" + recordCount + "] insertion done by [" + (System.currentTimeMillis()-startTime) + "] milleseconds");
 		entityManager.flush();
 	}
