@@ -26,8 +26,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Cacheable(true)
 public class Person extends AbstractPersistable<Long> {
 
-	private static final long serialVersionUID = 1L;
-
 	@Version
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private int version;

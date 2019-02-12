@@ -9,19 +9,17 @@ import javax.persistence.criteria.*;
 
 import lv.nixx.poc.spring.data.domain.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/*
- * Для работы данного примера используется файл persistence.xml,
- * находится в любом месте CLASSPATH META-INF
- */
+
 public class CustomerJPAUsageSample {
 
-	final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
+	EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
 	@Before
-	public void cleanTables(){
+	public void init(){
 		final EntityManager entityManager = factory.createEntityManager();
 		final EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
@@ -29,6 +27,12 @@ public class CustomerJPAUsageSample {
 		transaction.commit();
 		entityManager.close();
 	}
+	
+    @After
+    public void destroy() {
+    	factory.close();
+    }
+
 	
 	@Test
 	public void testShouldPersistCustomer(){
@@ -40,6 +44,7 @@ public class CustomerJPAUsageSample {
 		
 		assertNotNull(customer.getId()); // проверяем, что ID сгенерировано для Customer
 		transaction.commit();
+		entityManager.close();
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -49,6 +54,7 @@ public class CustomerJPAUsageSample {
 	    final EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
 		entityManager.persist(new Customer(null, null, null));
+		entityManager.close();
 	}
 	
 	@Test
@@ -86,6 +92,7 @@ public class CustomerJPAUsageSample {
 	    for(Customer c: resultList){
 	    	System.out.println(c);
 	    }
+		entityManager.close();
 	}
 	
 	@Test
@@ -184,7 +191,7 @@ public class CustomerJPAUsageSample {
 		for (Customer m : resultList) {
 			System.out.println(m);
 		}
-	
+		entityManager.close();
 	}
 
 }

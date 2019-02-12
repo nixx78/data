@@ -12,13 +12,28 @@ import javax.persistence.*;
 			@NamedQuery(name="Customer.findCustomerByLastName", query="Select c from Customer c where lastName=:lastName")
 		}
 )
-@NamedNativeQuery(
+
+@NamedNativeQueries(value = { 
+		@NamedNativeQuery(
 		resultSetMapping = "resultSetMapping", 
-		name="customersWithType", 
+		name = "customersWithType", 
 		query = " SELECT c.ID, FIRSTNAME, LASTNAME, SEGMENT, TYPE_ID, DESCRIPTION "
 				+ "FROM app.CUSTOMER C, app.CUSTOMERTYPE CT "
 				+ "WHERE C.TYPE_ID =  CT.ID"
-)
+				),
+		
+		@NamedNativeQuery(
+				resultSetMapping = "resultSetMapping", 
+				name = "customerByFirstName",
+				query = " SELECT c.ID, FIRSTNAME, LASTNAME, SEGMENT, TYPE_ID, DESCRIPTION "
+						+ "FROM app.CUSTOMER C, app.CUSTOMERTYPE CT "
+						+ "WHERE C.TYPE_ID =  CT.ID AND FIRSTNAME=:firstname"
+		)
+		
+})
+
+
+
 @SqlResultSetMapping(name = "resultSetMapping",
 classes = {
 		 @ConstructorResult(
@@ -32,7 +47,8 @@ classes = {
                 @ColumnResult(name="DESCRIPTION")
             }
          )
-})
+}
+)
 
 public class Customer {
 
