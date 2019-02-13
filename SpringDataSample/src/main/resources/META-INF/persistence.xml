@@ -1,0 +1,24 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+  version="2.1">
+  <persistence-unit name="spring.data.unit">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <shared-cache-mode>ALL</shared-cache-mode>
+    <properties>
+ 
+      <!--  Settings for network Derby on standart port:1527 -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/SpringSampleDB;create=true"/>
+      <property name="javax.persistence.jdbc.user" value=""/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+ 	   
+      <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
+
+	 <!-- 
+       <property name="hibernate.hbm2ddl.auto" value="create"/>
+      -->
+      
+    </properties>
+  </persistence-unit>
+</persistence>
