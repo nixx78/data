@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.mappingsamples.singletable;
+package lv.nixx.poc.db.mappingsamples.singletable;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.domain;
+package lv.nixx.poc.db.domain;
 
 import java.util.*;
 
@@ -31,9 +31,6 @@ import javax.persistence.*;
 		)
 		
 })
-
-
-
 @SqlResultSetMapping(name = "resultSetMapping",
 classes = {
 		 @ConstructorResult(

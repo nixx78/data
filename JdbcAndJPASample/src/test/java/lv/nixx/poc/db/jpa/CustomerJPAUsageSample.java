@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.jpa;
+package lv.nixx.poc.db.jpa;
 
 import static org.junit.Assert.*;
 
@@ -7,11 +7,11 @@ import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 
-import lv.nixx.poc.spring.data.domain.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import lv.nixx.poc.db.domain.*;
 
 
 public class CustomerJPAUsageSample {

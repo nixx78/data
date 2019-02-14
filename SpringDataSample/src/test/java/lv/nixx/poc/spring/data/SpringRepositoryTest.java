@@ -8,21 +8,21 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
+import lv.nixx.poc.spring.data.domain.*;
 import lv.nixx.poc.spring.data.repository.*;
-import lv.nixx.poc.spring.domain.*;
-
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = JPAConfiguration.class)
 @Transactional
-public class CustomerSpringDataTest {
+public class SpringRepositoryTest {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -44,10 +44,12 @@ public class CustomerSpringDataTest {
 		adressRepository.deleteAll();
 		customerRepository.deleteAll();
 		typeRepository.deleteAll();
+		
 		entityManager.flush();
 	}
 
 	@Test
+	@Rollback(false)
 	public void testCustomerTypeMultiplySave() {
 
 		/*
@@ -59,20 +61,18 @@ public class CustomerSpringDataTest {
 		final String testId = "testId";
 		final CustomerType testType = new CustomerType(testId, "TestType");
 		typeRepository.save(testType);
-		entityManager.flush();
 
 		testType.setDescription("New TestType desciption");
 		typeRepository.save(testType);
-		entityManager.flush();
 
-		final CustomerType test1Type = new CustomerType(testId, "Last TestType description");
+		final CustomerType test1Type = new CustomerType(testId, "Last TestType description 1112");
 		typeRepository.save(test1Type);
-		entityManager.flush();
+//		entityManager.flush();
 
 		CustomerType t = typeRepository.findById(testId).get();
 		assertNotNull(t);
 		assertEquals(testId, t.getId());
-		assertEquals("Last TestType description", t.getDescription());
+		assertEquals("Last TestType description 1112", t.getDescription());
 
 		printCustomerTypes();
 	}

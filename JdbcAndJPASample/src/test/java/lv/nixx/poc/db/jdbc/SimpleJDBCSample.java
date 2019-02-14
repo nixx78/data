@@ -1,4 +1,4 @@
-package lv.nixx.poc.jdbc;
+package lv.nixx.poc.db.jdbc;
 
 import static org.junit.Assert.*;
 

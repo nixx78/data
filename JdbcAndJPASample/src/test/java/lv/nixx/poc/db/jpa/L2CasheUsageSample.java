@@ -1,10 +1,10 @@
-package lv.nixx.poc.spring.data.jpa;
+package lv.nixx.poc.db.jpa;
 
 import javax.persistence.*;
 
-import lv.nixx.poc.spring.data.domain.Person;
-
 import org.junit.*;
+
+import lv.nixx.poc.db.domain.Person;
 
 
 public class L2CasheUsageSample {
@@ -44,9 +44,8 @@ public class L2CasheUsageSample {
 		
 		System.out.println("personid " + id );
 		
-		Cache cache = factory.getCache();
-		
-		boolean isCached = cache.contains(Person.class, id);
+		//Cache cache = factory.getCache();
+		//boolean isCached = cache.contains(Person.class, id);
 		//assertTrue(isCached);
 		
 		Person foundPerson = em.find(Person.class, id);

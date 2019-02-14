@@ -5,8 +5,8 @@ import java.util.*;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
+import lv.nixx.poc.spring.data.domain.*;
 import lv.nixx.poc.spring.data.repository.*;
-import lv.nixx.poc.spring.domain.*;
 
 import org.junit.Ignore;
 import org.junit.Test;

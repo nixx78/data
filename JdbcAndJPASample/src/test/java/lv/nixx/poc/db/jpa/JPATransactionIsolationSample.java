@@ -1,9 +1,11 @@
-package lv.nixx.poc.spring.data.jpa;
+package lv.nixx.poc.db.jpa;
 
 import java.util.*;
 import javax.persistence.*;
-import lv.nixx.poc.spring.data.domain.Person;
+
 import org.junit.*;
+
+import lv.nixx.poc.db.domain.Person;
 
 public class JPATransactionIsolationSample {
 	

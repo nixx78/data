@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.mappingsamples.joinedtable;
+package lv.nixx.poc.db.mappingsamples.joinedtable;
 
 import java.math.BigDecimal;
 

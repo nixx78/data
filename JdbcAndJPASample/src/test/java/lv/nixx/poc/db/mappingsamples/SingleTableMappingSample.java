@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.mappingsamples;
+package lv.nixx.poc.db.mappingsamples;
 
 import static org.junit.Assert.*;
 
@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 
 import javax.persistence.*;
 
-import lv.nixx.poc.spring.data.mappingsamples.singletable.BonusedClient;
-import lv.nixx.poc.spring.data.mappingsamples.singletable.SalaryProjectClient;
-import lv.nixx.poc.spring.data.mappingsamples.singletable.Student;
-import lv.nixx.poc.spring.data.mappingsamples.singletable.VisaGoldClient;
-
 import org.junit.Test;
+
+import lv.nixx.poc.db.mappingsamples.singletable.BonusedClient;
+import lv.nixx.poc.db.mappingsamples.singletable.SalaryProjectClient;
+import lv.nixx.poc.db.mappingsamples.singletable.Student;
+import lv.nixx.poc.db.mappingsamples.singletable.VisaGoldClient;
 
 public class SingleTableMappingSample {
 	

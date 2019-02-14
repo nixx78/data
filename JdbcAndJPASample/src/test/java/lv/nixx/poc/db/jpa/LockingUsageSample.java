@@ -1,12 +1,12 @@
-package lv.nixx.poc.spring.data.jpa;
+package lv.nixx.poc.db.jpa;
 
 import static org.junit.Assert.*;
 
 import javax.persistence.*;
 
-import lv.nixx.poc.spring.data.domain.Person;
-
 import org.junit.*;
+
+import lv.nixx.poc.db.domain.Person;
 
 public class LockingUsageSample {
 	

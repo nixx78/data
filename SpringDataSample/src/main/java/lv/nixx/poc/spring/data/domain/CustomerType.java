@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.domain;
+package lv.nixx.poc.spring.data.domain;
 
 import javax.persistence.*;
 

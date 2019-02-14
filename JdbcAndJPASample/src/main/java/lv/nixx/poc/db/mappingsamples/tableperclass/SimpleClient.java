@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.mappingsamples.tableperclass;
+package lv.nixx.poc.db.mappingsamples.tableperclass;
 
 import javax.persistence.MappedSuperclass;
 

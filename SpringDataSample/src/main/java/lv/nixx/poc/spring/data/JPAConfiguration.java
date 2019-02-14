@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("lv.nixx.poc.spring.data")
+@EnableJpaRepositories(basePackages = {"lv.nixx.poc.spring.data.repository", "lv.nixx.poc.spring.data.repository.txn"})
 @ComponentScan("lv.nixx.poc.spring.data")
 public class JPAConfiguration {
 

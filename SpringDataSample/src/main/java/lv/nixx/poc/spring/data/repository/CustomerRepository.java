@@ -2,11 +2,11 @@ package lv.nixx.poc.spring.data.repository;
 
 import java.util.List;
 
-import lv.nixx.poc.spring.domain.Customer;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import lv.nixx.poc.spring.data.domain.Customer;
 
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Long> {

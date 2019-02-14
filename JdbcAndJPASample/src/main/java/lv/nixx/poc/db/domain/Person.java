@@ -1,11 +1,9 @@
-package lv.nixx.poc.spring.data.domain;
+package lv.nixx.poc.db.domain;
 
 import java.util.*;
 import java.util.Map.Entry;
 
 import javax.persistence.*;
-
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 
 /**
@@ -24,7 +22,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 @Table(name="Person")
 @Cacheable(true)
-public class Person extends AbstractPersistable<Long> {
+public class Person {
+	
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
 
 	@Version
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -79,6 +81,10 @@ public class Person extends AbstractPersistable<Long> {
 		this.extension = ext;
 	}
 	
+	public long getId() {
+		return id;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
