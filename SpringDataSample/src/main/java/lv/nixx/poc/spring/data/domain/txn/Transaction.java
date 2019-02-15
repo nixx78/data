@@ -6,19 +6,22 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="TRANSACTIONS")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @EqualsAndHashCode(callSuper=true)
 public class Transaction extends AbstractPersistable<Long> {
 	
@@ -29,9 +32,10 @@ public class Transaction extends AbstractPersistable<Long> {
 	private BigDecimal amount;
     
     @Column(name="descr", nullable=false)
+    @Setter
 	private String description;
 	
-    @OneToOne( targetEntity=Currency.class,  optional=false)
+    @ManyToOne( targetEntity=Currency.class)
     @JoinColumn(name = "currency_code")
 	private Currency currency;
 	
