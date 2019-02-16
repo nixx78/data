@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
@@ -51,8 +52,8 @@ public class TransactionTest {
 		
 		LocalDateTime now = LocalDateTime.now();
 		
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", usd));
-		Transaction txn2 = txnRepo.save(new Transaction(now, BigDecimal.valueOf(20.01), "descr2", eur));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", usd, "acc1"));
+		Transaction txn2 = txnRepo.save(new Transaction(now, BigDecimal.valueOf(20.01), "descr2", eur, "acc2"));
 		
 		assertEquals(2, txnRepo.count());
 		
@@ -67,9 +68,39 @@ public class TransactionTest {
 	}
 	
 	@Test
-	public void requestSamples() {
+	public void requestsTest() {
 		// TODO Make sample from there... https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#mapping.object-creation.details
+		
+		LocalDateTime now = LocalDateTime.now();
+
+		final Currency usd = new Currency("USD", 810);
+		final Currency eur = new Currency("EUR", 978);
+		
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", usd, "account1"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.05), "descr2", eur, "account2"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.03), "descr3", usd, "account2"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.04), "descr4", usd, "account4"));
+
+		Collection<Transaction> txns = txnRepo.findAllByCurrency(usd);
+		txns.forEach(System.out::println);
+		System.out.println("====================");
+
+		assertEquals(3, txns.size());
+		
+		Collection<Transaction> notExisting = txnRepo.findAllByCurrency(new Currency("RUB", 978));
+		System.out.println(notExisting);
+		
+		System.out.println("====================");
+		
+		txns = txnRepo.findAllByAccountOrderByAmount("account2");
+		txns.forEach(System.out::println);
+		
+		System.out.println("====================");
+		txns = txnRepo.findAllByCurrencyAlphaCode("EUR");
+		txns.forEach(t-> System.out.println("Txn by alphaCode: " + t));
+
 	}
+
 	
 	@Test
 	public void pagingSample() throws InterruptedException {
@@ -79,7 +110,7 @@ public class TransactionTest {
 		final LocalDateTime now = LocalDateTime.now();
 
 		for (int i = 0; i < txnCount; i++) {
-			txnRepo.save(new Transaction(now, BigDecimal.valueOf(i), "descr" + i, usd));
+			txnRepo.save(new Transaction(now, BigDecimal.valueOf(i), "descr" + i, usd, "acc1"));
 		}
 		
 		assertEquals(20, txnRepo.count());

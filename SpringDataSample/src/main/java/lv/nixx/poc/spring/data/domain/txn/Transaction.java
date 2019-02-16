@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="TRANSACTIONS")
@@ -23,6 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(callSuper=true)
+@ToString
 public class Transaction extends AbstractPersistable<Long> {
 	
     @Column(name="date", nullable=false)
@@ -38,5 +40,8 @@ public class Transaction extends AbstractPersistable<Long> {
     @ManyToOne( targetEntity=Currency.class)
     @JoinColumn(name = "currency_code")
 	private Currency currency;
+    
+    @Column(name="account", nullable=false)
+    private String account;
 	
 }
