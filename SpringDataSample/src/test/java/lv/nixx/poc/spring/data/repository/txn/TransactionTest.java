@@ -24,9 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import lv.nixx.poc.spring.data.JPAConfiguration;
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
+import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 
 // TODO Make sample from there... https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#mapping.object-creation.details
+
+// Projection sample: https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#projections
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = JPAConfiguration.class)
@@ -145,14 +148,27 @@ public class TransactionTest {
 		}
 	
 	}
+	
+	@Test
+	public void getAllTransactionsProjection() {
+		createInitialData();
+		
+		Collection<TransactionProjection> all = txnRepo.findAllByAccount("account4");
+		
+		for(TransactionProjection t: all ) {
+			System.out.println(t.getId() + ":" + t.getDescription() + ":" + t.getFormattedAmount());
+		}
+		
+
+	}
 
 	private void createInitialData() {
 		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "account1"));
 		txnRepo.save(new Transaction(now, BigDecimal.valueOf(20.05), "descr2", EUR, "account2"));
 		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.03), "descr3", USD, "account2"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(77.77), "descr4", USD, "account4"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(4.2), "descr4", USD, "account4"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(1.0), "descr4", USD, "account4"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(77.77), "descr41", USD, "account4"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(4.2), "descr42", USD, "account4"));
+		txnRepo.save(new Transaction(now, BigDecimal.valueOf(1.0), "descr43", USD, "account4"));
 	}
 
 }

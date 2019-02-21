@@ -10,6 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
+import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 
 public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Long> {
 	
@@ -21,5 +22,8 @@ public interface TransactionRepository extends PagingAndSortingRepository<Transa
 	
 	@Query("select t from Transaction t")
 	public Stream<Transaction> streamAllPaged(Pageable pageable);
+	
+	// Query with projection
+	public Collection<TransactionProjection> findAllByAccount(String account);
 	
 }
