@@ -10,20 +10,28 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
+import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 
 public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Long> {
-	
-	public Collection<Transaction> findAllByCurrency(Currency currency);
-	public Collection<Transaction> findAllByAccountOrderByAmount(String account);
-	public Collection<Transaction> findAllByCurrencyAlphaCode(String alphaCode);
-	public Collection<Transaction> findTop3ByOrderByAmountDesc();
-	public Collection<Transaction> findFirst3ByCurrencyAlphaCode(String alphaCode, Sort sort);
-	
+
+	// Query with DTO as Result
+	Collection<TransactionDTO> findAllDtoedByCurrency(Currency currency);
+
+	Collection<Transaction> findAllByAccountOrderByAmount(String account);
+
+	Collection<Transaction> findAllByCurrencyAlphaCode(String alphaCode);
+
+	Collection<Transaction> findTop3ByOrderByAmountDesc();
+
+	Collection<Transaction> findFirst3ByCurrencyAlphaCode(String alphaCode, Sort sort);
+
 	@Query("select t from Transaction t")
-	public Stream<Transaction> streamAllPaged(Pageable pageable);
-	
-	// Query with projection
-	public Collection<TransactionProjection> findAllByAccount(String account);
-	
+	Stream<Transaction> streamAllPaged(Pageable pageable);
+
+	// Query with projection (Interface) as result
+	Collection<TransactionProjection> findAllByAccount(String account);
+
+	<T> Collection<T> findAllBy(Class<T> type);
+
 }

@@ -2,6 +2,7 @@ package lv.nixx.poc.spring.data.repository.txn;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lv.nixx.poc.spring.data.JPAConfiguration;
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
+import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 
@@ -79,24 +81,15 @@ public class TransactionTest {
 	@Test
 	public void requestsTest() {
 		createInitialData();
-		
-		Collection<Transaction> txns = txnRepo.findAllByCurrency(USD);
-		txns.forEach(System.out::println);
-		System.out.println("====================");
-
-		assertEquals(5, txns.size());
-
-		Collection<Transaction> notExisting = txnRepo.findAllByCurrency(new Currency("RUB", 978));
-		System.out.println(notExisting);
 
 		System.out.println("====================");
 
-		txns = txnRepo.findAllByAccountOrderByAmount("account2");
+		Collection<Transaction> txns = txnRepo.findAllByAccountOrderByAmount("account2");
 		txns.forEach(System.out::println);
 
 		System.out.println("====================");
 		txns = txnRepo.findAllByCurrencyAlphaCode(EUR.getAlphaCode());
-		
+
 		txns.forEach(t -> System.out.println("Txn by alphaCode: " + t));
 
 	}
@@ -127,39 +120,54 @@ public class TransactionTest {
 	@Test
 	public void findTopFirstSample() {
 		createInitialData();
-		
+
 		Collection<Transaction> result = txnRepo.findTop3ByOrderByAmountDesc();
 		result.forEach(System.out::println);
-		
+
 		assertEquals(3, result.size());
-		
+
 		System.out.println("==============================================");
 		result = txnRepo.findFirst3ByCurrencyAlphaCode(USD.getAlphaCode(), Sort.by("Amount").descending());
 		result.forEach(System.out::println);
 	}
-	
+
 	@Test
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public void getAllStreamed() {
 		createInitialData();
-		
+
 		try (Stream<Transaction> all = txnRepo.streamAllPaged(Pageable.unpaged())) {
 			all.forEach(System.out::println);
 		}
-	
+
 	}
-	
+
 	@Test
-	public void getAllTransactionsProjection() {
+	public void projectionAndDTOSample() {
+
 		createInitialData();
-		
+
 		Collection<TransactionProjection> all = txnRepo.findAllByAccount("account4");
-		
-		for(TransactionProjection t: all ) {
+
+		for (TransactionProjection t : all) {
 			System.out.println(t.getId() + ":" + t.getDescription() + ":" + t.getFormattedAmount());
 		}
-		
 
+		Collection<TransactionDTO> txns = txnRepo.findAllDtoedByCurrency(USD);
+		txns.forEach(System.out::println);
+		System.out.println("====================");
+
+		assertEquals(5, txns.size());
+
+		Collection<TransactionDTO> notExisting = txnRepo.findAllDtoedByCurrency(new Currency("RUB", 978));
+		System.out.println(notExisting);
+		assertTrue(notExisting.isEmpty());
+
+		Collection<Transaction> findAllAsTransaction = txnRepo.findAllBy(Transaction.class);
+		Collection<TransactionDTO> findAllAsDTO = txnRepo.findAllBy(TransactionDTO.class);
+		
+		assertFalse(findAllAsTransaction.isEmpty());
+		assertFalse(findAllAsDTO.isEmpty());
 	}
 
 	private void createInitialData() {
