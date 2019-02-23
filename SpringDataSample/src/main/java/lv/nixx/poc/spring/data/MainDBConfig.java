@@ -4,31 +4,35 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.derby.jdbc.ClientDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.*;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"lv.nixx.poc.spring.data.repository", "lv.nixx.poc.spring.data.repository.txn"})
+@EnableJpaRepositories(
+		basePackages = {"lv.nixx.poc.spring.data.repository.main"},
+		entityManagerFactoryRef = "mainEntityManager"
+	)
 @ComponentScan("lv.nixx.poc.spring.data")
-public class JPAConfiguration {
+public class MainDBConfig {
 
-	@Bean
-	public DataSource dataSource() {
+	@Bean(name = "mainDB")
+	public DataSource springDBDataSource() {
 		ClientDataSource ds = new ClientDataSource();
-		ds.setDatabaseName("SpringSampleDB");
+		ds.setDatabaseName("MainDB");
 		ds.setCreateDatabase("create");
 		ds.setServerName("localhost");
 		ds.setPortNumber(1527);
-		
 		return ds;
 	}
 
-	@Bean
-	public EntityManagerFactory entityManagerFactory() {
+	@Bean(name = "mainEntityManager")
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
 		HibernateJpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter();
 		jpaAdapter.setDatabasePlatform("org.hibernate.dialect.DerbyTenSevenDialect");
@@ -36,19 +40,16 @@ public class JPAConfiguration {
 		jpaAdapter.setShowSql(false);
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setDataSource(dataSource());
+		factory.setDataSource(springDBDataSource());
 		factory.setJpaVendorAdapter(jpaAdapter);
-		factory.afterPropertiesSet();
+		factory.setPackagesToScan(new String[] {"lv.nixx.poc.spring.data.domain.main"});
 
-		return factory.getObject();
+		return factory;
 	}
 	
 	@Bean
-	public JpaTransactionManager transactionManager() {
-		JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setDataSource(dataSource());
-		return txManager;
+	public PlatformTransactionManager  transactionManager(@Qualifier("mainEntityManager") EntityManagerFactory entityManagerFactory) {
+		return new JpaTransactionManager(entityManagerFactory);
 	}
-
 
 }

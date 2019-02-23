@@ -1,7 +1,6 @@
-package lv.nixx.poc.spring.data;
+package lv.nixx.poc.spring.data.repository.main;
 
-import lv.nixx.poc.spring.data.domain.Customer;
-import lv.nixx.poc.spring.data.repository.CustomerRepository;
+import lv.nixx.poc.spring.data.domain.main.Customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

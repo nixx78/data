@@ -12,17 +12,17 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name="TRANSACTIONS")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @EqualsAndHashCode(callSuper=true)
 @ToString
 public class Transaction extends AbstractPersistable<Long> {

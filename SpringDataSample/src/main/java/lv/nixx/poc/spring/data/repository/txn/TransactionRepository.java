@@ -7,13 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
 import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 
-public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Long> {
+public interface TransactionRepository extends PagingAndSortingRepository<Transaction, Long>, QueryByExampleExecutor<Transaction> {
 
 	// Query with DTO as Result
 	Collection<TransactionDTO> findAllDtoedByCurrency(Currency currency);

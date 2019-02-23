@@ -6,14 +6,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,19 +26,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import lv.nixx.poc.spring.data.JPAConfiguration;
+import lv.nixx.poc.spring.data.TransactionDBConfig;
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
 import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 
-// TODO Make sample from there... https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#mapping.object-creation.details
-
-// Projection sample: https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#projections
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = JPAConfiguration.class)
+@ContextConfiguration(classes = TransactionDBConfig.class)
 public class TransactionTest {
 
 	@Autowired
@@ -157,7 +157,7 @@ public class TransactionTest {
 		txns.forEach(System.out::println);
 		System.out.println("====================");
 
-		assertEquals(5, txns.size());
+		assertEquals(6, txns.size());
 
 		Collection<TransactionDTO> notExisting = txnRepo.findAllDtoedByCurrency(new Currency("RUB", 978));
 		System.out.println(notExisting);
@@ -165,18 +165,46 @@ public class TransactionTest {
 
 		Collection<Transaction> findAllAsTransaction = txnRepo.findAllBy(Transaction.class);
 		Collection<TransactionDTO> findAllAsDTO = txnRepo.findAllBy(TransactionDTO.class);
-		
+
 		assertFalse(findAllAsTransaction.isEmpty());
 		assertFalse(findAllAsDTO.isEmpty());
 	}
 
+	@Test
+	public void queryByExampleSample() {
+		createInitialData();
+
+		Transaction txnKey = new Transaction();
+		txnKey.setCurrency(USD);
+		txnKey.setDescription("descr3");
+
+		Example<Transaction> example = Example.of(txnKey);
+		Optional<Transaction> result = txnRepo.findOne(example);
+		assertTrue(result.isPresent());
+
+		txnKey = new Transaction();
+		txnKey.setDescription("descr3");
+
+		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("description", match -> match.startsWith());
+
+		example = Example.of(txnKey, matcher);
+
+		result = txnRepo.findOne(example);
+		assertTrue(result.isPresent());
+
+	}
+
 	private void createInitialData() {
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "account1"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(20.05), "descr2", EUR, "account2"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.03), "descr3", USD, "account2"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(77.77), "descr41", USD, "account4"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(4.2), "descr42", USD, "account4"));
-		txnRepo.save(new Transaction(now, BigDecimal.valueOf(1.0), "descr43", USD, "account4"));
+
+		Arrays.asList(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "account1"),
+				new Transaction(now, BigDecimal.valueOf(20.05), "descr2", EUR, "account2"),
+				new Transaction(now, BigDecimal.valueOf(10.03), "descr3", USD, "account2"),
+				new Transaction(now, BigDecimal.valueOf(77.77), "descr41", USD, "account4"),
+				new Transaction(now, BigDecimal.valueOf(4.2), "descr42", USD, "account4"),
+				new Transaction(now, BigDecimal.valueOf(1.0), "descr43", USD, "account4"),
+				new Transaction(now, BigDecimal.valueOf(8.0), "pref_descr43", USD, "account4")
+		).forEach(txnRepo::save);
+
 	}
 
 }

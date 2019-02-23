@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.data.domain;
+package lv.nixx.poc.spring.data.domain.main;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;

@@ -2,26 +2,22 @@ package lv.nixx.poc.spring.data;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
-import javax.persistence.*;
-import javax.transaction.Transactional;
-
-import lv.nixx.poc.spring.data.domain.*;
-import lv.nixx.poc.spring.data.repository.*;
+import lv.nixx.poc.spring.data.domain.main.*;
+import lv.nixx.poc.spring.data.repository.main.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = JPAConfiguration.class)
-@Transactional
+@ContextConfiguration(classes = MainDBConfig.class)
 public class SpringRepositoryTest {
 
 	@Autowired
@@ -36,20 +32,14 @@ public class SpringRepositoryTest {
 	@Autowired
 	private CustomerDAO customerDAO;
 
-	@Autowired
-	private EntityManager entityManager;
-
 	@Before
 	public void prepateTables() {
 		adressRepository.deleteAll();
 		customerRepository.deleteAll();
 		typeRepository.deleteAll();
-		
-		entityManager.flush();
 	}
 
 	@Test
-	@Rollback(false)
 	public void testCustomerTypeMultiplySave() {
 
 		/*
@@ -67,7 +57,6 @@ public class SpringRepositoryTest {
 
 		final CustomerType test1Type = new CustomerType(testId, "Last TestType description 1112");
 		typeRepository.save(test1Type);
-//		entityManager.flush();
 
 		CustomerType t = typeRepository.findById(testId).get();
 		assertNotNull(t);
@@ -102,18 +91,16 @@ public class SpringRepositoryTest {
 		 */
 
 		typeRepository.save(simpleCustomer);
-		entityManager.flush();
 
 		Customer c1 = new Customer("Jack", "Bauer", simpleCustomer);
 		customerDAO.save(c1);
-		entityManager.flush();
 
 		Long c1ID = c1.getId();
 		assertNotNull(c1ID);
 
 		Customer c2 = new Customer("Nikolas", "Cage", simpleCustomer);
 		customerDAO.save(c2);
-		entityManager.flush();
+
 		Long c2ID = c2.getId();
 		assertNotNull(c2ID);
 
@@ -135,7 +122,6 @@ public class SpringRepositoryTest {
 		final CustomerType vipCustomer = new CustomerType("vip", "Vip Customer");
 		typeRepository.save(simpleCustomer);
 		typeRepository.save(vipCustomer);
-		entityManager.flush();
 
 		// save a couple of customers
 		Customer c1 = new Customer("Jack", "Bauer", simpleCustomer);
@@ -149,7 +135,6 @@ public class SpringRepositoryTest {
 		customerDAO.save(c1);
 		customerDAO.save(c2);
 		customerDAO.save(c3);
-		entityManager.flush();
 
 		printCustomers();
 		Long c1ID = c1.getId();
@@ -180,7 +165,8 @@ public class SpringRepositoryTest {
 		// Удалим адресс и Extension у клиента
 		expCustomer3.getAdress().clear();
 		expCustomer3.setExtension(null);
-		entityManager.flush();
+		
+		customerRepository.save(expCustomer3);
 
 		// Проверим, что он действительно удалился
 		expCustomer3 = customerRepository.findById(c3ID).get();
@@ -198,7 +184,6 @@ public class SpringRepositoryTest {
 
 		final CustomerType simpleCustomer = new CustomerType("simple", "Simple Customer");
 		typeRepository.save(simpleCustomer);
-		entityManager.flush();
 
 		Customer c1 = new Customer("Nikolas", "Smith", simpleCustomer);
 		c1.setExtension(new CustomerExtension("Nikolas's additional data"));
@@ -206,7 +191,6 @@ public class SpringRepositoryTest {
 		c1.addAdress(new Adress("N2 line1", "N2 line2"));
 
 		customerDAO.save(c1);
-		entityManager.flush();
 
 		printCustomers();
 		Long c3ID = c1.getId();
@@ -226,18 +210,18 @@ public class SpringRepositoryTest {
 	@Test
 	public void testShouldRetrieveAndGetUsingNamedQuery() {
 
-		final CustomerType simpleCustomer = new CustomerType("simple", "Simple Customer");
-		typeRepository.save(simpleCustomer);
-		entityManager.flush();
+		final CustomerType simpleType = new CustomerType("simple", "Simple Customer");
+		typeRepository.save(simpleType);
 
-		Customer c1 = new Customer("Jack", "Bauer", simpleCustomer);
-		Customer c2 = new Customer("Nikolas", "Cage", simpleCustomer);
-		customerDAO.save(c1);
-		customerDAO.save(c2);
-
-		List<Customer> result = customerRepository.selectAllCustomersUsingNamedQuery();
+		Customer c1 = new Customer("Jack", "Bauer", simpleType);
+		Customer c2 = new Customer("Nikolas", "Cage", simpleType);
+		c1 = customerRepository.save(c1);
+		c2 = customerRepository.save(c2);
+		
+		Collection<Customer> result = new ArrayList<>();
+		customerRepository.findAll().forEach(result::add);
+		
 		assertEquals(2, result.size());
-
 	}
 
 	private void printCustomers() {
