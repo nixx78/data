@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MainDBConfig.class)
-public class SpringRepositoryTest {
+public class MainDBTest {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -34,11 +34,12 @@ public class SpringRepositoryTest {
 
 	@Before
 	public void prepateTables() {
+		customerRepository.deleteAll();
 		adressRepository.deleteAll();
 		customerRepository.deleteAll();
 		typeRepository.deleteAll();
 	}
-
+	
 	@Test
 	public void testCustomerTypeMultiplySave() {
 
@@ -206,7 +207,7 @@ public class SpringRepositoryTest {
 		assertEquals("Nikolas's additional data", c3Extension.getAdditionalData());
 		assertEquals(2, adress.size());
 	}
-
+	
 	@Test
 	public void testShouldRetrieveAndGetUsingNamedQuery() {
 

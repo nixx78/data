@@ -35,7 +35,7 @@ import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TransactionDBConfig.class)
-public class TransactionTest {
+public class TransactionDBTest {
 
 	@Autowired
 	private CurrencyRepository currencyRepo;

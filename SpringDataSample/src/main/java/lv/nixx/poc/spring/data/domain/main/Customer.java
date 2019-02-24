@@ -26,7 +26,6 @@ public class Customer {
     @ManyToOne
     private CustomerType type;
     
-    
     @OneToOne(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="customer", targetEntity=CustomerExtension.class, orphanRemoval=true)
     private CustomerExtension extension;
     
