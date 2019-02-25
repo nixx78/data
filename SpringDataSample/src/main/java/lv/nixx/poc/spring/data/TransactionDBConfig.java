@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.*;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -64,11 +63,6 @@ public class TransactionDBConfig {
 	public PlatformTransactionManager transactionManager(@Qualifier("txnEntityManager") EntityManagerFactory entityManagerFactory ) {
 		return new JpaTransactionManager(entityManagerFactory);
 	}
-	
-	@Bean(name="txnJdbcTemplate")
-	@Primary
-	public JdbcTemplate txnJdbcTemplate() {
-		return new JdbcTemplate(transactionDBSource());
-	}
+
 
 }
