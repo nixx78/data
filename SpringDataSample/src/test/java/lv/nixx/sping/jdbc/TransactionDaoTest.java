@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import lv.nixx.poc.spring.data.TransactionDBConfig;
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
-import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 import lv.nixx.poc.spring.data.repository.txn.TransactionRepository;
+import lv.nixx.poc.spring.jdbc.TransactionDTO;
 import lv.nixx.poc.spring.jdbc.TransactionDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
