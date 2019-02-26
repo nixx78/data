@@ -1,11 +1,14 @@
 package lv.nixx.sping.jdbc;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sql.DataSource;
 
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -86,10 +90,28 @@ public class JdbcTemplateSandbox {
 	}
 	
 	//TODO 13.4 JDBC batch operations
+	
+	@Test
+	public void batchUpdateSample() {
+		
+	    List<Object[]> batch = Arrays.asList(
+	    			new Object[]{"descr_acc2", "account2"},
+	    			new Object[]{"descr_acc4", "account4"}
+	    		);
+        
+        int[] updateCounts = jdbcTemplate.batchUpdate("update Transactions set descr = ? where account = ?", batch);
+        System.out.println(Arrays.toString(updateCounts));
+		
+	}
 
 
 	private void createInitialData() {
 		final LocalDateTime now = LocalDateTime.now();
+		
+		SimpleJdbcInsert insertActor = new SimpleJdbcInsert(dataSource).withTableName("transactions");
+
+
+		AtomicInteger index = new AtomicInteger();
 
 		Arrays.asList(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "account1"),
 				new Transaction(now, BigDecimal.valueOf(20.05), "descr2", EUR, "account2"),
@@ -97,7 +119,16 @@ public class JdbcTemplateSandbox {
 				new Transaction(now, BigDecimal.valueOf(77.77), "descr41", USD, "account4"),
 				new Transaction(now, BigDecimal.valueOf(4.2), "descr42", USD, "account4"),
 				new Transaction(now, BigDecimal.valueOf(1.0), "descr43", USD, "account4"),
-				new Transaction(now, BigDecimal.valueOf(8.0), "pref_descr43", USD, "account4")).forEach(txnRepo::save);
+				new Transaction(now, BigDecimal.valueOf(8.0), "pref_descr43", USD, "account4")).forEach(t -> {
+			        Map<String, Object> p = new HashMap<String, Object>();
+			        p.put("id", index.getAndIncrement() );
+			        p.put("date", Timestamp.valueOf(t.getDate()));
+			        p.put("amount", t.getAmount());
+			        p.put("descr", t.getDescription());
+			        p.put("account", t.getAccount());
+			        p.put("currency_code", t.getCurrency().getAlphaCode());
+			        insertActor.execute(p);
+				});
 
 	}
 
