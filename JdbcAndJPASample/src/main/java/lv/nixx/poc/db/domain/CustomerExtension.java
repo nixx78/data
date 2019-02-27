@@ -2,8 +2,13 @@ package lv.nixx.poc.db.domain;
 
 import javax.persistence.*;
 
+import lombok.Data;
+import lombok.ToString;
+
 @Entity
 @Table(name="CustomerExtension")
+@ToString
+@Data
 public class CustomerExtension {
 
 	@Id
@@ -21,27 +26,6 @@ public class CustomerExtension {
 
 	public CustomerExtension(String additionalData) {
 		this.additionalData = additionalData;
-	}
-	
-	public String getAdditionalData() {
-		return additionalData;
-	}
-
-	public void setAdditionalData(String additionalData) {
-		this.additionalData = additionalData;
-	}
-	
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-
-	@Override
-	public String toString() {
-		return "Extension [id=" + id + ", additionalData=" + additionalData + "]";
 	}
 	
 }

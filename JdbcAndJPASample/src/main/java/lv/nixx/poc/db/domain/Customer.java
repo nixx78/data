@@ -4,6 +4,9 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import lombok.Data;
+import lombok.ToString;
+
 @Entity
 @Table(name="Customer")
 @NamedQueries( 
@@ -47,6 +50,8 @@ classes = {
 }
 )
 
+@Data
+@ToString
 public class Customer {
 
     @Id
@@ -90,60 +95,9 @@ public class Customer {
         setExtension(extension);
     }
 
-	public CustomerExtension getExtension() {
-		return extension;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setExtension(CustomerExtension extension) {
-		this.extension = extension;
-		if (extension != null) {
-			this.extension.setCustomer(this);
-		}
-	}
-	
-	public void addAdress(Adress adress){
+    public void addAdress(Adress adress){
 		adress.setCustomer(this);
 		this.adress.add(adress);
 	}
-	
-	public Set<Adress> getAdress() {
-		return adress;
-	}
-
-	public CustomerType getType() {
-		return this.type;
-	}
-	
-	public Segment getSegment() {
-		return segment;
-	}
-
-	public void setSegment(Segment segment) {
-		this.segment = segment;
-	}
-
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", segment=" + segment + ", type="
-				+ type + ", extension=" + extension + ", adress=" + adress
-				+ "]";
-	}
-
-	
-	
-    
 
 }

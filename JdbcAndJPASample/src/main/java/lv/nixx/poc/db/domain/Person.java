@@ -5,6 +5,9 @@ import java.util.Map.Entry;
 
 import javax.persistence.*;
 
+import lombok.Data;
+import lombok.ToString;
+
 
 /**
  * Класс для хранения сущности Person, демонстрируются следующие связи (работает начиная с JPA 2.0): <br>
@@ -22,6 +25,8 @@ import javax.persistence.*;
 @Entity
 @Table(name="Person")
 @Cacheable(true)
+@ToString
+@Data
 public class Person {
 	
 	@Id
@@ -80,37 +85,9 @@ public class Person {
 		this.surname = surname;
 		this.extension = ext;
 	}
-	
-	public long getId() {
-		return id;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public PersonExtension getExtension() {
-		return extension;
-	}
-	
 	public void addAliase(String alias){
 		this.aliase.add(alias);
-	}
-
-	public Set<String> getAliases() {
-		return aliase;
-	}
-	
-	public Set<PersonAdditionalField> getAdditionalFields() {
-		return additionalFields;
 	}
 
 	public void addAdditionalField(PersonAdditionalField additionalField) {
@@ -121,23 +98,11 @@ public class Person {
 		this.tasks.put(task.getTaskId(), task);
 	}
 	
-	public Map<String, Task> getTasks() {
+	public Map<String, Task> getTasksAsMap() {
 		for(Entry<String, Task> e : tasks.entrySet()){
 			e.getValue().setTaskId(e.getKey());
 		}
 		return tasks;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	@Override
-	public String toString() {
-		return "Person [version=" + version + ", name=" + name + ", surname="
-				+ surname + ", extension=" + extension + ", aliase=" + aliase
-				+ ", additionalFields=" + additionalFields + ", tasks=" + tasks
-				+ ", getId()=" + getId() + "]";
 	}
 
 	

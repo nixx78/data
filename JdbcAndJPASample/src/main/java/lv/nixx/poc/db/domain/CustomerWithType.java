@@ -1,5 +1,12 @@
 package lv.nixx.poc.db.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@ToString
 public class CustomerWithType {
 
 	private Long id;
@@ -8,21 +15,5 @@ public class CustomerWithType {
 	private String segment;
 	private String typeId;
 	private String description;
-
-	public CustomerWithType(Long id, String firstName, String lastName, String segment, String typeId,
-			String description) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.segment = segment;
-		this.typeId = typeId;
-		this.description = description;
-	}
-
-	@Override
-	public String toString() {
-		return "CustomerWithType [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", segment="
-				+ segment + ", typeId=" + typeId + ", description=" + description + "]";
-	}
 
 }

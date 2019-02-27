@@ -3,7 +3,16 @@ package lv.nixx.poc.db.domain;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Embeddable
+@Data
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
 
 	// Данные поле мы не сохраняем в таблице, его, мы сами заполняем 
@@ -14,33 +23,4 @@ public class Task {
 	private String description;
 	private String project;
 
-	public Task() {
-	}
-
-	public Task(String taskId, String project, String description) {
-		this.taskId = taskId;
-		this.project = project;
-		this.description = description;
-	}
-
-	public String getTaskId() {
-		return taskId;
-	}
-	
-	public void setTaskId(String taskId) {
-		this.taskId = taskId;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Override
-	public String toString() {
-		return "Task [taskId=" + taskId + ", description=" + description + ", project=" + project + "]";
-	}
 }
