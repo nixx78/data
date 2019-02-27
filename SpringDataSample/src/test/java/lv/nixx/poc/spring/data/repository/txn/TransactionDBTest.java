@@ -6,15 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -22,20 +19,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import lv.nixx.poc.spring.data.TransactionDBConfig;
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
 import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
 import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
+import lv.nixx.sping.jdbc.GenericJdbcTest;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TransactionDBConfig.class)
-public class TransactionDBTest {
+public class TransactionDBTest extends GenericJdbcTest {
 
 	@Autowired
 	private CurrencyRepository currencyRepo;
@@ -43,30 +36,22 @@ public class TransactionDBTest {
 	@Autowired
 	private TransactionRepository txnRepo;
 
-	private static final Currency USD = new Currency("USD", 810);
-	private static final Currency EUR = new Currency("EUR", 978);
-
 	private final LocalDateTime now = LocalDateTime.now();
-
-	@Before
-	public void init() {
-		txnRepo.deleteAll();
-		currencyRepo.deleteAll();
-
-		currencyRepo.save(USD);
-		currencyRepo.save(EUR);
-	}
 
 	@Test
 	public void crudOperations() {
 
 		Iterable<Currency> allCurrencies = currencyRepo.findAll();
 		System.out.println(allCurrencies);
+		
+		System.out.println(txnRepo.findAll());
+		
+		long existingCount = txnRepo.count();
 
 		txnRepo.save(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "acc1"));
 		Transaction txn2 = txnRepo.save(new Transaction(now, BigDecimal.valueOf(20.01), "descr2", EUR, "acc2"));
 
-		assertEquals(2, txnRepo.count());
+		assertEquals(existingCount + 2, txnRepo.count());
 
 		Transaction txn = txnRepo.findById(txn2.getId()).orElse(null);
 		assertEquals("descr2", txn.getDescription());
@@ -102,8 +87,6 @@ public class TransactionDBTest {
 		for (int i = 0; i < txnCount; i++) {
 			txnRepo.save(new Transaction(now, BigDecimal.valueOf(i), "descr" + i, USD, "acc1"));
 		}
-
-		assertEquals(20, txnRepo.count());
 
 		Page<Transaction> page = null;
 		int p = 0;
@@ -191,19 +174,6 @@ public class TransactionDBTest {
 
 		result = txnRepo.findOne(example);
 		assertTrue(result.isPresent());
-
-	}
-
-	private void createInitialData() {
-
-		Arrays.asList(new Transaction(now, BigDecimal.valueOf(10.01), "descr1", USD, "account1"),
-				new Transaction(now, BigDecimal.valueOf(20.05), "descr2", EUR, "account2"),
-				new Transaction(now, BigDecimal.valueOf(10.03), "descr3", USD, "account2"),
-				new Transaction(now, BigDecimal.valueOf(77.77), "descr41", USD, "account4"),
-				new Transaction(now, BigDecimal.valueOf(4.2), "descr42", USD, "account4"),
-				new Transaction(now, BigDecimal.valueOf(1.0), "descr43", USD, "account4"),
-				new Transaction(now, BigDecimal.valueOf(8.0), "pref_descr43", USD, "account4")
-		).forEach(txnRepo::save);
 
 	}
 
