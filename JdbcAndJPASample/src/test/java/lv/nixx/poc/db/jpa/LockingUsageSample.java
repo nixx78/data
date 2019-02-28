@@ -89,6 +89,7 @@ public class LockingUsageSample {
 	}
 
 	@Test(expected = RollbackException.class)
+	@Ignore
 	public void changePesimisticLockedObjectAndGetException() {
 		final Long id = createMainDataEntity();
 		

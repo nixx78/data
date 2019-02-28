@@ -24,7 +24,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name="Person")
-@Cacheable(true)
+@Cacheable(false)
 @ToString
 @Data
 public class Person {
