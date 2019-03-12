@@ -96,7 +96,6 @@ public class Customer {
     }
 
     public void addAdress(Adress adress){
-		adress.setCustomer(this);
 		this.adress.add(adress);
 	}
 

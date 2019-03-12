@@ -64,11 +64,10 @@
  	  
       <!--  
         if you just created the database, maybe
-        you want hibernate to create a schema for you
-        <property name="hibernate.hbm2ddl.auto" value="create"/> 
-      -->
-      
-      <property name="hibernate.hbm2ddl.auto" value="none"/>
+        you want hibernate to create a schema for you (create)
+              -->
+        <property name="hibernate.hbm2ddl.auto" value="none"/> 
+
     </properties>
   </persistence-unit>
 </persistence>

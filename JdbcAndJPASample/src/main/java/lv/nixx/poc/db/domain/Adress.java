@@ -10,9 +10,6 @@ public class Adress {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToOne
-	private Customer customer;
-
 	private String line1;
 	private String line2;
 
@@ -38,14 +35,6 @@ public class Adress {
 
 	public void setLine2(String line2) {
 		this.line2 = line2;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
 	}
 
 }

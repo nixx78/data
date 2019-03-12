@@ -2,7 +2,9 @@ package lv.nixx.poc.db.jpa;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
@@ -19,12 +21,28 @@ public class CustomerJPAUsageSample {
 
 	@Before
 	public void init() {
-		final EntityManager entityManager = factory.createEntityManager();
-		final EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-		entityManager.createQuery("DELETE FROM Customer").executeUpdate();
-		transaction.commit();
-		entityManager.close();
+		clearDatabase(); 
+		createInitialCustomers();
+	}
+
+	private void clearDatabase() {
+		final EntityManager em = factory.createEntityManager();
+		final EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			em.createQuery("DELETE FROM Customer").executeUpdate();
+			em.createQuery("DELETE FROM CustomerType").executeUpdate();
+			em.createQuery("DELETE FROM CustomerExtension").executeUpdate();
+			transaction.commit();
+			
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+			ex.printStackTrace();
+			
+			transaction.rollback();
+		} finally {
+			Optional.ofNullable(em).ifPresent(t-> t.close());
+		}
 	}
 
 	@After
@@ -58,29 +76,6 @@ public class CustomerJPAUsageSample {
 	@Test
 	public void testTestSaveCustomersAndRetrieveUsingCriteria() {
 		final EntityManager entityManager = factory.createEntityManager();
-
-		final EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-
-		CustomerType customerType = new CustomerType("student", "Customer is Student");
-		entityManager.merge(customerType);
-
-		Customer c1 = new Customer("Jack", "Bauer", customerType);
-		c1.setExtension(new CustomerExtension("addtionalData1"));
-		Customer c2 = new Customer("Nikolas", "Cage", customerType);
-		c2.setExtension(new CustomerExtension("addtionalData2"));
-		Customer c3 = new Customer("Piter", "First", null);
-		c3.setExtension(new CustomerExtension("addtionalData3"));
-		Customer c4 = new Customer("John", "Rembo", customerType);
-		c4.setSegment(Segment.VIP);
-		c4.setExtension(new CustomerExtension("addtionalData4"));
-
-		entityManager.merge(c1);
-		entityManager.merge(c2);
-		entityManager.merge(c3);
-		entityManager.merge(c4);
-
-		transaction.commit();
 
 		TypedQuery<Customer> query = entityManager.createQuery("SELECT e FROM Customer e", Customer.class);
 		List<Customer> resultList = query.getResultList();
@@ -123,30 +118,6 @@ public class CustomerJPAUsageSample {
 	@Test
 	public void testShouldShowHowWorkWithQueries() {
 		final EntityManager entityManager = factory.createEntityManager();
-
-		final EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-
-		CustomerType customerType = new CustomerType("student", "Customer is Student");
-		entityManager.merge(customerType);
-
-		Customer c1 = new Customer("Jack", "Bauer", customerType);
-		c1.setExtension(new CustomerExtension("addtionalData1"));
-		c1.addAdress(new Adress("1_line1", "1_line2"));
-		c1.addAdress(new Adress("2_line1", "2_line2"));
-		Customer c2 = new Customer("Nikolas", "Cage", customerType);
-		c2.setExtension(new CustomerExtension("addtionalData2"));
-		Customer c3 = new Customer("Piter", "First", null);
-		c3.setExtension(new CustomerExtension("addtionalData3"));
-		Customer c4 = new Customer("John", "Rembo", customerType);
-		c4.setExtension(new CustomerExtension("addtionalData4"));
-
-		entityManager.merge(c1);
-		entityManager.merge(c2);
-		entityManager.merge(c3);
-		entityManager.merge(c4);
-
-		transaction.commit();
 
 		// Мы можем вызвать именованый запрос и даже передать в него параметры
 		TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findCustomerByLastName", Customer.class);
@@ -196,30 +167,6 @@ public class CustomerJPAUsageSample {
 
 		final EntityManager entityManager = factory.createEntityManager();
 
-		final EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-
-		CustomerType customerType = new CustomerType("student", "Customer is Student");
-		entityManager.merge(customerType);
-
-		Customer c1 = new Customer("Jack", "Bauer", customerType);
-		c1.setExtension(new CustomerExtension("addtionalData1"));
-		c1.addAdress(new Adress("1_line1", "1_line2"));
-		c1.addAdress(new Adress("2_line1", "2_line2"));
-		Customer c2 = new Customer("Nikolas", "Cage", customerType);
-		c2.setExtension(new CustomerExtension("addtionalData2"));
-		Customer c3 = new Customer("Piter", "First", null);
-		c3.setExtension(new CustomerExtension("addtionalData3"));
-		Customer c4 = new Customer("John", "Rembo", customerType);
-		c4.setExtension(new CustomerExtension("addtionalData4"));
-
-		entityManager.merge(c1);
-		entityManager.merge(c2);
-		entityManager.merge(c3);
-		entityManager.merge(c4);
-
-		transaction.commit();
-
 		// Запрос можно задать также, при помощи criteriaBuilder который показан ниже...
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
@@ -249,30 +196,6 @@ public class CustomerJPAUsageSample {
 
 		final EntityManager entityManager = factory.createEntityManager();
 
-		final EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-
-		CustomerType customerType = new CustomerType("student", "Customer is Student");
-		entityManager.merge(customerType);
-
-		Customer c1 = new Customer("Jack", "Bauer", customerType);
-		c1.setExtension(new CustomerExtension("addtionalData1"));
-		c1.addAdress(new Adress("1_line1", "1_line2"));
-		c1.addAdress(new Adress("2_line1", "2_line2"));
-		Customer c2 = new Customer("Nikolas", "Cage", customerType);
-		c2.setExtension(new CustomerExtension("addtionalData2"));
-		Customer c3 = new Customer("Piter", "First", null);
-		c3.setExtension(new CustomerExtension("addtionalData3"));
-		Customer c4 = new Customer("John", "Rembo", customerType);
-		c4.setExtension(new CustomerExtension("addtionalData4"));
-
-		entityManager.merge(c1);
-		entityManager.merge(c2);
-		entityManager.merge(c3);
-		entityManager.merge(c4);
-
-		transaction.commit();
-
 		// Запрос можно задать также, при помощи criteriaBuilder который показан ниже...
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Customer> criteriaQuery = criteriaBuilder.createQuery(Customer.class);
@@ -282,7 +205,6 @@ public class CustomerJPAUsageSample {
 		
 		criteriaQuery.select(customerRoot);
 		
-		ParameterExpression<Integer> p = criteriaBuilder.parameter(Integer.class);
 		criteriaQuery.where(criteriaBuilder.equal(customerRoot.get("firstName"), "John"));
 		
 		TypedQuery<Customer> query = entityManager.createQuery(criteriaQuery);
@@ -294,6 +216,39 @@ public class CustomerJPAUsageSample {
 		}
 		
 		entityManager.close();
+	}
+
+	private void createInitialCustomers() {
+		final EntityManager em = factory.createEntityManager();
+		
+		try {
+			final EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+
+			CustomerType customerType = new CustomerType("student", "Customer is Student");
+			em.merge(customerType);
+
+			Customer c1 = new Customer("Jack", "Bauer", customerType);
+			c1.setExtension(new CustomerExtension("addtionalData1"));
+			c1.addAdress(new Adress("1_line1", "1_line2"));
+			c1.addAdress(new Adress("2_line1", "2_line2"));
+			
+			Customer c2 = new Customer("Nikolas", "Cage", customerType);
+			c2.setExtension(new CustomerExtension("addtionalData2"));
+			
+			Customer c3 = new Customer("Piter", "First", null);
+			c3.setExtension(new CustomerExtension("addtionalData3"));
+			
+			Customer c4 = new Customer("John", "Rembo", customerType);
+			c4.setExtension(new CustomerExtension("addtionalData4"));
+			
+			Arrays.asList(c1, c2, c2, c4).forEach(em::merge);
+
+			transaction.commit();
+		} finally {
+			Optional.ofNullable(em).ifPresent(t-> t.close());
+		}
+
 	}
 
 
