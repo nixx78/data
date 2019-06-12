@@ -51,10 +51,7 @@ public class SimpleJDBCSample {
 			}
 			connection.rollback();
 		} finally {
-
-			if (connection != null) {
-				connection.close();
-			}
+			connection.close();
 		}
 	}
 
