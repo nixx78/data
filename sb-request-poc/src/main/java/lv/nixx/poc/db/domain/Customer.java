@@ -42,6 +42,9 @@ public class Customer {
     @ManyToOne
     private CustomerType type;
 
+    public Customer() {
+    }
+
     public Customer(String firstName, String lastName, CustomerType type) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,26 +1,19 @@
-package lv.nixx.poc.db.builder;
+package lv.nixx.poc.db.util;
 
 import lv.nixx.poc.db.domain.Customer;
 import lv.nixx.poc.db.domain.CustomerType;
-import lv.nixx.poc.db.mapping.CustomerWithType;
-import org.junit.Before;
-import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.Arrays;
-import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-
-public class CustomerRequestTest {
+public class TestDataCreator {
 
     private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
-    @Before
-    public void init() {
+    public void clearData() {
         final EntityManager entityManager = factory.createEntityManager();
         final EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -29,51 +22,9 @@ public class CustomerRequestTest {
 
         transaction.commit();
         entityManager.close();
-
-        insertData();
     }
 
-    @Test
-    public void customerRequestByFistLastNameTest() {
-
-        final EntityManager em = factory.createEntityManager();
-
-        try {
-            Collection<CustomerWithType> result = CustomerRequest.create()
-                    .withFirstName("Name1")
-                    .withLastName("LastName1")
-                    .execute(em);
-
-            assertEquals(1, result.size());
-
-        } finally {
-            em.close();
-        }
-    }
-
-    @Test
-    public void customerRequestByTypeTest() {
-
-        final EntityManager em = factory.createEntityManager();
-
-        try {
-            Collection<CustomerWithType> result = CustomerRequest.create()
-                    .withFirstName(null)
-                    .withLastName(null)
-                    .withType(Arrays.asList("massMarket", "student"))
-                    .execute(em);
-
-            result.forEach(System.out::println);
-
-            assertEquals(5, result.size());
-
-        } finally {
-            em.close();
-        }
-    }
-
-
-    private void insertData() {
+    public void createTestData() {
 
         final EntityManager entityManager = factory.createEntityManager();
 
@@ -105,5 +56,4 @@ public class CustomerRequestTest {
         }
 
     }
-
 }

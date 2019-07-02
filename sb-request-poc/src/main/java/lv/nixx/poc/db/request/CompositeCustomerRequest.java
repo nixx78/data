@@ -1,4 +1,4 @@
-package lv.nixx.poc.db.builder;
+package lv.nixx.poc.db.request;
 
 
 import com.healthmarketscience.sqlbuilder.*;
@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerRequest {
+public class CompositeCustomerRequest {
 
-    private static Logger LOG = LoggerFactory.getLogger(CustomerRequest.class);
+    private static Logger LOG = LoggerFactory.getLogger(CompositeCustomerRequest.class);
 
     private String firstName;
     private String lastName;
@@ -26,7 +26,7 @@ public class CustomerRequest {
     private DbTable customerTable;
     private DbTable customerType;
 
-    public CustomerRequest() {
+    public CompositeCustomerRequest() {
         DbSpec spec = new DbSpec();
         DbSchema schema = spec.addDefaultSchema();
 
@@ -34,21 +34,21 @@ public class CustomerRequest {
         customerType = schema.addTable("CustomerType");
     }
 
-    public static CustomerRequest create() {
-        return new CustomerRequest();
+    public static CompositeCustomerRequest create() {
+        return new CompositeCustomerRequest();
     }
 
-    public CustomerRequest withFirstName(String firstName) {
+    public CompositeCustomerRequest withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public CustomerRequest withLastName(String lastName) {
+    public CompositeCustomerRequest withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public CustomerRequest withType(Collection<String> type) {
+    public CompositeCustomerRequest withType(Collection<String> type) {
         this.type = type;
         return this;
     }
@@ -79,6 +79,7 @@ public class CustomerRequest {
         LOG.info("Incoming parameters: firstName [{}] lastName [{}] type [{}", firstName, lastName, type);
         LOG.info("Sql request [{}]", q);
 
+        // TODO https://thoughts-on-java.org/hibernate-tips-map-native-query-results-entities/
         return entityManager.createNativeQuery(q.toString(), "customerWithTypeMapping").getResultList();
     }
 
