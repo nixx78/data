@@ -6,25 +6,26 @@ import lv.nixx.poc.db.mapping.CustomerWithType;
 
 import javax.persistence.*;
 
-
-@SqlResultSetMapping(name = "customerWithTypeMapping",
-        classes = {
-                @ConstructorResult(
-                        targetClass = CustomerWithType.class,
-                        columns = {
-                                @ColumnResult(name = "ID", type = Long.class),
-                                @ColumnResult(name = "FIRSTNAME"),
-                                @ColumnResult(name = "LASTNAME"),
-                                @ColumnResult(name = "TYPE_ID"),
-                                @ColumnResult(name = "DESCRIPTION")
-                        }
-                )
-        }
-)
-
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "customerWithTypeMapping",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = CustomerWithType.class,
+                                columns = {
+                                        @ColumnResult(name = "ID", type = Long.class),
+                                        @ColumnResult(name = "FIRSTNAME"),
+                                        @ColumnResult(name = "LASTNAME"),
+                                        @ColumnResult(name = "TYPE_ID"),
+                                        @ColumnResult(name = "DESCRIPTION")
+                                }
+                        )
+                }
+        )
+})
 
 @Entity
-@Table(name = "Customer")
+@Table(name = "CUSTOMER", schema = "app")
 @Data
 @ToString
 public class Customer {

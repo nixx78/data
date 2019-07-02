@@ -1,10 +1,11 @@
 package lv.nixx.poc.db.request;
 
 
-import com.healthmarketscience.sqlbuilder.*;
+import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.CustomCondition;
+import com.healthmarketscience.sqlbuilder.InCondition;
+import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import lv.nixx.poc.db.mapping.CustomerWithType;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class CompositeCustomerRequest {
+public class CompositeCustomerRequest extends GenericCustomerRequest<CustomerWithType> {
 
     private static Logger LOG = LoggerFactory.getLogger(CompositeCustomerRequest.class);
 
@@ -23,15 +24,10 @@ public class CompositeCustomerRequest {
     private String lastName;
     private Collection<String> type;
 
-    private DbTable customerTable;
     private DbTable customerType;
 
     public CompositeCustomerRequest() {
-        DbSpec spec = new DbSpec();
-        DbSchema schema = spec.addDefaultSchema();
-
-        customerTable = schema.addTable("Customer");
-        customerType = schema.addTable("CustomerType");
+         customerType = addTableToSpec("CUSTOMER_TYPE", "ct");
     }
 
     public static CompositeCustomerRequest create() {
@@ -69,7 +65,7 @@ public class CompositeCustomerRequest {
                 .validate();
 
         // We can add condition with column just as text
-        Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("t0.firstName = '" + t + "'")));
+        Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("c.firstName = '" + t + "'")));
 
         // Wer can add condition using column object
         Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.equalTo(lastNameColumn, t)));
@@ -79,7 +75,6 @@ public class CompositeCustomerRequest {
         LOG.info("Incoming parameters: firstName [{}] lastName [{}] type [{}", firstName, lastName, type);
         LOG.info("Sql request [{}]", q);
 
-        // TODO https://thoughts-on-java.org/hibernate-tips-map-native-query-results-entities/
         return entityManager.createNativeQuery(q.toString(), "customerWithTypeMapping").getResultList();
     }
 

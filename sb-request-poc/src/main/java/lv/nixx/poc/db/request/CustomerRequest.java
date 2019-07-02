@@ -6,9 +6,6 @@ import com.healthmarketscience.sqlbuilder.CustomCondition;
 import com.healthmarketscience.sqlbuilder.CustomSql;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import lv.nixx.poc.db.domain.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +14,12 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerRequest {
+public class CustomerRequest extends GenericCustomerRequest<Customer> {
 
     private static Logger LOG = LoggerFactory.getLogger(CustomerRequest.class);
 
     private String firstName;
     private String lastName;
-
-    private DbTable customerTable;
-
-    public CustomerRequest() {
-        DbSpec spec = new DbSpec();
-        DbSchema schema = spec.addDefaultSchema();
-
-        customerTable = schema.addTable("Customer");
-    }
 
     public static CustomerRequest create() {
         return new CustomerRequest();
@@ -54,16 +42,16 @@ public class CustomerRequest {
 
         SelectQuery q = new SelectQuery()
                 .addCustomColumns(
-                        new CustomSql("t0.id"),
-                        new CustomSql("t0.firstName"),
-                        new CustomSql("t0.lastName"),
-                        new CustomSql("t0.type_id")
+                        new CustomSql("id"),
+                        new CustomSql("firstName"),
+                        new CustomSql("lastName"),
+                        new CustomSql("type_id")
                 )
                 .addFromTable(customerTable)
                 .validate();
 
         // We can add condition with column just as text
-        Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("t0.firstName = '" + t + "'")));
+        Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("firstName = '" + t + "'")));
 
         // Wer can add condition using column object
         Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.equalTo(lastNameColumn, t)));

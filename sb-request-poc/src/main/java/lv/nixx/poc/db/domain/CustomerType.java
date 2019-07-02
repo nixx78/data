@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="CustomerType")
+@Table(name="CUSTOMER_TYPE", schema = "app")
 @Data
 @ToString
 @EqualsAndHashCode(of= {"id", "description"})
