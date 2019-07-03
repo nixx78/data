@@ -1,4 +1,4 @@
-package lv.nixx.poc.db.mapping;
+package lv.nixx.poc.db.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

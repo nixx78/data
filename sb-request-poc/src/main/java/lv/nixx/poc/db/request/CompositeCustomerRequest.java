@@ -1,13 +1,12 @@
 package lv.nixx.poc.db.request;
 
-
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.CustomCondition;
 import com.healthmarketscience.sqlbuilder.InCondition;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import lv.nixx.poc.db.mapping.CustomerWithType;
+import lv.nixx.poc.db.domain.CustomerWithType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +52,6 @@ public class CompositeCustomerRequest extends GenericCustomerRequest<CustomerWit
     public List<CustomerWithType> execute(EntityManager entityManager) {
 
         DbColumn customerTypeColumn = customerTable.addColumn("TYPE_ID");
-        DbColumn lastNameColumn = customerTable.addColumn("lastName");
 
         DbColumn typeIdColumn = customerType.addColumn("ID");
 
@@ -68,7 +66,7 @@ public class CompositeCustomerRequest extends GenericCustomerRequest<CustomerWit
         Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("c.firstName = '" + t + "'")));
 
         // Wer can add condition using column object
-        Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.equalTo(lastNameColumn, t)));
+        Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.equalTo(lastNameCustomerCol, t)));
 
         Optional.ofNullable(type).map(t -> q.addCondition(new InCondition(customerTypeColumn, t)));
 

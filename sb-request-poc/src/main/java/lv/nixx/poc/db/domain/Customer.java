@@ -2,7 +2,6 @@ package lv.nixx.poc.db.domain;
 
 import lombok.Data;
 import lombok.ToString;
-import lv.nixx.poc.db.mapping.CustomerWithType;
 
 import javax.persistence.*;
 

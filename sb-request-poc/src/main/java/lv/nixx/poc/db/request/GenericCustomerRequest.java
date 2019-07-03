@@ -1,5 +1,6 @@
 package lv.nixx.poc.db.request;
 
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
@@ -9,8 +10,11 @@ import java.util.Collection;
 
 public abstract class GenericCustomerRequest<T> {
 
-    final DbSpec spec;
     private final DbSchema schema;
+
+    final DbSpec spec;
+    final DbColumn lastNameCustomerCol;
+    final DbColumn firstNameCustomerCol;
 
     DbTable customerTable;
 
@@ -23,7 +27,12 @@ public abstract class GenericCustomerRequest<T> {
     public GenericCustomerRequest() {
         this.spec = new DbSpec();
         this.schema = spec.addSchema("app");
+
         customerTable = new DbTable(schema, "Customer", "c");
+
+        this.lastNameCustomerCol = customerTable.addColumn("lastName");
+        this.firstNameCustomerCol = customerTable.addColumn("firstName");
+
     }
 
 }

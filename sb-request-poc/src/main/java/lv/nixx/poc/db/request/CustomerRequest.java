@@ -2,10 +2,8 @@ package lv.nixx.poc.db.request;
 
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.CustomCondition;
 import com.healthmarketscience.sqlbuilder.CustomSql;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import lv.nixx.poc.db.domain.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +36,6 @@ public class CustomerRequest extends GenericCustomerRequest<Customer> {
 
     public List<Customer> execute(EntityManager entityManager) {
 
-        DbColumn lastNameColumn = customerTable.addColumn("lastName");
 
         SelectQuery q = new SelectQuery()
                 .addCustomColumns(
@@ -51,10 +48,10 @@ public class CustomerRequest extends GenericCustomerRequest<Customer> {
                 .validate();
 
         // We can add condition with column just as text
-        Optional.ofNullable(firstName).map(t -> q.addCondition(new CustomCondition("firstName = '" + t + "'")));
+        Optional.ofNullable(firstName).map(t -> q.addCondition(BinaryCondition.like(firstNameCustomerCol, t)));
 
-        // Wer can add condition using column object
-        Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.equalTo(lastNameColumn, t)));
+        // We can add condition using column object
+        Optional.ofNullable(lastName).map(t -> q.addCondition(BinaryCondition.like(lastNameCustomerCol, t)));
 
 
         LOG.info("Incoming parameters: firstName [{}] lastName [{}]", firstName, lastName);
