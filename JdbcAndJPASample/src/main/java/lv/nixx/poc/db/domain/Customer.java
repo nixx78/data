@@ -18,7 +18,7 @@ import lombok.ToString;
 
 @NamedNativeQueries(value = { 
 		@NamedNativeQuery(
-		resultSetMapping = "resultSetMapping", 
+		resultSetMapping = "customerWithTypeMapping",
 		name = "customersWithType", 
 		query = " SELECT c.ID, FIRSTNAME, LASTNAME, SEGMENT, TYPE_ID, DESCRIPTION "
 				+ "FROM app.CUSTOMER C, app.CUSTOMERTYPE CT "
@@ -26,7 +26,7 @@ import lombok.ToString;
 				),
 		
 		@NamedNativeQuery(
-				resultSetMapping = "resultSetMapping", 
+				resultSetMapping = "customerWithTypeMapping",
 				name = "customerByFirstName",
 				query = " SELECT c.ID, FIRSTNAME, LASTNAME, SEGMENT, TYPE_ID, DESCRIPTION "
 						+ "FROM app.CUSTOMER C, app.CUSTOMERTYPE CT "
@@ -34,7 +34,7 @@ import lombok.ToString;
 		)
 		
 })
-@SqlResultSetMapping(name = "resultSetMapping",
+@SqlResultSetMapping(name = "customerWithTypeMapping",
 classes = {
 		 @ConstructorResult(
            targetClass=CustomerWithType.class,
