@@ -9,14 +9,12 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import lv.nixx.poc.db.domain.Customer;
 import lv.nixx.poc.db.util.TestDataCreator;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.Arrays;
 import java.util.List;
@@ -38,18 +36,6 @@ public class SQLBuilderSandbox {
     public void sqlBuilderSample() {
 
         final EntityManager entityManager = factory.createEntityManager();
-
-        EntityTransaction transaction = entityManager.getTransaction();
-
-        transaction.begin();
-        Arrays.asList(
-                new Customer("Name1", "LastName1", null),
-                new Customer("Name2", "LastName2", null),
-                new Customer("Name3", "LastName3", null),
-                new Customer("Name4", "LastName4", null)
-        ).forEach(entityManager::persist);
-        transaction.commit();
-
 
         DbSpec spec = new DbSpec();
         DbSchema schema = spec.addDefaultSchema();
@@ -88,18 +74,6 @@ public class SQLBuilderSandbox {
     public void sqlBuilderSample1() {
 
         final EntityManager entityManager = factory.createEntityManager();
-
-        EntityTransaction transaction = entityManager.getTransaction();
-
-        transaction.begin();
-        Arrays.asList(
-                new Customer("Name1", "LastName1", null),
-                new Customer("Name2", "LastName2", null),
-                new Customer("Name3", "LastName3", null),
-                new Customer("Name4", "LastName4", null),
-                new Customer("Name4", "LastName41", null)
-        ).forEach(entityManager::persist);
-        transaction.commit();
 
 
         DbSpec spec = new DbSpec();
