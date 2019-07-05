@@ -6,14 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @Table(name = "ACCOUNT", schema = "app")
 @Data
-@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = "accountId")
+@ToString(exclude = "transactions")
 public class Account {
 
     @Id
@@ -24,12 +25,26 @@ public class Account {
     @Column(name = "ACC_NUMBER")
     private String number;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Collection<Transaction> transactions;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Transaction> transactions = new ArrayList<>();
 
     public Account(String number) {
         this.number = number;
+    }
+
+    public void addTransaction(Collection<Transaction> txns) {
+        txns.forEach(this::addTransaction);
+    }
+
+    public void addTransaction(Transaction txn) {
+        this.transactions.add(txn);
+        if (txn.getAccount() != this) {
+            txn.setAccount(this);
+        }
+    }
+
+    public void removeTransaction() {
+        this.transactions.clear();
     }
 
 }

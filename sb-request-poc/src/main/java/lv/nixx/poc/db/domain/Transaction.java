@@ -1,16 +1,14 @@
 package lv.nixx.poc.db.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "TXN_TABLE", schema = "app")
-@Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "txnId")
 public class Transaction {
@@ -20,8 +18,8 @@ public class Transaction {
     @Column(name = "TXN_ID")
     private Long txnId;
 
-    @ManyToOne
-    @JoinColumn(name = "ACCOUNT_ID", updatable = false, insertable = false)
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     @Column(name = "AMOUNT", length = 18, scale = 2)
@@ -40,9 +38,5 @@ public class Transaction {
         this.currency = currency;
     }
 
-    public String toString() {
-        Account acc = this.getAccount();
-        return "Transaction(txnId=" + this.getTxnId() + ", account=" + (acc == null ? null : acc.getNumber()) + ", amount=" + this.getAmount() + ", date=" + this.getDate() + ", currency=" + this.getCurrency() + ")";
-    }
 
 }
