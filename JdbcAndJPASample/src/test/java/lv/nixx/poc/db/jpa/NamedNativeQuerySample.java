@@ -45,8 +45,8 @@ public class NamedNativeQuerySample {
 
         Customer c1 = new Customer("Jack", "Bauer", customerType);
         c1.setExtension(new CustomerExtension("addtionalData1"));
-        c1.addAdress(new Adress("1_line1", "1_line2"));
-        c1.addAdress(new Adress("2_line1", "2_line2"));
+        c1.addAddress(new Address("1_line1", "1_line2"));
+        c1.addAddress(new Address("2_line1", "2_line2"));
         Customer c2 = new Customer("Nikolas", "Cage", customerType);
         c2.setExtension(new CustomerExtension("addtionalData2"));
         Customer c3 = new Customer("Piter", "First", null);
