@@ -53,6 +53,33 @@ public class CustomerJPAUsageSample {
 		factory.close();
 	}
 
+<<<<<<< Updated upstream
+=======
+	@Test
+	public void testShouldPersistCustomer() {
+		final EntityManager entityManager = factory.createEntityManager();
+		final EntityTransaction transaction = entityManager.getTransaction();
+
+		CustomerExtension customerExtension = new CustomerExtension("AddData1");
+
+		transaction.begin();
+		Customer customer = new Customer("name1", "surname1", null);
+		customer.setExtension(customerExtension);
+		entityManager.persist(customer);
+
+		assertNotNull(customer.getId()); // проверяем, что ID сгенерировано для Customer
+		transaction.commit();
+
+		List<Object[]> resultList = entityManager.createNativeQuery("select * from CustomerExtension").getResultList();
+		resultList.stream()
+				.map(Arrays::toString)
+				.forEach(System.out::println);
+
+
+		entityManager.close();
+	}
+
+>>>>>>> Stashed changes
 	@Test(expected = PersistenceException.class)
 	public void testShouldTryToSaveCustomerWithNullNameAndGetException() {
 		final EntityManager entityManager = factory.createEntityManager();
@@ -232,7 +259,11 @@ public class CustomerJPAUsageSample {
 			Customer c4 = new Customer("John", "Rembo", customerType);
 			c4.setExtension(new CustomerExtension("additionalData4"));
 			
+<<<<<<< Updated upstream
 			Arrays.asList(c1, c2, c3, c4).forEach(em::persist);
+=======
+			Arrays.asList(c1, c2, c2, c4).forEach(em::persist);
+>>>>>>> Stashed changes
 
 			transaction.commit();
 		} finally {
