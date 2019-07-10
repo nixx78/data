@@ -23,7 +23,7 @@ import lombok.ToString;
  */
 
 @Entity
-@Table(name="Person")
+@Table(name="PERSON")
 @Cacheable(false)
 @ToString
 @Data
@@ -52,8 +52,8 @@ public class Person {
 	 * в отдельной таблице, имя которой указано в аннотации @CollectionTable 
 	 */
 	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name = "Aliase")
-	private Set<String> aliase = new TreeSet<>();
+	@CollectionTable(name = "ALIAS_TABLE")
+	private Set<String> alias = new TreeSet<>();
 
 	/* Данные из коллекции хранятся в отдельной таблице, имя которой мы указали в аннотации, обязательное условие, для класса AdditionalField
 	 * должна стоять аннотация @Embeddable
@@ -64,7 +64,7 @@ public class Person {
 	 * в отдельной таблице, имя которой указано в аннотации @CollectionTable 
 	 */
 	@ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "PersonAdditionalField")
+    @CollectionTable(name = "PERSON_ADDITIONAL_FIELD")
 	private Set<PersonAdditionalField> additionalFields = new HashSet<>();
 
 	/** 
@@ -73,7 +73,7 @@ public class Person {
 	@ElementCollection(fetch=FetchType.EAGER)
 	// Название колонки, в которой будет хранится ключ Map
 	@MapKeyColumn(name="task_id") 
-    @CollectionTable(name="Task", joinColumns=@JoinColumn(name="person_id"))	
+    @CollectionTable(name="TASK", joinColumns=@JoinColumn(name="person_id"))
 	// Название таблицы и колонки, в которой будет хранится ключ, по которому связываем с таблицей Person
 	private Map<String, Task> tasks = new HashMap<>();
 
@@ -86,8 +86,8 @@ public class Person {
 		this.extension = ext;
 	}
 
-	public void addAliase(String alias){
-		this.aliase.add(alias);
+	public void addAlias(String alias){
+		this.alias.add(alias);
 	}
 
 	public void addAdditionalField(PersonAdditionalField additionalField) {
@@ -98,12 +98,5 @@ public class Person {
 		this.tasks.put(task.getTaskId(), task);
 	}
 	
-	public Map<String, Task> getTasksAsMap() {
-		for(Entry<String, Task> e : tasks.entrySet()){
-			e.getValue().setTaskId(e.getKey());
-		}
-		return tasks;
-	}
 
-	
 }

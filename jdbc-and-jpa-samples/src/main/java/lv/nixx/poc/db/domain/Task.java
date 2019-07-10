@@ -15,11 +15,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Task {
 
-	// Данные поле мы не сохраняем в таблице, его, мы сами заполняем 
-	// из поля, в которым хранится ключ для Map. 
-	@Transient
+	@Transient				// This column will be created automatically
 	private String taskId;
-	
+
 	private String description;
 	private String project;
 

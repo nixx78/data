@@ -19,8 +19,13 @@ import java.util.stream.Stream;
 public class TablePrinter {
 
     private static final Logger LOG = LoggerFactory.getLogger("TablePrinter");
+    private String tableName;
 
-    public static void printTableContent(String tableName) throws Exception {
+    public TablePrinter(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public void print() throws Exception {
 
         EmbeddedDataSource dataSource = new EmbeddedDataSource();
         dataSource.setDatabaseName("memory:derbyDB");
@@ -29,7 +34,7 @@ public class TablePrinter {
 
         Statement statement = connection.createStatement();
 
-        final ResultSet rs = statement.executeQuery("select * from " + tableName);
+        final ResultSet rs = statement.executeQuery("select * from " + this.tableName);
 
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -71,7 +76,7 @@ public class TablePrinter {
             outRows.add(leadingTabs + sj.toString());
         });
 
-        LOG.info("{} Table [{}] content \n{}", "\n", tableName, outRows);
+        LOG.info("{} Table [{}] content \n{}", "\n", this.tableName, outRows);
 
     }
 

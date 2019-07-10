@@ -55,10 +55,10 @@ public class CustomerPersistSample {
 		assertEquals(Segment.VIP, savedCustomer.getSegment());
 
 
-		TablePrinter.printTableContent("CUSTOMER");
-		TablePrinter.printTableContent("ADDRESS");
-		TablePrinter.printTableContent("CUSTOMER_EXTENSION");
-		TablePrinter.printTableContent("CUSTOMER_TYPE");
+		new TablePrinter("CUSTOMER").print();
+		new TablePrinter("ADDRESS").print();
+		new TablePrinter("CUSTOMER_EXTENSION").print();
+		new TablePrinter("CUSTOMER_TYPE").print();
 
 
 	}

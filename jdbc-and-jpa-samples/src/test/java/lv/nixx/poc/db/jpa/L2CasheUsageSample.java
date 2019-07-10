@@ -21,10 +21,10 @@ public class L2CasheUsageSample {
 
 		// Данные удаляем именно из таблиц, ибо, если удалять из сущности Person
 		// получаем constrain error
-		entityManager.createNativeQuery("DELETE FROM Task").executeUpdate();
-		entityManager.createNativeQuery("DELETE FROM Aliase").executeUpdate();
-		entityManager.createNativeQuery("DELETE FROM PersonAdditionalField").executeUpdate();
-		entityManager.createNativeQuery("DELETE FROM Person").executeUpdate();
+		entityManager.createNativeQuery("DELETE FROM TASK").executeUpdate();
+		entityManager.createNativeQuery("DELETE FROM ALIAS_TABLE").executeUpdate();
+		entityManager.createNativeQuery("DELETE FROM PERSON_ADDITIONAL_FIELD").executeUpdate();
+		entityManager.createNativeQuery("DELETE FROM PERSON").executeUpdate();
 		transaction.commit();
 
 		entityManager.close();

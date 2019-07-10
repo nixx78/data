@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Embeddable
-@Table(name = "PersonAdditionalField")
+@Table(name = "PERSON_ADDITIONAL_FIELD")
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
