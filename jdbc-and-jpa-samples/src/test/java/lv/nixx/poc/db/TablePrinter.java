@@ -25,58 +25,63 @@ public class TablePrinter {
         this.tableName = tableName;
     }
 
-    public void print() throws Exception {
+    public void print() {
 
         EmbeddedDataSource dataSource = new EmbeddedDataSource();
         dataSource.setDatabaseName("memory:derbyDB");
 
-        Connection connection = dataSource.getConnection();
+        try {
+            Connection connection = dataSource.getConnection();
 
-        Statement statement = connection.createStatement();
+            Statement statement = connection.createStatement();
 
-        final ResultSet rs = statement.executeQuery("select * from " + this.tableName);
+            final ResultSet rs = statement.executeQuery("select * from " + this.tableName);
 
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
 
-        ColumnInfo[] columnInfos = new ColumnInfo[columnCount];
+            ColumnInfo[] columnInfos = new ColumnInfo[columnCount];
 
-        for (int c = 1; c <= columnCount; c++) {
-            String columnName = metaData.getColumnName(c);
-            columnInfos[c - 1] = new ColumnInfo(columnName);
-        }
-
-        List<String[]> values = new ArrayList<>();
-
-        while (rs.next()) {
-            String[] v = new String[columnCount];
             for (int c = 1; c <= columnCount; c++) {
-                String cValue = rs.getString(c);
-                int pos = c - 1;
-                v[pos] = cValue;
-                columnInfos[pos].updateMax(cValue);
+                String columnName = metaData.getColumnName(c);
+                columnInfos[c - 1] = new ColumnInfo(columnName);
             }
-            values.add(v);
+
+            List<String[]> values = new ArrayList<>();
+
+            while (rs.next()) {
+                String[] v = new String[columnCount];
+                for (int c = 1; c <= columnCount; c++) {
+                    String cValue = rs.getString(c);
+                    int pos = c - 1;
+                    v[pos] = cValue;
+                    columnInfos[pos].updateMax(cValue);
+                }
+                values.add(v);
+            }
+
+            String leadingTabs = "\t\t";
+
+            String header = Stream.of(columnInfos)
+                    .map(ColumnInfo::getHeader)
+                    .collect(Collectors.joining("|"));
+
+            StringJoiner outRows = new StringJoiner("\n");
+            outRows.add(leadingTabs + header);
+
+            values.forEach(row -> {
+                StringJoiner sj = new StringJoiner("|");
+                for (int c = 0; c < row.length; c++) {
+                    sj.add(columnInfos[c].formatValue(row[c]));
+                }
+                outRows.add(leadingTabs + sj.toString());
+            });
+
+            LOG.info("{} Table [{}] content \n{}", "\n", this.tableName, outRows);
+
+        } catch (Exception ex) {
+            LOG.error("Can't print table [{}] content, error [{}]", this.tableName, ex.getMessage() );
         }
-
-        String leadingTabs = "\t\t";
-
-        String header = Stream.of(columnInfos)
-                .map(ColumnInfo::getHeader)
-                .collect(Collectors.joining("|"));
-
-        StringJoiner outRows = new StringJoiner("\n");
-        outRows.add(leadingTabs + header);
-
-        values.forEach(row -> {
-            StringJoiner sj = new StringJoiner("|");
-            for (int c = 0; c < row.length; c++) {
-                sj.add(columnInfos[c].formatValue(row[c]));
-            }
-            outRows.add(leadingTabs + sj.toString());
-        });
-
-        LOG.info("{} Table [{}] content \n{}", "\n", this.tableName, outRows);
 
     }
 

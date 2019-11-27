@@ -42,13 +42,7 @@
             <!--
               if you don't have a database already created append ;create=true to end of the jdbc url
 
-            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby:derbyDB;create=true"/>
-            <property name="javax.persistence.jdbc.user" value=""/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-            -->
-
-            <!-- In-Memory DB Settings -->
+            <!- In-Memory DB Settings -->
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:derbyDB;create=true"/>
             <property name="javax.persistence.jdbc.user" value=""/>
