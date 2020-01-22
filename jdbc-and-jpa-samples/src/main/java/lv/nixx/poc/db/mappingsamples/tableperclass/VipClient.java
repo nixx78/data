@@ -2,8 +2,6 @@ package lv.nixx.poc.db.mappingsamples.tableperclass;
 
 import javax.persistence.MappedSuperclass;
 
-import lv.nixx.poc.db.mappingsamples.tableperclass.GenericBankClient;
-
 @MappedSuperclass
 public abstract class VipClient extends GenericBankClient {
 	

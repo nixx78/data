@@ -1,20 +1,18 @@
 package lv.nixx.poc.db.jpa;
 
 import lv.nixx.poc.db.TablePrinter;
-import lv.nixx.poc.db.domain.*;
+import lv.nixx.poc.db.domain.Address;
+import lv.nixx.poc.db.domain.Customer;
+import lv.nixx.poc.db.domain.CustomerExtension;
+import lv.nixx.poc.db.domain.CustomerType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
 
 public class CustomerAddressUsageSample {
 

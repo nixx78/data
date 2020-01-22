@@ -1,7 +1,6 @@
 package lv.nixx.poc.db.domain;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.persistence.*;
 
