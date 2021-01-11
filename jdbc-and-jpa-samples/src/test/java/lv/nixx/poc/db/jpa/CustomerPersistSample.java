@@ -16,8 +16,6 @@ public class CustomerPersistSample {
 
 	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("simple.customer.unit");
 
-
-
 	@Test
 	public void testShouldPersistCustomerWithAllAttributes() throws Exception {
 

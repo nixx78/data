@@ -5,17 +5,22 @@ import lv.nixx.poc.txs.data.BalanceRepository;
 import lv.nixx.poc.txs.data.TransactionRepository;
 import lv.nixx.poc.txs.data.model.Container;
 import lv.nixx.poc.txs.data.model.Statistic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class TransactionSandboxService {
+
+    private static final Logger LOG = LoggerFactory.getLogger("TransactionSandboxService");
 
     @Autowired
     private TransactionRepository txnRepo;

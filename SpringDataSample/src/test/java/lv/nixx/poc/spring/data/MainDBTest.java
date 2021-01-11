@@ -206,6 +206,7 @@ public class MainDBTest {
 
 		assertEquals("Nikolas's additional data", c3Extension.getAdditionalData());
 		assertEquals(2, adress.size());
+
 	}
 	
 	@Test
