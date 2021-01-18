@@ -28,14 +28,13 @@ public class JsonHelper {
 
         JsonSerializer<Date> ser = (date, type, arg2) -> new JsonPrimitive(df.format(date));
 
-
         JsonSerializer<BigDecimal> bigDecimalSer = (bd, type, arg2) -> new JsonPrimitive(bd.setScale(2, RoundingMode.HALF_UP));
 
         JsonDeserializer<BigDecimal> bigDecimalDeser = (json, typeOfT, context) -> {
             try {
                 final DecimalFormat df1 = new DecimalFormat();
                 df1.setParseBigDecimal(true);
-                BigDecimal bigDecimal = (BigDecimal) (json == null ? null : df1.parse(json.getAsString()));
+                BigDecimal bigDecimal = (BigDecimal) (json == null ? BigDecimal.ZERO : df1.parse(json.getAsString()));
                 return bigDecimal.setScale(2, RoundingMode.HALF_UP);
             } catch (ParseException e) {
                 throw new JsonParseException(e);

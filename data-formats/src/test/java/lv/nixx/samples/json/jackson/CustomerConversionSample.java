@@ -1,5 +1,6 @@
-package lv.nixx.samples.json;
+package lv.nixx.samples.json.jackson;
 
+import lv.nixx.samples.json.ObjectMapperService;
 import lv.nixx.samples.json.domain.AdditionalProperties;
 import lv.nixx.samples.json.domain.Customer;
 import org.junit.Test;

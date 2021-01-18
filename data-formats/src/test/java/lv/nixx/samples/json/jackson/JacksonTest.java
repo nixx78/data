@@ -1,4 +1,4 @@
-package lv.nixx.samples.json;
+package lv.nixx.samples.json.jackson;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import lv.nixx.samples.json.ObjectMapperService;
 import org.junit.Test;
 
 import lv.nixx.samples.json.domain.*;

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-public class GsonTest {
+public class GsonUsageSample {
 
 	@Test
 	public void createJson() throws ParseException{
