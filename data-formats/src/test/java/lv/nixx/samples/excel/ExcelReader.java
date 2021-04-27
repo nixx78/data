@@ -14,13 +14,15 @@ import org.junit.jupiter.api.Test;
 public class ExcelReader {
 
     @Test
-    public void simpleFileReadTest() throws Exception {
+    public void readAndParseExcelFileSample() throws Exception {
 
         String excelFilePath = "./src/test/resources/simple_table.xls";
         FileInputStream inputStream = new FileInputStream(excelFilePath);
 
         Workbook workbook = new HSSFWorkbook(inputStream);
         Sheet firstSheet = workbook.getSheetAt(0);
+
+        System.out.println("Sheet name: " + firstSheet.getSheetName());
 
         for (Row nextRow : firstSheet) {
             Iterator<Cell> cellIterator = nextRow.cellIterator();
