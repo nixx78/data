@@ -23,9 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lv.nixx.poc.spring.data.domain.txn.Currency;
 import lv.nixx.poc.spring.data.domain.txn.Transaction;
-import lv.nixx.poc.spring.data.domain.txn.TransactionDTO;
+import lv.nixx.poc.spring.data.domain.dto.TransactionDTO;
 import lv.nixx.poc.spring.data.domain.txn.TransactionProjection;
-import lv.nixx.poc.spring.data.repository.txn.CurrencyRepository;
 import lv.nixx.sping.jdbc.GenericJdbcTest;
 
 public class TransactionDBTest extends GenericJdbcTest {

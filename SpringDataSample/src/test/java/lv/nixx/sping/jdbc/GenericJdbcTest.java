@@ -129,9 +129,7 @@ public abstract class GenericJdbcTest {
 				put("account", "account4");
 				put("currency_code", USD.getAlphaCode());
 			}
-		}).forEach(t -> {
-			insertTransaction.execute(t);
-		});
+		}).forEach(insertTransaction::execute);
 		
 
 	}

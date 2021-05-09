@@ -33,10 +33,9 @@ public class MainDBTest {
 	private CustomerDAO customerDAO;
 
 	@Before
-	public void prepateTables() {
+	public void prepareTables() {
 		customerRepository.deleteAll();
 		adressRepository.deleteAll();
-		customerRepository.deleteAll();
 		typeRepository.deleteAll();
 	}
 	
@@ -194,6 +193,7 @@ public class MainDBTest {
 		customerDAO.save(c1);
 
 		printCustomers();
+
 		Long c3ID = c1.getId();
 
 		Customer expCustomer3 = customerRepository.findById(c3ID).get();
@@ -203,6 +203,7 @@ public class MainDBTest {
 		assertNotNull(expCustomer3);
 		assertNotNull(c3Extension);
 		assertNotNull(adress);
+
 
 		assertEquals("Nikolas's additional data", c3Extension.getAdditionalData());
 		assertEquals(2, adress.size());
@@ -242,4 +243,5 @@ public class MainDBTest {
 			System.out.println(type);
 		}
 	}
+
 }

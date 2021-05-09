@@ -1,9 +1,10 @@
-package lv.nixx.poc.spring.data.domain.txn;
+package lv.nixx.poc.spring.data.domain.dto;
 
 import java.math.BigDecimal;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lv.nixx.poc.spring.data.domain.txn.Currency;
 
 @Data
 @RequiredArgsConstructor
