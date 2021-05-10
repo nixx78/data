@@ -1,5 +1,9 @@
 package lv.nixx.sping.jdbc;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import lv.nixx.poc.spring.data.MainDBConfig;
 import lv.nixx.poc.spring.data.domain.dto.AddressDTO;
 import lv.nixx.poc.spring.data.domain.dto.CustomerDTO;
@@ -23,6 +27,9 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -83,6 +90,33 @@ public class OneToManyMappingSample {
         System.out.println(res);
     }
 
+    @Test
+    public void manualMappingUsingLambdaSample() {
+
+        Map<CustomerDTO, List<AddressDTO>> m = jdbcTemplate.query(
+                "SELECT c.*, a.customer_id as cid, a.id as aid, a.line1, a.line2 FROM Customer c LEFT JOIN Adress a on c.id = a.customer_id",
+                new FlatRowMapper()).stream()
+                .collect(
+                        groupingBy(CustomerAndAccount::getCustomerDTO,
+                                mapping(
+                                        CustomerAndAccount::getAddressDTO, toList()
+                                )
+                        )
+                );
+
+        List<CustomerDTO> customers = m.entrySet().stream()
+                .map(e -> {
+                    List<AddressDTO> value = e.getValue().stream()
+                            .filter(Objects::nonNull)
+                            .collect(toList());
+
+                    return e.getKey().setAddress(value);
+                })
+                .collect(toList());
+
+        System.out.println(customers);
+    }
+
     static class ManualOneToManyMapper implements RowMapper<CustomerDTO> {
 
         Map<Long, CustomerDTO> m = new HashMap<>();
@@ -110,5 +144,30 @@ public class OneToManyMappingSample {
             return customerDTO;
         }
     }
+
+    static class FlatRowMapper implements RowMapper<CustomerAndAccount> {
+
+        @Override
+        public CustomerAndAccount mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            AddressDTO a = new AddressDTO()
+                    .setId(rs.getLong("aid"))
+                    .setLine1(rs.getString("line1"))
+                    .setLine2(rs.getString("line2"));
+
+            return new CustomerAndAccount(new CustomerDTO()
+                    .setId(rs.getLong("id"))
+                    .setName(rs.getString("firstName") + " " + rs.getString("lastName"))
+                    , a.notEmpty() ? a : null);
+        }
+    }
+
+    @AllArgsConstructor
+    @Getter
+    static class CustomerAndAccount {
+        private final CustomerDTO customerDTO;
+        private final AddressDTO addressDTO;
+    }
+
 
 }
