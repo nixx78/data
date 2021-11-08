@@ -5,21 +5,20 @@ import lv.nixx.samples.json.domain.AdditionalProperties;
 import lv.nixx.samples.json.domain.Customer;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class CustomerConversionSample {
 
-    private ObjectMapperService om = new ObjectMapperService();
+    private final ObjectMapperService om = new ObjectMapperService();
 
     @Test
     public void toJsonFromJson() throws Exception {
 
-        Customer c = new Customer(100L, "Name.value");
+        Customer c = new Customer(100L, "Name.value", null);
 
-        final AdditionalProperties ap = c.getAdditionalProperties();
-
-        ap.addProperty("p1", "v1");
-        ap.addProperty("p2", "v2");
+        c.addAdditionalProperty("p1", "v1");
+        c.addAdditionalProperty("p2", "v2");
 
         final String s = om.writerWithDefaultPrettyPrinter().writeValueAsString(c);
         assertFalse(s.isEmpty());
