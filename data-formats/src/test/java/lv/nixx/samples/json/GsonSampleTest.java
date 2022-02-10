@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-public class GsonUsageSample {
+public class GsonSampleTest {
 
 	@Test
 	public void createJson() throws ParseException{
@@ -41,7 +41,7 @@ public class GsonUsageSample {
 		Person p = gson.fromJson(s, Person.class);
 		System.out.println(p);
 		System.out.println(p.getSalary());
-		assertEquals("100.45", p.getSalary().toString());
+		assertEquals("100.00", p.getSalary().toString());
 	}
 	
 	@Test
