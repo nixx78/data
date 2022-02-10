@@ -1,4 +1,4 @@
-package lv.nixx.samples.json.domain.command;
+package lv.nixx.samples.json.command;
 
 import lombok.Getter;
 import lombok.Setter;

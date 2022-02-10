@@ -2,9 +2,6 @@ package lv.nixx.samples.json.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lv.nixx.samples.json.ObjectMapperService;
-import lv.nixx.samples.json.domain.command.AlphaCommand;
-import lv.nixx.samples.json.domain.command.BetaCommand;
-import lv.nixx.samples.json.domain.command.Command;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
