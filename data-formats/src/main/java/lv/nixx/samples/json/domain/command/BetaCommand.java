@@ -6,10 +6,10 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class BetaCommand extends Command<BetaCommand.BetaCommandPayload> {
+public class BetaCommand extends Command<BetaCommand.Payload> {
 
     public BetaCommand() {
-        super("BetaCommand", new BetaCommandPayload());
+        super("BetaCommand", new Payload());
     }
 
     public BetaCommand withF1(String f1) {
@@ -31,7 +31,7 @@ public class BetaCommand extends Command<BetaCommand.BetaCommandPayload> {
     @Getter
     @Setter
     @ToString
-    static public class BetaCommandPayload {
+    static public class Payload {
         String f1;
         String f2;
         String f3;

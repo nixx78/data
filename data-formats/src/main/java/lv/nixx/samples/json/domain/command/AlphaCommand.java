@@ -7,21 +7,21 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class AlphaCommand extends Command<AlphaCommand.AlphaCommandPayload>{
+public class AlphaCommand extends Command<AlphaCommand.Payload>{
 
     @JsonCreator
     public AlphaCommand(@JsonProperty("payload.fieldOne") String fieldOne,  @JsonProperty("payload.fieldTwo") String fieldTwo ) {
-        super("AlphaCommand", new AlphaCommandPayload(fieldOne, fieldTwo));
+        super("AlphaCommand", new Payload(fieldOne, fieldTwo));
     }
 
     @Getter
     @ToString
-    static class AlphaCommandPayload {
+    static class Payload {
         String fieldOne;
         String fieldTwo;
 
         @JsonCreator
-        AlphaCommandPayload(@JsonProperty("fieldOne") String fieldOne, @JsonProperty("fieldTwo") String fieldTwo) {
+        Payload(@JsonProperty("fieldOne") String fieldOne, @JsonProperty("fieldTwo") String fieldTwo) {
             this.fieldOne = fieldOne;
             this.fieldTwo = fieldTwo;
         }

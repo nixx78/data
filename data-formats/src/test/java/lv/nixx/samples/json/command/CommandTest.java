@@ -20,7 +20,7 @@ public class CommandTest {
         String j1 = om.writeValueAsString(ac);
         System.out.println(j1);
 
-        assertEquals("AlphaCommand:AlphaCommand.AlphaCommandPayload(fieldOne=v1, fieldTwo=v2)", processJson(j1));
+        assertEquals("AlphaCommand:AlphaCommand.Payload(fieldOne=v1, fieldTwo=v2)", processJson(j1));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class CommandTest {
         System.out.println("---------------------");
         String j2 = om.writeValueAsString(bc);
         System.out.println(j2);
-        assertEquals("BetaCommand:BetaCommand.BetaCommandPayload(f1=f1, f2=f2, f3=f3)", processJson(j2));
+        assertEquals("BetaCommand:BetaCommand.Payload(f1=f1, f2=f2, f3=f3)", processJson(j2));
     }
 
     private String processJson(String s) throws JsonProcessingException {

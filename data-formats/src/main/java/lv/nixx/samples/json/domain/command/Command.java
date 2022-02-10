@@ -1,7 +1,5 @@
 package lv.nixx.samples.json.domain.command;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
@@ -20,7 +18,7 @@ public abstract class Command<T> {
     private final String action;
     private final T payload;
 
-    public Command(String action, T payload) {
+    Command(String action, T payload) {
         this.action = action;
         this.payload = payload;
     }
