@@ -1,9 +1,9 @@
 package lv.nixx.poc.txs.rest;
 
 import lv.nixx.poc.txs.TransactionSandboxService;
-import lv.nixx.poc.txs.data.AppException;
-import lv.nixx.poc.txs.data.model.Container;
-import lv.nixx.poc.txs.data.model.Statistic;
+import lv.nixx.poc.txs.AppException;
+import lv.nixx.poc.txs.model.Container;
+import lv.nixx.poc.txs.model.Statistic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +20,7 @@ public class BalanceController {
         try {
             return transactionSandboxService.saveAllInTransaction(c);
         } catch (AppException ae) {
-            final Statistic stat = ae.getStat();
-            return stat;
+            return ae.getStat();
         }
     }
 

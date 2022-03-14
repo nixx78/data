@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:derby:sampledb;create=true
+  jpa:
+    hibernate.ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DerbyTenSevenDialect

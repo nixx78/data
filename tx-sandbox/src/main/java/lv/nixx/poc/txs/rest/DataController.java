@@ -1,9 +1,9 @@
 package lv.nixx.poc.txs.rest;
 
-import lv.nixx.poc.txs.data.BalanceRepository;
-import lv.nixx.poc.txs.data.TransactionRepository;
-import lv.nixx.poc.txs.data.model.AccountBalance;
-import lv.nixx.poc.txs.data.model.Transaction;
+import lv.nixx.poc.txs.repo.BalanceRepository;
+import lv.nixx.poc.txs.repo.TransactionRepository;
+import lv.nixx.poc.txs.orm.AccountBalance;
+import lv.nixx.poc.txs.orm.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

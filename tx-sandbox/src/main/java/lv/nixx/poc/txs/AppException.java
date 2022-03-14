@@ -1,10 +1,10 @@
-package lv.nixx.poc.txs.data;
+package lv.nixx.poc.txs;
 
-import lv.nixx.poc.txs.data.model.Statistic;
+import lv.nixx.poc.txs.model.Statistic;
 
 public class AppException extends RuntimeException {
 
-    private Statistic stat;
+    private final Statistic stat;
 
     public AppException(Statistic stat, String message) {
         super(message);

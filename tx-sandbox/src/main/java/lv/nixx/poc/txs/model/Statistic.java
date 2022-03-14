@@ -1,4 +1,4 @@
-package lv.nixx.poc.txs.data.model;
+package lv.nixx.poc.txs.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

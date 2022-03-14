@@ -1,7 +1,9 @@
-package lv.nixx.poc.txs.data.model;
+package lv.nixx.poc.txs.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lv.nixx.poc.txs.orm.AccountBalance;
+import lv.nixx.poc.txs.orm.Transaction;
 
 import java.util.Collection;
 

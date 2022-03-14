@@ -1,10 +1,10 @@
-package lv.nixx.poc.txs;
+package lv.nixx.poc.txs.service;
 
-import lv.nixx.poc.txs.data.BalanceRepository;
-import lv.nixx.poc.txs.data.TransactionRepository;
-import lv.nixx.poc.txs.data.model.AccountBalance;
-import lv.nixx.poc.txs.data.model.Container;
-import lv.nixx.poc.txs.data.model.Transaction;
+import lv.nixx.poc.txs.repo.BalanceRepository;
+import lv.nixx.poc.txs.repo.TransactionRepository;
+import lv.nixx.poc.txs.orm.AccountBalance;
+import lv.nixx.poc.txs.model.Container;
+import lv.nixx.poc.txs.orm.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class BalancePersistence {
+public class BalanceServiceWithRepo {
 
     @Autowired
     private TransactionRepository txnRepo;
