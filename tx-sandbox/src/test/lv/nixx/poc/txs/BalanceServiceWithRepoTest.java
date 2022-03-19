@@ -16,8 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(DBCleanupExtension.class)
@@ -59,10 +58,10 @@ class BalanceServiceWithRepoTest {
         Container container = service.saveTxnAndBalanceTransactionalAnnotated(c);
         assertNotNull(container);
 
-        System.out.println("Success test");
-        balanceRepository.findAll().forEach(System.out::println);
-        System.out.println("--------------");
-        transactionRepository.findAll().forEach(System.out::println);
+        assertAll(
+                () -> assertEquals(1, balanceRepository.findAll().size()),
+                () -> assertEquals(2, transactionRepository.findAll().size())
+        );
     }
 
     @Test
@@ -95,10 +94,11 @@ class BalanceServiceWithRepoTest {
         );
         assertEquals("Wrong account", ex.getMessage());
 
-        System.out.println("Fail test");
-        balanceRepository.findAll().forEach(System.out::println);
-        System.out.println("--------------");
-        transactionRepository.findAll().forEach(System.out::println);
+        assertAll(
+                () -> assertEquals(0, balanceRepository.findAll().size()),
+                () -> assertEquals(0, transactionRepository.findAll().size())
+        );
+
     }
 
 }

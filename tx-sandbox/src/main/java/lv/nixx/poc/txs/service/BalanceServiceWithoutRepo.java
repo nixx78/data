@@ -40,12 +40,13 @@ public class BalanceServiceWithoutRepo {
             savedTxn.add(t);
         }
 
-        final AccountBalance savedBalance = entityManager.merge(balance);
-
         if (balance.getAccountId().equalsIgnoreCase("Error")) {
             // Transaction rollback in this case
             throw new IllegalArgumentException("Wrong account");
         }
+
+        final AccountBalance savedBalance = entityManager.merge(balance);
+
 
         return new Container(savedTxn, savedBalance);
     }

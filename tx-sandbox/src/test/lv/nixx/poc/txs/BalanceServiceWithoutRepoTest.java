@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(DBCleanupExtension.class)
@@ -59,10 +59,10 @@ class BalanceServiceWithoutRepoTest {
         Container container = service.saveTxnAndBalanceTransactionalAnnotated(c);
         assertNotNull(container);
 
-        System.out.println("Success test");
-        balanceRepository.findAll().forEach(System.out::println);
-        System.out.println("--------------");
-        transactionRepository.findAll().forEach(System.out::println);
+        assertAll(
+                () -> assertEquals(1, balanceRepository.findAll().size()),
+                () -> assertEquals(2, transactionRepository.findAll().size())
+        );
     }
 
     @Test
@@ -82,10 +82,35 @@ class BalanceServiceWithoutRepoTest {
         );
         assertEquals("Wrong account", ex.getMessage());
 
-        System.out.println("Fail test");
-        balanceRepository.findAll().forEach(System.out::println);
-        System.out.println("--------------");
-        transactionRepository.findAll().forEach(System.out::println);
+        assertAll(
+                () -> assertEquals(0, balanceRepository.findAll().size()),
+                () -> assertEquals(0, transactionRepository.findAll().size())
+        );
     }
+
+    @Test
+    @Transactional
+    void saveWithoutTransactionFailTest() {
+
+        Date timestamp = new Date();
+
+        Container c = new Container(txn, new AccountBalance()
+                .setAccountId("Error")
+                .setBalance(BigDecimal.valueOf(100.00))
+                .setTimestamp(timestamp)
+                .setUpdateUser("user")
+        );
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> service.saveWithoutTransaction(c)
+        );
+        assertEquals("Wrong account", ex.getMessage());
+
+        assertAll(
+                () -> assertEquals(0, balanceRepository.findAll().size()),
+                () -> assertEquals(2, transactionRepository.findAll().size())
+        );
+    }
+
 
 }

@@ -30,12 +30,13 @@ public class BalanceServiceWithRepo {
         final AccountBalance balance = c.getBalance();
 
         final List<Transaction> savedTxn = txnRepo.saveAll(c.getTxn());
-        final AccountBalance savedBalance = balanceRepository.save(balance);
 
         if (balance.getAccountId().equalsIgnoreCase("Error")) {
             // Transaction rollback in this case
             throw new IllegalArgumentException("Wrong account");
         }
+
+        final AccountBalance savedBalance = balanceRepository.save(balance);
 
         return new Container(savedTxn, savedBalance);
     }
