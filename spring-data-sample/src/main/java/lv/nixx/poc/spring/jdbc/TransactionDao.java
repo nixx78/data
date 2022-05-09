@@ -22,25 +22,25 @@ public class TransactionDao {
         this.transactionRepository = transactionRepository;
     }
 
-    public TransactionDTO save(TransactionDTO txn) {
+    public Transaction save(Transaction txn) {
         return transactionRepository.save(txn);
     }
 
-    public Collection<TransactionDTO> getAllTransactions() {
+    public Collection<Transaction> getAllTransactions() {
         return jdbcTemplate.query("select * from TRANSACTION_TBL", new TransactionMapper());
     }
 
-    static class TransactionMapper implements RowMapper<TransactionDTO> {
+    static class TransactionMapper implements RowMapper<Transaction> {
 
         @Override
-        public TransactionDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
             long id = rs.getLong("ID");
             String currency = rs.getString("currency");
             String accountId = rs.getString("account_id");
             BigDecimal amount = rs.getBigDecimal("amount");
             String descr = rs.getString("descr");
 
-            return new TransactionDTO()
+            return new Transaction()
                     .setId(id)
                     .setCurrency(currency)
                     .setAccountId(accountId)

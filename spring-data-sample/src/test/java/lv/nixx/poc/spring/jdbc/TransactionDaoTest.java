@@ -9,6 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TransactionDaoTest {
@@ -24,8 +29,8 @@ class TransactionDaoTest {
     @Test
     void saveAndGetTest() {
 
-        TransactionDTO createdTxn = transactionRepository.save(
-                new TransactionDTO()
+        Transaction createdTxn = transactionRepository.save(
+                new Transaction()
                         .setCurrency("USD")
                         .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
                         .setDescription("Simple transaction")
@@ -35,8 +40,26 @@ class TransactionDaoTest {
 
         log.info("Created txn: {}", createdTxn);
 
-        Collection<TransactionDTO> allTransactions = transactionDao.getAllTransactions();
-        System.out.println(allTransactions);
+        Optional<Transaction> byId = transactionRepository.findById(createdTxn.getId());
+
+        log.info("Find by id [{}]", byId.orElse(null));
+
+        Collection<Transaction> actualList = StreamSupport
+                .stream(transactionRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+
+        log.info("All Transaction using Repository: {}", actualList);
+
+        Collection<Transaction> allTransactions = transactionDao.getAllTransactions();
+
+        log.info("All Transaction using DAO: {}", allTransactions);
+
+        assertAll(
+                () -> assertNotNull(byId),
+                () -> assertEquals(1, actualList.size()),
+                () -> assertEquals(1, allTransactions.size())
+        );
 
     }
+
 }
