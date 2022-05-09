@@ -1,0 +1,38 @@
+<configuration scan="true">
+
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
+ 
+ <property name="LOG_DIR" value="./logs" />
+ <property name="PATTERN" value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %level %logger{0} - %msg%n" />
+ 
+ <!-- ==============  Size and Time based Rolling file appenders section ============== -->
+  <appender name="FileMain" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/sample.log</file>
+    <encoder>
+      <pattern>${PATTERN}</pattern>
+    </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${LOG_DIR}//sample.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+      </rollingPolicy>
+  </appender>
+
+ <!-- ===================================================================== -->
+ 
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${PATTERN}</pattern>
+    </encoder>
+  </appender>
+  
+  <root level="debug">
+    <appender-ref ref="Console" />
+    <appender-ref ref="FileMain" />
+  </root>
+
+ 
+</configuration>
