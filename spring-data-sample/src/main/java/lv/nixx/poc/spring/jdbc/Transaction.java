@@ -20,7 +20,7 @@ public class Transaction {
 
     @Id
     @Column("ID")
-    private long id;
+    private Long id;
 
     @Column("ACCOUNT_ID")
     private String accountId;

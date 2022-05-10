@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -27,7 +28,7 @@ class TransactionDaoTest {
     private TransactionRepository transactionRepository;
 
     @Test
-    void saveAndGetTest() {
+    void crudWithEntitySample() {
 
         Transaction createdTxn = transactionRepository.save(
                 new Transaction()
@@ -59,6 +60,26 @@ class TransactionDaoTest {
                 () -> assertEquals(1, actualList.size()),
                 () -> assertEquals(1, allTransactions.size())
         );
+
+        Transaction anotherTxn = transactionRepository.save(
+                new Transaction()
+                        .setCurrency("EUR")
+                        .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
+                        .setDescription("Another transaction")
+                        .setAccountId("accountId")
+                        .setAmount(BigDecimal.valueOf(20.00))
+        );
+
+        assertEquals(2, transactionDao.getAllTransactions().size());
+
+        Long idToDelete = anotherTxn.getId();
+        transactionRepository.deleteAllById(List.of(idToDelete));
+
+        assertAll(
+                () -> assertEquals(1, transactionRepository.count()),
+                () -> assertFalse(transactionRepository.existsById(idToDelete))
+        );
+
 
     }
 
