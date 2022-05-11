@@ -1,5 +1,6 @@
 package lv.nixx.poc.spring.jdbc;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +18,20 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TransactionDaoTest {
+class TransactionRepositoryTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TransactionDaoTest.class);
+    private static final Logger log = LoggerFactory.getLogger(TransactionRepositoryTest.class);
 
     @Autowired
     private TransactionDao transactionDao;
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @BeforeEach
+    void cleanup() {
+        transactionRepository.deleteAll();
+    }
 
     @Test
     void crudWithEntitySample() {

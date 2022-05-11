@@ -10,9 +10,10 @@ https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/
 * H2 in - memory - db
 * Создания таблиц при помощи schema.sql
 * CRUD - репозиторий
+* Использование JdbcTemplate
 * Аннотации для Entity
 
 # TODO
 * Account (1) -> Transaction (n) -> https://javabydeveloper.com/spring-data-jdbc-one-to-many-example/
+* Add @Query and query by method name sample 
 * @DomainEvents -> https://www.baeldung.com/spring-data-ddd
-* PagingSample
