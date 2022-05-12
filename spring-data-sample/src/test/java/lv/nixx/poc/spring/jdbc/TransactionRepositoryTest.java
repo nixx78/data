@@ -1,5 +1,6 @@
 package lv.nixx.poc.spring.jdbc;
 
+import lv.nixx.poc.spring.jdbc.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -36,20 +37,40 @@ class TransactionRepositoryTest {
     @Test
     void crudWithEntitySample() {
 
-        Transaction createdTxn = transactionRepository.save(
+        transactionRepository.save(
                 new Transaction()
-                        .setCurrency("USD")
+                        .setCurrency("EUR")
                         .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
-                        .setDescription("Simple transaction")
+                        .setDescription("Simple transaction 1")
                         .setAccountId("accountId")
                         .setAmount(BigDecimal.valueOf(10.00))
         );
 
-        log.info("Created txn: {}", createdTxn);
+        transactionRepository.save(
+                new Transaction()
+                        .setCurrency("EUR")
+                        .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
+                        .setDescription("Simple transaction 1")
+                        .setAccountId("AnotherAccountId")
+                        .setAmount(BigDecimal.valueOf(10.00))
+        );
 
-        Optional<Transaction> byId = transactionRepository.findById(createdTxn.getId());
+        Transaction txn2 = transactionRepository.save(
+                new Transaction()
+                        .setCurrency("USD")
+                        .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
+                        .setDescription("Another transaction")
+                        .setAccountId("AnotherAccountId")
+                        .setAmount(BigDecimal.valueOf(10.00))
+        );
 
-        log.info("Find by id [{}]", byId.orElse(null));
+        Optional<Transaction> byId = transactionRepository.findById(txn2.getId());
+
+        assertAll(
+                () -> assertEquals(txn2, byId.orElse(null)),
+                () -> assertEquals(2, transactionRepository.getByCurrency("EUR").size()),
+                () -> assertEquals(1, transactionRepository.getByAccountId("accountId").size())
+        );
 
         Collection<Transaction> actualList = StreamSupport
                 .stream(transactionRepository.findAll().spliterator(), false)
@@ -59,34 +80,22 @@ class TransactionRepositoryTest {
 
         Collection<Transaction> allTransactions = transactionDao.getAllTransactions();
 
-        log.info("All Transaction using DAO: {}", allTransactions);
-
         assertAll(
                 () -> assertNotNull(byId),
-                () -> assertEquals(1, actualList.size()),
-                () -> assertEquals(1, allTransactions.size())
+                () -> assertEquals(3, actualList.size()),
+                () -> assertEquals(3, allTransactions.size())
         );
 
-        Transaction anotherTxn = transactionRepository.save(
-                new Transaction()
-                        .setCurrency("EUR")
-                        .setDate(LocalDateTime.parse("2022-05-09T10:00:23.77"))
-                        .setDescription("Another transaction")
-                        .setAccountId("accountId")
-                        .setAmount(BigDecimal.valueOf(20.00))
-        );
+        Long anotherTxnId = txn2.getId();
 
-        assertEquals(2, transactionDao.getAllTransactions().size());
+        txn2.setDescription("Updated description");
+        transactionRepository.save(txn2);
 
-        Long idToDelete = anotherTxn.getId();
-        transactionRepository.deleteAllById(List.of(idToDelete));
+        Transaction updatedTransaction = transactionRepository.findById(anotherTxnId).orElse(null);
+        assertEquals("Updated description", updatedTransaction.getDescription());
 
-        assertAll(
-                () -> assertEquals(1, transactionRepository.count()),
-                () -> assertFalse(transactionRepository.existsById(idToDelete))
-        );
-
-
+        transactionRepository.deleteAllById(List.of(anotherTxnId));
+        assertFalse(transactionRepository.existsById(anotherTxnId));
     }
 
 }

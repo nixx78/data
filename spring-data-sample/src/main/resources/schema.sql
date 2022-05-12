@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS TRANSACTION_TBL (
         descr VARCHAR(255),
         date TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS LOGENTRY_TBL (
+        id SERIAL primary key,
+        level VARCHAR(20),
+        message VARCHAR(255),
+        timestamp TIMESTAMP
+);

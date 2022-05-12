@@ -1,5 +1,6 @@
 package lv.nixx.poc.spring.jdbc;
 
+import lv.nixx.poc.spring.jdbc.repository.TransactionRepositoryWithPaging;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

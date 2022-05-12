@@ -12,8 +12,9 @@ https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/
 * CRUD - репозиторий
 * Использование JdbcTemplate
 * Аннотации для Entity
+* Обработка @DomainEvents
+* Запрос из repository: аннотация @Query
+* Запрос из repository: по имени метода
 
 # TODO
 * Account (1) -> Transaction (n) -> https://javabydeveloper.com/spring-data-jdbc-one-to-many-example/
-* Add @Query and query by method name sample 
-* @DomainEvents -> https://www.baeldung.com/spring-data-ddd
