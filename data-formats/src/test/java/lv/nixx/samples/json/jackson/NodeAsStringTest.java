@@ -21,15 +21,15 @@ class NodeAsStringTest {
     void getNodeAsStringTest() throws JsonProcessingException {
 
 
-        String json = """
-                {  "field1" : "Field1.Value",
-                  "payload" : {
-                    "id" : 1,
-                    "name" : "Name1",
-                    "dateOfBirth" : null,
-                    "salary" : null
-                  }
-                }""";
+        String json = "{" +
+                "  \"field1\" : \"Field1.Value\",\n" +
+                "  \"payload\" : {\n" +
+                "    \"id\" : 1,\n" +
+                "    \"name\" : \"Name1\",\n" +
+                "    \"dateOfBirth\" : null,\n" +
+                "    \"salary\" : null\n" +
+                "  }\n" +
+                "}";
 
         Wrapper wrapper = om.readValue(json, Wrapper.class);
 
