@@ -4,63 +4,119 @@ import lv.nixx.poc.db.TablePrinter;
 import lv.nixx.poc.db.domain.*;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+
+//TODO Migrate project to latest libraries version and do cleanup
 public class CustomerPersistSample {
 
-	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("simple.customer.unit");
+    private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("simple.customer.unit");
 
-	@Test
-	public void testShouldPersistCustomerWithAllAttributes() throws Exception {
+    private final TablePrinter customerTablePrinter = new TablePrinter("CUSTOMER");
 
-		EntityManager em = factory.createEntityManager();
-		final EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
+    @Test
+    public void testShouldPersistCustomerWithAllAttributes() throws Exception {
 
-		CustomerType type1 = new CustomerType("TYPE1", "genericType1");
-		em.persist(type1);
+        EntityManager em = factory.createEntityManager();
+        final EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
 
-		Customer customer = new Customer("name1", "surname1", null);
-		customer.setExtension(new CustomerExtension("additionalData"));
-		customer.addAddress(new Address("a.line11", "a.line12"));
-		customer.addAddress(new Address("a.line21", "a.line22"));
-		customer.addAddress(new Address("a.line21", "a.line224444"));
-		customer.setType(type1);
-		customer.setSegment(Segment.VIP);
+        CustomerType type1 = new CustomerType("TYPE1", "genericType1");
+        em.persist(type1);
 
-		em.persist(customer);
+        Customer customer = new Customer("name1", "surname1", null)
+                .setExtension(new CustomerExtension("additionalData"))
+                .addAddress(new Address("a.line11", "a.line12"))
+                .addAddress(new Address("a.line21", "a.line22"))
+                .addAddress(new Address("a.line21", "a.line224444"))
+                .setType(type1)
+                .setSegment(Segment.VIP);
 
-		final Long id = customer.getId();
+        em.persist(customer);
 
-		assertNotNull(id); // проверяем, что ID сгенерировано для Customer
-		transaction.commit();
-		em.close();
+        final Long id = customer.getId();
 
-		// Получаем  entity еще раз из базы данных
-		em = factory.createEntityManager();
+        assertNotNull(id); // проверяем, что ID сгенерировано для Customer
+        transaction.commit();
+        em.close();
 
-		final Customer savedCustomer = em.find(Customer.class, id);
+        // Получаем  entity еще раз из базы данных
+        em = factory.createEntityManager();
 
-		assertNotNull(savedCustomer.getExtension());
-		assertEquals(3, savedCustomer.getAddress().size());
-		assertEquals("TYPE1", savedCustomer.getType().getId());
-		assertEquals(Segment.VIP, savedCustomer.getSegment());
+        final Customer savedCustomer = em.find(Customer.class, id);
 
-
-		new TablePrinter("CUSTOMER").print();
-		new TablePrinter("ADDRESS").print();
-		new TablePrinter("CUSTOMER_EXTENSION").print();
-		new TablePrinter("CUSTOMER_TYPE").print();
+        assertNotNull(savedCustomer.getExtension());
+        assertEquals(3, savedCustomer.getAddress().size());
+        assertEquals("TYPE1", savedCustomer.getType().getId());
+        assertEquals(Segment.VIP, savedCustomer.getSegment());
 
 
-	}
+        customerTablePrinter.print();
+        new TablePrinter("ADDRESS").print();
+        new TablePrinter("CUSTOMER_EXTENSION").print();
+        new TablePrinter("CUSTOMER_TYPE").print();
+    }
 
+    @Test
+    public void saveAndUpdateCustomerUsingUpdateStatement() {
 
+        EntityManager em = factory.createEntityManager();
+        final EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        Customer customer = new Customer("name1", "surname1", null);
+        Customer savedCustomer = em.merge(customer);
+
+        transaction.commit();
+
+        // Update customer
+        System.out.println("--------------------------------");
+        em.getTransaction().begin();
+        Query query = em.createQuery("UPDATE Customer c SET c.lastName = :lstName WHERE c.id=:id");
+        query.setParameter("lstName", "updatedLastName");
+        query.setParameter("id", savedCustomer.getId());
+
+        int rowsUpdated = query.executeUpdate();
+        System.out.println("entities Updated: " + rowsUpdated);
+        em.getTransaction().commit();
+        em.close();
+
+        final Customer savedCustomer1 = factory.createEntityManager().find(Customer.class, savedCustomer.getId());
+        assertEquals("updatedLastName", savedCustomer1.getLastName());
+
+        customerTablePrinter.print();
+    }
+
+    @Test
+    public void saveAndUpdateCustomerUsingUpdateEntity() {
+
+        EntityManager em = factory.createEntityManager();
+        final EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        Customer customer = new Customer("name1", "surname1", null);
+        customer.setSegment(Segment.VIP);
+        Customer savedCustomer = em.merge(customer);
+
+        transaction.commit();
+
+        // Update customer
+        System.out.println("--------------------------------");
+
+        CustomerEntityForUpdate customerEntityForUpdate = em.find(CustomerEntityForUpdate.class, savedCustomer.getId());
+
+        em.getTransaction().begin();
+        customerEntityForUpdate.setLastName("LastNameOneMoreTimeUpdated");
+        em.getTransaction().commit();
+        em.close();
+
+        customerTablePrinter.print();
+
+        final Customer savedCustomer1 = factory.createEntityManager().find(Customer.class, savedCustomer.getId());
+        assertEquals("LastNameOneMoreTimeUpdated", savedCustomer1.getLastName());
+    }
 
 }

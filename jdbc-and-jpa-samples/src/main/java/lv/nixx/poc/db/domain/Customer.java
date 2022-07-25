@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -52,6 +53,7 @@ import lombok.ToString;
 
 @Data
 @ToString
+@Accessors(chain = true)
 public class Customer {
 
     @Id
@@ -95,15 +97,17 @@ public class Customer {
         setExtension(extension);
     }
 
-    public void addAddress(Address address) {
+    public Customer addAddress(Address address) {
         this.address.add(address);
+        return this;
     }
 
-    public void setExtension(CustomerExtension ce) {
+    public Customer setExtension(CustomerExtension ce) {
         this.extension = ce;
         if (ce != null && ce.getCustomer() != this) {
             ce.setCustomer(this);
         }
+        return this;
     }
 
 

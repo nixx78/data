@@ -26,6 +26,10 @@ public class DomainEventsTest {
         logMessage.setMessage("Updated message");
 
         repository.save(logMessage);
+
+        repository.delete(logMessage);
+
+
     }
 
 }
