@@ -13,7 +13,7 @@ import lv.nixx.poc.db.mappingsamples.tableperclass.SalaryProjectClient;
 import lv.nixx.poc.db.mappingsamples.tableperclass.Student;
 import lv.nixx.poc.db.mappingsamples.tableperclass.VisaGoldClient;
 
-public class TablePerClassSample {
+public class TablePerClassTest {
 	
 	@Test
 	public void createAndSaveEntities(){

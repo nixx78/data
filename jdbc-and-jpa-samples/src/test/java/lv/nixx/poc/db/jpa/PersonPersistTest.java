@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.*;
 import java.util.Map;
 
-public class PersonPersistSample {
+public class PersonPersistTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PersonPersistSample.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PersonPersistTest.class);
 
     private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 

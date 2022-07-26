@@ -5,24 +5,23 @@ import lv.nixx.poc.db.domain.Address;
 import lv.nixx.poc.db.domain.Customer;
 import lv.nixx.poc.db.domain.CustomerExtension;
 import lv.nixx.poc.db.domain.CustomerType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
-public class CustomerAddressUsageSample {
+public class CustomerAddressUsageTest {
 
-	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
+	private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
 	TablePrinter customerPrinter = new TablePrinter("CUSTOMER");
 	TablePrinter addressPrinter = new TablePrinter("ADDRESS");
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		clearDatabase(); 
 		createInitialCustomers();
 	}
@@ -48,13 +47,13 @@ public class CustomerAddressUsageSample {
 		}
 	}
 
-	@After
-	public void destroy() {
+	@AfterEach
+	void destroy() {
 		factory.close();
 	}
 
 	@Test
-	public void changeAddressSample() {
+	void changeAddressSample() {
 		EntityManager em = factory.createEntityManager();
 		TypedQuery<Customer> query = em.createNamedQuery("Customer.findCustomerByLastName", Customer.class);
 		query.setParameter("lastName", "Bauer");
@@ -99,7 +98,7 @@ public class CustomerAddressUsageSample {
 			c1.addAddress(new Address("1_line1", "1_line2"));
 			c1.addAddress(new Address("2_line1", "2_line2"));
 
-			Arrays.asList(c1).forEach(em::persist);
+			em.persist(c1);
 
 			transaction.commit();
 		} finally {

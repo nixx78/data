@@ -5,23 +5,23 @@ import lv.nixx.poc.db.domain.txn.EmbeddedTransactionId;
 import lv.nixx.poc.db.domain.txn.TransactionId;
 import lv.nixx.poc.db.domain.txn.TransactionWithEmbeddedId;
 import lv.nixx.poc.db.domain.txn.TransactionWithIdClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TransactionPersistTest {
 
-    private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
+    private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
-    private TablePrinter txnPrinter = new TablePrinter("TXN_TABLE");
-    private TablePrinter txnIdTablePrinter = new TablePrinter("TXN_ID_CLASS_TABLE");
+    private final TablePrinter txnPrinter = new TablePrinter("TXN_TABLE");
+    private final TablePrinter txnIdTablePrinter = new TablePrinter("TXN_ID_CLASS_TABLE");
 
     @Test
-    public void embeddableIdTest() throws Exception {
+    public void embeddableIdTest() {
 
         TransactionWithEmbeddedId txn1 = new TransactionWithEmbeddedId();
         txn1.setTransactionId(new EmbeddedTransactionId("key1", 10L, false));

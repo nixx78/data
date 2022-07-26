@@ -8,19 +8,19 @@ import javax.persistence.*;
 
 import org.junit.Test;
 
-import lv.nixx.poc.db.mappingsamples.joinedtable.BonusedClient;
-import lv.nixx.poc.db.mappingsamples.joinedtable.SalaryProjectClient;
-import lv.nixx.poc.db.mappingsamples.joinedtable.Student;
-import lv.nixx.poc.db.mappingsamples.joinedtable.VisaGoldClient;
+import lv.nixx.poc.db.mappingsamples.singletable.BonusedClient;
+import lv.nixx.poc.db.mappingsamples.singletable.SalaryProjectClient;
+import lv.nixx.poc.db.mappingsamples.singletable.Student;
+import lv.nixx.poc.db.mappingsamples.singletable.VisaGoldClient;
 
-public class JoinedTableMappingSample {
+public class SingleTableMappingTest {
 	
 	@Test
 	public void createAndSaveEntities(){
 	
 		final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 		final EntityManager entityManager = factory.createEntityManager();
-
+		
 		deleteAllRecords(entityManager);
 		
 		entityManager.getTransaction().begin();
@@ -41,31 +41,31 @@ public class JoinedTableMappingSample {
 		
 		entityManager.getTransaction().commit();
 		
-		Query allStudentQuery = entityManager.createQuery("select s from Student.JS s", Student.class);
+		Query allStudentQuery = entityManager.createQuery("select s from Student.ST s", Student.class);
 		assertEquals(2, allStudentQuery.getResultList().size());
 
-		Query visaGoldQuery = entityManager.createQuery("select s from VisaGoldClient.JS s", VisaGoldClient.class);
+		Query visaGoldQuery = entityManager.createQuery("select s from VisaGoldClient.ST s", VisaGoldClient.class);
 		assertEquals(1, visaGoldQuery.getResultList().size());
 
-		Query bonusedClientQuery = entityManager.createQuery("select s from BonusedClient.JS s", BonusedClient.class);
+		Query bonusedClientQuery = entityManager.createQuery("select s from BonusedClient.ST s", BonusedClient.class);
 		assertEquals(3, bonusedClientQuery.getResultList().size());
 
-		Query salaryProjectClientQuery = entityManager.createQuery("select s from SalaryProjectClient.JS s", SalaryProjectClient.class);
+		Query salaryProjectClientQuery = entityManager.createQuery("select s from SalaryProjectClient.ST s", SalaryProjectClient.class);
 		assertEquals(4, salaryProjectClientQuery.getResultList().size());
 
 		entityManager.close();
 	}
-	
+
 	private void deleteAllRecords(EntityManager entityManager) {
 		entityManager.getTransaction().begin();
 		
-		entityManager.createQuery("delete from Student.JS").executeUpdate();
-		entityManager.createQuery("delete from VisaGoldClient.JS").executeUpdate();
-		entityManager.createQuery("delete from BonusedClient.JS").executeUpdate();
-		entityManager.createQuery("delete from SalaryProjectClient.JS").executeUpdate();
+		entityManager.createQuery("delete from Student.ST").executeUpdate();
+		entityManager.createQuery("delete from VisaGoldClient.ST").executeUpdate();
+		entityManager.createQuery("delete from BonusedClient.ST").executeUpdate();
+		entityManager.createQuery("delete from SalaryProjectClient.ST").executeUpdate();
 		
 		entityManager.getTransaction().commit();
 	}
-	
+
 
 }

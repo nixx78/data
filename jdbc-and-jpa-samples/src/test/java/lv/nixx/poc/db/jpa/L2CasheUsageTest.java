@@ -7,7 +7,7 @@ import org.junit.*;
 import lv.nixx.poc.db.domain.Person;
 
 
-public class L2CasheUsageSample {
+public class L2CasheUsageTest {
 	
 	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 	

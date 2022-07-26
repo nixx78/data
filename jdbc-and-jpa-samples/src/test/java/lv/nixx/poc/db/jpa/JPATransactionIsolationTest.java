@@ -7,7 +7,7 @@ import org.junit.*;
 
 import lv.nixx.poc.db.domain.Person;
 
-public class JPATransactionIsolationSample {
+public class JPATransactionIsolationTest {
 	
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("test.unit");
 	

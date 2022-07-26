@@ -2,23 +2,21 @@ package lv.nixx.poc.db.jpa;
 
 import lv.nixx.poc.db.TablePrinter;
 import lv.nixx.poc.db.domain.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-//TODO Migrate project to latest libraries version and do cleanup
-public class CustomerPersistSample {
+public class CustomerPersistTest {
 
     private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("simple.customer.unit");
 
     private final TablePrinter customerTablePrinter = new TablePrinter("CUSTOMER");
 
     @Test
-    public void testShouldPersistCustomerWithAllAttributes() throws Exception {
+    void testShouldPersistCustomerWithAllAttributes() {
 
         EntityManager em = factory.createEntityManager();
         final EntityTransaction transaction = em.getTransaction();
@@ -48,11 +46,12 @@ public class CustomerPersistSample {
 
         final Customer savedCustomer = em.find(Customer.class, id);
 
-        assertNotNull(savedCustomer.getExtension());
-        assertEquals(3, savedCustomer.getAddress().size());
-        assertEquals("TYPE1", savedCustomer.getType().getId());
-        assertEquals(Segment.VIP, savedCustomer.getSegment());
-
+        assertAll(
+                () -> assertNotNull(savedCustomer.getExtension()),
+                () -> assertEquals(3, savedCustomer.getAddress().size()),
+                () -> assertEquals("TYPE1", savedCustomer.getType().getId()),
+                () -> assertEquals(Segment.VIP, savedCustomer.getSegment())
+        );
 
         customerTablePrinter.print();
         new TablePrinter("ADDRESS").print();
@@ -61,7 +60,7 @@ public class CustomerPersistSample {
     }
 
     @Test
-    public void saveAndUpdateCustomerUsingUpdateStatement() {
+    void saveAndUpdateCustomerUsingUpdateStatement() {
 
         EntityManager em = factory.createEntityManager();
         final EntityTransaction transaction = em.getTransaction();
@@ -91,7 +90,7 @@ public class CustomerPersistSample {
     }
 
     @Test
-    public void saveAndUpdateCustomerUsingUpdateEntity() {
+    void saveAndUpdateCustomerUsingUpdateEntity() {
 
         EntityManager em = factory.createEntityManager();
         final EntityTransaction transaction = em.getTransaction();

@@ -8,7 +8,7 @@ import org.junit.*;
 
 import lv.nixx.poc.db.domain.Person;
 
-public class LockingUsageSample {
+public class LockingUsageTest {
 	
 	private static final String initialPersonName = "initial.Name";
 	private static final String changedPersonName = "new.Name";

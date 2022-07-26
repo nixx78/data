@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 
-public class NamedNativeQuerySample {
+public class NamedNativeQueryTest {
 
     private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
