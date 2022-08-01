@@ -1,11 +1,10 @@
 package lv.nixx.poc.db.domain;
 
-import java.util.*;
-
-import javax.persistence.*;
-
 import lombok.Data;
 import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.*;
 
 
 /**
