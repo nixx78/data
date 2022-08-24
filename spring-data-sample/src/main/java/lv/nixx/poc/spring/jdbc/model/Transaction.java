@@ -1,4 +1,4 @@
-package lv.nixx.poc.spring.jdbc;
+package lv.nixx.poc.spring.jdbc.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

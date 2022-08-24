@@ -13,3 +13,8 @@ CREATE TABLE IF NOT EXISTS LOGENTRY_TBL (
         message VARCHAR(255),
         timestamp TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS ACCOUNT_TBL (
+        id VARCHAR(255) primary key,
+        name VARCHAR(255)
+);

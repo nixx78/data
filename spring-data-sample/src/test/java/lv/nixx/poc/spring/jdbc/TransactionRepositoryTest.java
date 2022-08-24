@@ -1,5 +1,6 @@
 package lv.nixx.poc.spring.jdbc;
 
+import lv.nixx.poc.spring.jdbc.model.Transaction;
 import lv.nixx.poc.spring.jdbc.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
