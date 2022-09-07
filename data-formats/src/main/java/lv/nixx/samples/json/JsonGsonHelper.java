@@ -10,9 +10,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class JsonHelper {
+public class JsonGsonHelper {
 
-    private JsonHelper() {}
+    private JsonGsonHelper() {}
 
     public static Gson gson() {
 

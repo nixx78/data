@@ -26,7 +26,7 @@ public class GsonSampleTest {
 		p.setDateOfBirth(df.parse("01.12.1978"));
 		p.setSalary(BigDecimal.valueOf(100));
 		
-		Gson gson = JsonHelper.gson();
+		Gson gson = JsonGsonHelper.gson();
 		String json = gson.toJson(p);
 		System.out.println(json);
 		
@@ -37,7 +37,7 @@ public class GsonSampleTest {
 	@Test
 	public void parseJson1(){
 		String s = "{\"id\":100,\"name\":\"name\",\"dateOfBirth\":\"06.12.1978\",\"salary\":100.45}";
-		Gson gson = JsonHelper.gson();
+		Gson gson = JsonGsonHelper.gson();
 		Person p = gson.fromJson(s, Person.class);
 		System.out.println(p);
 		System.out.println(p.getSalary());
@@ -47,7 +47,7 @@ public class GsonSampleTest {
 	@Test
 	public void parseJson2(){
 		String s = "{\"id\":100,\"name\":\"name\",\"dateOfBirth\":\"06.12.1978\",\"salary\":100}";
-		Gson gson = JsonHelper.gson();
+		Gson gson = JsonGsonHelper.gson();
 		Person p = gson.fromJson(s, Person.class);
 		System.out.println(p);
 		System.out.println(p.getSalary());
