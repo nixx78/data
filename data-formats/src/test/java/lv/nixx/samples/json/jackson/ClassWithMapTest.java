@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,13 +23,14 @@ class ClassWithMapTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void test() throws JsonProcessingException {
+    void test() throws JsonProcessingException, JSONException {
 
         ClassWithExtension c = new ClassWithExtension("key")
                 .addValue(Term.WEEK1, 10)
                 .addValue(Term.WEEK2, 20);
 
-        assertEquals("{\"key\":\"key\",\"WEEK2\":20,\"WEEK1\":10}",  objectMapper.writeValueAsString(c));
+        JSONAssert.assertEquals("{\"key\":\"key\",\"WEEK2\":20,\"WEEK1\":10}",
+                objectMapper.writeValueAsString(c), false);
     }
 
 
