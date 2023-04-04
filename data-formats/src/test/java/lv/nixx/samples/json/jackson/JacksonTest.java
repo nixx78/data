@@ -4,14 +4,19 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lv.nixx.samples.json.ObjectMapperService;
 import org.junit.Test;
 
@@ -19,20 +24,25 @@ import lv.nixx.samples.json.domain.*;
 
 public class JacksonTest {
 	
-	private ObjectMapperService objectMapper = new ObjectMapperService();
+	private final ObjectMapperService objectMapper = new ObjectMapperService();
 
 	@Test
 	public void objectToJsonWithoutNullFieldsTest() throws Exception {
 
-		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, null);
+		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, null, LocalDateTime.parse("2023-04-05T12:00:00"));
 
 		ObjectMapperService service = new ObjectMapperService();
 		service.setSerializationInclusion(NON_NULL);
 		service.enable(SerializationFeature.INDENT_OUTPUT);
 
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		JavaTimeModule module = new JavaTimeModule();
+		module.addSerializer(new LocalDateTimeSerializer(dateTimeFormatter));
+		service.registerModule(module);
+
 		String s = service.writeValueAsString(p);
 		// Null field will not be in JSON
-		System.out.println(s);
+		System.out.println("Transaction as JSON:\n" + s);
 
 		Transaction transaction = service.readValue(s, Transaction.class);
 
