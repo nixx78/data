@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -12,5 +13,6 @@ public class Person {
     private int id;
     private String name;
     private Date dateOfBirth;
+    private LocalDateTime timestamp;
     private BigDecimal salary;
 }

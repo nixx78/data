@@ -1,151 +1,170 @@
 package lv.nixx.samples.json.jackson;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lv.nixx.samples.json.ObjectMapperService;
-import org.junit.Test;
 
 import lv.nixx.samples.json.domain.*;
+import org.junit.jupiter.api.Test;
 
-public class JacksonTest {
-	
-	private final ObjectMapperService objectMapper = new ObjectMapperService();
+class JacksonTest {
 
-	@Test
-	public void objectToJsonWithoutNullFieldsTest() throws Exception {
+    private final ObjectMapperService objectMapper = new ObjectMapperService();
 
-		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, null, LocalDateTime.parse("2023-04-05T12:00:00"));
+    @Test
+    void objectToJsonWithoutNullFieldsTest() throws Exception {
 
-		ObjectMapperService service = new ObjectMapperService();
-		service.setSerializationInclusion(NON_NULL);
-		service.enable(SerializationFeature.INDENT_OUTPUT);
+        Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, null, LocalDateTime.parse("2023-04-05T12:00:00"));
 
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-		JavaTimeModule module = new JavaTimeModule();
-		module.addSerializer(new LocalDateTimeSerializer(dateTimeFormatter));
-		service.registerModule(module);
+        ObjectMapperService service = new ObjectMapperService();
+        service.setSerializationInclusion(NON_NULL);
+        service.enable(SerializationFeature.INDENT_OUTPUT);
 
-		String s = service.writeValueAsString(p);
-		// Null field will not be in JSON
-		System.out.println("Transaction as JSON:\n" + s);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        JavaTimeModule module = new JavaTimeModule();
+        module.addSerializer(new LocalDateTimeSerializer(dateTimeFormatter));
+        service.registerModule(module);
 
-		Transaction transaction = service.readValue(s, Transaction.class);
+        String s = service.writeValueAsString(p);
+        // Null field will not be in JSON
+        System.out.println("Transaction as JSON:\n" + s);
 
-		System.out.println(transaction);
+        Transaction transaction = service.readValue(s, Transaction.class);
 
-		assertNotNull(transaction);
-		assertNull(transaction.getCurrency());
-		assertEquals("Type should be set by default", Type.CREDIT, transaction.getType());
-	}
-		
-	@Test
-	public void objectToStringSample() throws Exception {
-		Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, Currency.EUR);
-		p.setDescription("Txn Description value");
+        System.out.println(transaction);
 
-		String jsonString = objectMapper.writeValueAsString(p);
-		assertNotNull(jsonString);
-		System.out.println(jsonString);
-	}
-	
-	@Test
-	public void stringToObjectSample() throws Exception {
-		String json = "{\r\n" + 
-				"  \"id\" : 10,\r\n" + 
-				"  \"amount\" : 10.0,\r\n" + 
-				"  \"currency\" : \"EUR\",\r\n" +
-				"\"Txn description\" : \"Txn Description value\""+
-				"}";
-		
-		Transaction txn = objectMapper.readValue(json, Transaction.class);
-		assertNotNull(txn);
-		
-		System.out.println(txn);
-	}
-	
-	@Test
-	public void requiredFieldTest() throws Exception {
-		String json = "{\r\n" + 
-				"  \"id\" : 10,\r\n" + 
-				"  \"amount\" : 10.0,\r\n" +
-				"  \"currency\": null" +
-				"}";
-		
-		Transaction txn = objectMapper.readValue(json, Transaction.class);
-		assertNotNull(txn);
-		
-		System.out.println(txn);
-	}
+        assertNotNull(transaction);
+        assertNull(transaction.getCurrency());
+        assertEquals(Type.CREDIT, transaction.getType(), "Type should be set by default");
+    }
 
-	@Test
-	public void jsonNodeCompareSuccessTest() throws IOException {
-		String expectedJson = "{\"id\":10,\"amount\":10.0}";
-		String   actualJson = "{\"amount\":10.0,\"id\":10}";
+    @Test
+    void objectToStringSample() throws Exception {
+        Transaction p = new Transaction(10, 1, BigDecimal.valueOf(10.00), null, Currency.EUR);
+        p.setDescription("Txn Description value");
 
-		JsonNode expectedNode = objectMapper.readTree(expectedJson);
-		JsonNode actualNode = objectMapper.readTree(actualJson);
+        String jsonString = objectMapper.writeValueAsString(p);
+        assertNotNull(jsonString);
+        System.out.println(jsonString);
+    }
 
-		assertEquals(expectedNode, actualNode);
-	}
+    @Test
+    void objectToStringWithDateFormatTest() throws Exception {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-	@Test
-	public void jsonNodeCompareFailTest() throws IOException {
-		String expectedJson = "{\"id\":10,\"amount\": 10.0}";
-		String actualJson   = "{\"id\":10,\"amount\": 10.1}";
+        ObjectMapperService om = new ObjectMapperService();
+        om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        om.findAndRegisterModules();
 
-		JsonNode expectedNode = objectMapper.readTree(expectedJson);
-		JsonNode actualNode = objectMapper.readTree(actualJson);
+        String json = om.writeValueAsString(new Person()
+                .setId(100)
+                .setName("name")
+                .setDateOfBirth(df.parse("01.12.1978 13:00:01"))
+                .setSalary(BigDecimal.valueOf(100))
+                .setTimestamp(LocalDateTime.parse("2023-02-14T12:01:02"))
+        );
+        System.out.println(json);
 
-		assertNotEquals(expectedNode, actualNode);
-	}
+    }
 
-	@Test
-	public void createJsonObjectOnFly() throws IOException {
+    @Test
+    void stringToObjectSample() throws Exception {
+        String json = "{\r\n" +
+                "  \"id\" : 10,\r\n" +
+                "  \"amount\" : 10.0,\r\n" +
+                "  \"currency\" : \"EUR\",\r\n" +
+                "\"Txn description\" : \"Txn Description value\"" +
+                "}";
 
-		ObjectNode personObject = objectMapper.createObjectNode();
-		personObject.put("name", "Name.Value");
-		personObject.put("surname", "Surname.Value");
+        Transaction txn = objectMapper.readValue(json, Transaction.class);
+        assertNotNull(txn);
 
-		personObject.set("value", new TextNode("Text.Value"));
+        System.out.println(txn);
+    }
 
-		JsonNode nameField = personObject.get("name");
-		System.out.println(nameField.asText());
+    @Test
+    void requiredFieldTest() throws Exception {
+        String json = "{\r\n" +
+                "  \"id\" : 10,\r\n" +
+                "  \"amount\" : 10.0,\r\n" +
+                "  \"currency\": null" +
+                "}";
 
-		assertTrue(personObject.has("surname"));
+        Transaction txn = objectMapper.readValue(json, Transaction.class);
+        assertNotNull(txn);
 
-		ObjectNode rootNode = objectMapper.createObjectNode();
-		rootNode.set("person", personObject);
+        System.out.println(txn);
+    }
 
-		System.out.println(rootNode);
+    @Test
+    void jsonNodeCompareSuccessTest() throws IOException {
+        String expectedJson = "{\"id\":10,\"amount\":10.0}";
+        String actualJson = "{\"amount\":10.0,\"id\":10}";
 
-		JsonNode expectedNode = objectMapper.readTree("{\"person\":{\"name\":\"Name.Value\",\"surname\":\"Surname.Value\",\"value\":\"Text.Value\"}}");
-		assertEquals(expectedNode, rootNode);
+        JsonNode expectedNode = objectMapper.readTree(expectedJson);
+        JsonNode actualNode = objectMapper.readTree(actualJson);
 
-		JsonNode person = expectedNode.get("person");
+        assertEquals(expectedNode, actualNode);
+    }
 
-		String name = person.get("name").asText();
-		System.out.println(name);
+    @Test
+    void jsonNodeCompareFailTest() throws IOException {
+        String expectedJson = "{\"id\":10,\"amount\": 10.0}";
+        String actualJson = "{\"id\":10,\"amount\": 10.1}";
 
-		String notExistingFieldValue = Optional.ofNullable(person.get("notExistingField")).map(JsonNode::asText).orElse(null);
-		assertNull(notExistingFieldValue);
-		assertFalse(person.has("notExistingField"));
-	}
+        JsonNode expectedNode = objectMapper.readTree(expectedJson);
+        JsonNode actualNode = objectMapper.readTree(actualJson);
 
+        assertNotEquals(expectedNode, actualNode);
+    }
+
+    @Test
+    void createJsonObjectOnFly() throws IOException {
+
+        ObjectNode personObject = objectMapper.createObjectNode();
+        personObject.put("name", "Name.Value");
+        personObject.put("surname", "Surname.Value");
+
+        personObject.set("value", new TextNode("Text.Value"));
+
+        JsonNode nameField = personObject.get("name");
+        System.out.println(nameField.asText());
+
+        assertTrue(personObject.has("surname"));
+
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        rootNode.set("person", personObject);
+
+        System.out.println(rootNode);
+
+        JsonNode expectedNode = objectMapper.readTree("{\"person\":{\"name\":\"Name.Value\",\"surname\":\"Surname.Value\",\"value\":\"Text.Value\"}}");
+        assertEquals(expectedNode, rootNode);
+
+        JsonNode person = expectedNode.get("person");
+
+        String name = person.get("name").asText();
+        System.out.println(name);
+
+        String notExistingFieldValue = Optional.ofNullable(person.get("notExistingField")).map(JsonNode::asText).orElse(null);
+        assertNull(notExistingFieldValue);
+        assertFalse(person.has("notExistingField"));
+    }
 
 
 }

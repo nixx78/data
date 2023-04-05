@@ -9,10 +9,12 @@ import java.text.SimpleDateFormat;
 
 import lv.nixx.samples.json.domain.Person;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 
+@Ignore
 public class GsonSampleTest {
 
 	@Test

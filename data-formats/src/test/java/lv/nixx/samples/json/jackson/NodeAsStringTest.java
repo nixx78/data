@@ -56,7 +56,7 @@ class NodeAsStringTest {
 
         assertAll(
                 () -> assertEquals("Field1.Value", dsr.field1),
-                () -> assertEquals("{\"id\":1,\"name\":\"Name1\",\"dateOfBirth\":null,\"salary\":null}", dsr.payload)
+                () -> assertEquals("{\"id\":1,\"name\":\"Name1\",\"dateOfBirth\":null,\"timestamp\":null,\"salary\":null}", dsr.payload)
         );
 
     }

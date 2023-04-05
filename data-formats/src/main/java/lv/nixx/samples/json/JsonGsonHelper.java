@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class JsonGsonHelper {
@@ -41,12 +43,16 @@ public class JsonGsonHelper {
             }
         };
 
-
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Date.class, deser);
         gsonBuilder.registerTypeAdapter(Date.class, ser);
+
         gsonBuilder.registerTypeAdapter(BigDecimal.class, bigDecimalSer);
         gsonBuilder.registerTypeAdapter(BigDecimal.class, bigDecimalDeser);
+
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->
+                ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString()).toLocalDateTime()).create();
+
         return gsonBuilder.create();
     }
 
