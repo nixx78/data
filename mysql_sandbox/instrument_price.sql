@@ -21,20 +21,19 @@ insert into instrument (id, name) values
  (2, 'instr2'),
  (3, 'instr3');
  
- select * from instrument;
- 
 insert into instrument_price(instrument_id, price, date_time) values
 	(1, 100.01, '2023-05-15 11:04:11'),
 	(1, 100.12, '2023-05-15 11:00:00'),
-	(1, 100.13, '2023-05-12 10:00:00'),
+	(1, 100.13, '2023-05-17 10:00:00'),
 	(2, 10.00, '2023-05-15 10:00:00'),
-	(2, 15.00, '2023-05-15 09:00:00');
+	(2, 15.00, '2023-05-15 09:00:00')
 
-
+-- Цена с максимальной датой для каждого инструмента c фильтром по дате
 select i.id, i.name, p.price, p.date_time from instrument i
 LEFT JOIN (SELECT id, instrument_id, price, date_time, ROW_NUMBER()
  OVER (PARTITION BY instrument_id ORDER BY date_time DESC) AS RowNum 
- FROM instrument_price) p
+ FROM instrument_price
+ WHERE DATE(date_time) = '2023-05-15') p
 ON i.id = p.instrument_id
-WHERE RowNum = 1;
+WHERE RowNum = 1 OR RowNum IS NULL;
  
