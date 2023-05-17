@@ -36,4 +36,15 @@ LEFT JOIN (SELECT id, instrument_id, price, date_time, ROW_NUMBER()
  WHERE DATE(date_time) = '2023-05-15') p
 ON i.id = p.instrument_id
 WHERE RowNum = 1 OR RowNum IS NULL;
- 
+
+-- Еще один способ как можно получить данные, JOIN таблицы с самой собой
+select i.id, i.name, p.price, p.date_time from instrument i
+LEFT JOIN (SELECT e.*
+FROM instrument_price e
+JOIN (
+    SELECT instrument_id, MAX(date_time) AS maxDate
+    FROM instrument_price
+    WHERE DATE(date_time) = '2023-05-15'
+    GROUP BY instrument_id
+) t ON e.instrument_id = t.instrument_id AND e.date_time = t.maxDate
+) p ON i.id = p.instrument_id;
