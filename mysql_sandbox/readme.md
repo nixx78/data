@@ -1,6 +1,4 @@
-## DB песочница 
-* База данных c набором таблиц
+Проект с примером соединения с MySQL (docker)  
+Для получения данных используется CommandLineRunner
 
-Запуск Docker c базой данных: docker-compose up -d
-Остановка Docker: docker-compose down
-Остановка Docker и удаление данных из Volume: docker-compose down -v 
+Директория docker - запуск контейнера и файлы для создания schema и примеры различных SQL запросов

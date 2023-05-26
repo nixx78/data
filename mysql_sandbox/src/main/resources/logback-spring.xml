@@ -1,0 +1,35 @@
+<configuration scan="true">
+
+	<property name="LOG_DIR" value="./logs" />
+	<property name="PATTERN"  value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %level %logger{0} - %msg%n" />
+
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FileMain"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/mysql_sandbox.log</file>
+		<encoder>
+			<pattern>${PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_DIR}//sample.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="Console" />
+		<appender-ref ref="FileMain" />
+	</root>
+
+
+
+</configuration>
