@@ -61,6 +61,7 @@ public class CustomerAddressUsageTest {
 
 		customerPrinter.print();
 		addressPrinter.print();
+		System.out.println("======= Initial data in tables =======");
 
 		em.getTransaction().begin();
 
@@ -77,7 +78,7 @@ public class CustomerAddressUsageTest {
 		// Persist не нужен, объект у нас уже в контексте
 		em.getTransaction().commit();
 
-		System.out.println("Data in tables after update:");
+		System.out.println("======= Data in tables after update: =======");
 
 		customerPrinter.print();
 		addressPrinter.print();
