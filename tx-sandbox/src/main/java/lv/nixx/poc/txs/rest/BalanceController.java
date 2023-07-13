@@ -1,7 +1,7 @@
 package lv.nixx.poc.txs.rest;
 
-import lv.nixx.poc.txs.TransactionSandboxService;
 import lv.nixx.poc.txs.AppException;
+import lv.nixx.poc.txs.TransactionSandboxService;
 import lv.nixx.poc.txs.model.Container;
 import lv.nixx.poc.txs.model.Statistic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BalanceController {
 
+    private final TransactionSandboxService transactionSandboxService;
+
     @Autowired
-    private TransactionSandboxService transactionSandboxService;
+    public BalanceController(TransactionSandboxService transactionSandboxService) {
+        this.transactionSandboxService = transactionSandboxService;
+    }
 
     @PostMapping("/bulk")
     public Statistic saveAllInTransaction(@RequestBody Container c) {

@@ -1,10 +1,10 @@
 package lv.nixx.poc.txs;
 
+import lv.nixx.poc.txs.model.Container;
+import lv.nixx.poc.txs.orm.AccountBalance;
+import lv.nixx.poc.txs.orm.Transaction;
 import lv.nixx.poc.txs.repo.BalanceRepository;
 import lv.nixx.poc.txs.repo.TransactionRepository;
-import lv.nixx.poc.txs.orm.AccountBalance;
-import lv.nixx.poc.txs.model.Container;
-import lv.nixx.poc.txs.orm.Transaction;
 import lv.nixx.poc.txs.service.BalanceServiceWithRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

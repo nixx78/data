@@ -16,13 +16,13 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "ACCOUNT_ID", nullable = false)
     private String accountId;
 
     @Column(name = "DATE")
     private Date date;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "AMOUNT", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "DESCRIPTION")
