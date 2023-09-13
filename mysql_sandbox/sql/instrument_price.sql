@@ -1,16 +1,18 @@
+
 CREATE TABLE IF NOT EXISTS instrument(
     id INT PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS instrument_price(
+CREATE TABLE IF NOT EXISTS instrument_price (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    instrument_id int,
-    date_time timestamp,
-  	price numeric(10,3),
+    instrument_id INT,
+    date_time TIMESTAMP,
+    price NUMERIC(10 , 3 ),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (instrument_id) REFERENCES instrument(id)
+    FOREIGN KEY (instrument_id)
+        REFERENCES instrument (id)
 );
 
 delete from instrument_price where id!=0;
@@ -22,11 +24,13 @@ insert into instrument (id, name) values
  (3, 'instr3');
  
 insert into instrument_price(instrument_id, price, date_time) values
+	(1, 100.13, '2023-05-17 10:00:00'),
 	(1, 100.01, '2023-05-15 11:04:11'),
 	(1, 100.12, '2023-05-15 11:00:00'),
-	(1, 100.13, '2023-05-17 10:00:00'),
+	(1, 99.90, '2023-05-15 10:00:00'),
 	(2, 10.00, '2023-05-15 10:00:00'),
-	(2, 15.00, '2023-05-15 09:00:00')
+	(2, 15.00, '2023-05-15 09:00:00'),
+	(2, 14.00, '2023-05-15 08:00:00');
 
 -- Цена с максимальной датой для каждого инструмента c фильтром по дате
 select i.id, i.name, p.price, p.date_time from instrument i
@@ -48,3 +52,18 @@ JOIN (
     GROUP BY instrument_id
 ) t ON e.instrument_id = t.instrument_id AND e.date_time = t.maxDate
 ) p ON i.id = p.instrument_id;
+
+-- Получить текущую и предыдущую цену для каждого инстремента
+WITH InstrumentData AS (
+SELECT id, instrument_id, price, date_time, ROW_NUMBER()
+ OVER (PARTITION BY instrument_id ORDER BY date_time DESC) AS RowNum 
+ FROM instrument_price
+) 
+SELECT i.name, curr.price AS Current,  curr.date_time AS CurrDateTime, prev.price AS Prev, prev.date_time AS PrevDateTime FROM instrument i
+ LEFT JOIN InstrumentData curr ON  i.id = curr.instrument_id AND curr.RowNum= 1
+ LEFT JOIN InstrumentData prev ON  i.id = prev.instrument_id AND prev.RowNum= 2
+ WHERE curr.price IS NOT NULL;
+
+
+
+

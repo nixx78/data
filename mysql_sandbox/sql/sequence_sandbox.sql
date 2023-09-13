@@ -14,11 +14,11 @@ WHERE
 
 INSERT INTO table_with_grouped_data (instrumentID, state, nvalue, date_time) VALUES
  (1, 'SUCCESS', 1.10, '2023-09-06 12:00:00'),
- (1, 'SUCCESS', 1.100, '2023-09-06 11:59:00'),
- (1, 'FAIL',	1.10, '2023-09-06 11:58:00'),
- (1, 'FAIL',	2.00, '2023-09-06 11:57:00'),
- (1, 'SUCCESS', 3.00, '2023-09-06 11:56:00'),
- (1, 'SUCCESS', 1.10, '2023-09-06 11:55:00'),
+ (1, 'SUCCESS', 1.100, '2023-09-05 11:59:00'),
+ (1, 'FAIL',	1.10, '2023-09-03 11:58:00'),
+ (1, 'FAIL',	2.00, '2023-09-02 11:57:00'),
+ (1, 'SUCCESS', 3.00, '2023-09-01 11:56:00'),
+ (1, 'SUCCESS', 1.10, '2023-09-01 11:55:00'),
  
  (2, 'FAIL', 	1.00, '2023-09-06 12:00:00'),
  (2, 'FAIL', 	1.00, '2023-09-06 11:59:00'),
@@ -65,26 +65,18 @@ WITH RankedData AS (
 	FROM table_with_grouped_data t
 	ORDER BY  instrumentID, date_time desc
 )
-SELECT instrumentID, count(*) as LastSequenceSize_ByState
-from RankedData
-where concat(instrumentID, "_", seqId) IN (
-	SELECT concat(instrumentID, "_", MIN(seqId)) as ID from RankedData
-	GROUP BY instrumentID
-    )
+SELECT r.instrumentID, count(*) AS LastSequenceSize_ByValue
+FROM RankedData r
+WHERE r.seqId=0
 GROUP BY instrumentID;
- 
 
 -- Получаем длину последовательности по nvalue
 WITH RankedData AS (
 	SELECT	*,
 	ROW_NUMBER() OVER (PARTITION BY instrumentID ORDER BY date_time desc) - ROW_NUMBER() OVER (PARTITION BY instrumentID, nvalue ORDER BY date_time desc) AS seqId
 	FROM table_with_grouped_data t
-	ORDER BY  instrumentID, date_time desc
 ) 
-SELECT instrumentID, count(*) AS LastSequenceSize_ByValue
-FROM RankedData
-WHERE concat(instrumentID, "_", seqId) IN (
-	SELECT concat(instrumentID, "_", MIN(seqId)) AS ID FROM RankedData
-	GROUP BY instrumentID
-    )
+SELECT r.instrumentID, count(*) AS LastSequenceSize_ByValue
+FROM RankedData r
+WHERE r.seqId=0
 GROUP BY instrumentID;
