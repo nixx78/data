@@ -59,9 +59,22 @@ public class CustomerWithEmbeddedAddressTest {
                 .secondAddress(new AddressEmbeddable("2_second_Line1", "2_second_Line2"))
                 .build();
 
+        // В этом случае, объект AddressEmbeddable будет null
+        CustomerWithEmbeddedAddress c3 = CustomerWithEmbeddedAddress.builder()
+                .firstAddress(null)
+                .secondAddress(null)
+                .build();
+
+        CustomerWithEmbeddedAddress c4 = CustomerWithEmbeddedAddress.builder()
+                .firstAddress(new AddressEmbeddable("4_first_Line1", "4_first_Line2"))
+                .build();
+
 
         em.persist(c1);
         em.persist(c2);
+        em.persist(c3);
+        em.persist(c4);
+
 
         em.getTransaction().commit();
 

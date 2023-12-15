@@ -40,7 +40,9 @@
     <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
     <logger name="org.apache.derby.iapi.error.StandardException" level="error"/>
 
-    <!--
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="WARN"/>
+
+   <!--
       <logger name="javax.xml" level="ERROR"/>
       <logger name="org.springframework" level="ERROR"/>
      -->

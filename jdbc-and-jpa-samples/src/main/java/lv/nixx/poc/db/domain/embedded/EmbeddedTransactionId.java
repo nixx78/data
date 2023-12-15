@@ -1,4 +1,4 @@
-package lv.nixx.poc.db.domain.txn;
+package lv.nixx.poc.db.domain.embedded;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

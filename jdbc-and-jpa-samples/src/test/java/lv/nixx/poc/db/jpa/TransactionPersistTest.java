@@ -1,9 +1,7 @@
 package lv.nixx.poc.db.jpa;
 
 import lv.nixx.poc.db.TablePrinter;
-import lv.nixx.poc.db.domain.txn.EmbeddedTransactionId;
 import lv.nixx.poc.db.domain.txn.TransactionId;
-import lv.nixx.poc.db.domain.txn.TransactionWithEmbeddedId;
 import lv.nixx.poc.db.domain.txn.TransactionWithIdClass;
 import org.junit.jupiter.api.Test;
 
@@ -17,38 +15,10 @@ public class TransactionPersistTest {
 
     private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("test.unit");
 
-    private final TablePrinter txnPrinter = new TablePrinter("TXN_TABLE");
     private final TablePrinter txnIdTablePrinter = new TablePrinter("TXN_ID_CLASS_TABLE");
 
     @Test
-    public void embeddableIdTest() {
-
-        TransactionWithEmbeddedId txn1 = new TransactionWithEmbeddedId();
-        txn1.setTransactionId(new EmbeddedTransactionId("key1", 10L, false));
-        txn1.setData("Data1");
-
-        TransactionWithEmbeddedId txn2 = new TransactionWithEmbeddedId();
-        txn2.setTransactionId(new EmbeddedTransactionId("key2", 20L, true));
-        txn2.setData("Data2");
-
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-
-        em.persist(txn1);
-        em.persist(txn2);
-
-        em.getTransaction().commit();
-
-        System.out.println("========================");
-        txnPrinter.print();
-        System.out.println("========================");
-
-        TransactionWithEmbeddedId actualTxn = em.find(TransactionWithEmbeddedId.class, new EmbeddedTransactionId("key2", 20L, true));
-        assertNotNull(actualTxn);
-    }
-
-    @Test
-    public void idClassSampleTest() throws Exception {
+    public void idClassSampleTest() {
 
         TransactionWithIdClass txn1 = new TransactionWithIdClass();
         txn1.setKey1("Key1");
