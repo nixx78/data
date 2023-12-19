@@ -39,6 +39,16 @@ public class TransactionWithEmbeddedIdTest {
 
         TransactionWithEmbeddedId actualTxn = em.find(TransactionWithEmbeddedId.class, new EmbeddedTransactionId("key2", 20L, true));
         assertNotNull(actualTxn);
+
+
+        actualTxn.setData("Data2.Updated");
+
+        em.getTransaction().begin();
+        em.merge(actualTxn);
+        em.getTransaction().commit();
+
+        System.out.println("Table content after update");
+        txnPrinter.print();
     }
 
 }
