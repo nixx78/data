@@ -12,19 +12,21 @@ public class ReaderSample {
 
     private final String csv = "Name,Surname, Age, Comments\n" +
             "John, Rambo, 35, N/A\n" +
-            "Jack,,45,Comment \"Inside quotes\" line\n"+
-            ",,,,,,\n"+
+            "Jack,,45,Comment \"Inside quotes\" line\n" +
+            ",,,,,,\n" +
             "Pamela,Anderson,45,\"Coma , inside quotes\"";
 
     @Test
     public void fileReadSample() throws IOException {
 
-        Iterable<CSVRecord> records = CSVFormat.RFC4180
-                .withFirstRecordAsHeader()
-                .withIgnoreSurroundingSpaces()
-                .withNullString("N/A")
-                .withNullString("")
-                .parse(new FileReader("./src/test/resources/sample.csv"));
+        CSVFormat csvFormat = CSVFormat.RFC4180.builder()
+                .setSkipHeaderRecord(true)
+                .setHeader()
+                .setSkipHeaderRecord(true)
+                .setNullString("N/A")
+                .build();
+
+        Iterable<CSVRecord> records = csvFormat.parse(new FileReader("./src/test/resources/sample.csv"));
 
         for (CSVRecord record : records) {
             String f1 = record.get("Name");
@@ -37,13 +39,17 @@ public class ReaderSample {
 
     @Test
     public void readCSVWithEmptyLine() throws IOException {
-        Iterable<CSVRecord> records = CSVFormat.RFC4180
-                .withFirstRecordAsHeader()
-                .withIgnoreSurroundingSpaces()
-                .withNullString("N/A")
-                .withNullString("")
-                .withIgnoreEmptyLines()
-                .parse(new StringReader(csv));
+
+        CSVFormat csvFormat = CSVFormat.RFC4180.builder()
+                .setSkipHeaderRecord(true)
+                .setHeader()
+                .setIgnoreEmptyLines(true)
+                .setIgnoreSurroundingSpaces(true)
+                .setSkipHeaderRecord(true)
+                .setNullString("N/A")
+                .build();
+
+        Iterable<CSVRecord> records = csvFormat.parse(new StringReader(csv));
 
         for (CSVRecord record : records) {
             String f1 = record.get("Name");
@@ -56,13 +62,17 @@ public class ReaderSample {
 
     @Test
     public void readCSVHeaderMap() throws IOException {
-        Iterable<CSVRecord> records = CSVFormat.RFC4180
-                .withHeader(Headers.class)
-                .withFirstRecordAsHeader()
-                .withNullString("")
-                .withIgnoreSurroundingSpaces()
 
-                .parse(new StringReader(csv));
+        CSVFormat csvFormat = CSVFormat.RFC4180.builder()
+                .setSkipHeaderRecord(true)
+                .setHeader(Headers.class)
+                .setIgnoreSurroundingSpaces(true)
+                .setIgnoreEmptyLines(true)
+                .setSkipHeaderRecord(true)
+                .setNullString("")
+                .build();
+
+        Iterable<CSVRecord> records = csvFormat.parse(new StringReader(csv));
 
         for (CSVRecord record : records) {
             String f1 = record.get(Headers.Name);
@@ -78,8 +88,6 @@ public class ReaderSample {
     enum Headers {
         Name, Surname, Age, Comments
     }
-
-
 
 
 }
