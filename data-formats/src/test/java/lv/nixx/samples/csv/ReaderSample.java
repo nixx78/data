@@ -22,7 +22,6 @@ public class ReaderSample {
         CSVFormat csvFormat = CSVFormat.RFC4180.builder()
                 .setSkipHeaderRecord(true)
                 .setHeader()
-                .setSkipHeaderRecord(true)
                 .setNullString("N/A")
                 .build();
 
