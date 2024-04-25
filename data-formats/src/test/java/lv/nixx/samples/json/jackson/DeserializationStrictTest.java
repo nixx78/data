@@ -26,7 +26,7 @@ public class DeserializationStrictTest {
         );
 
         assertEquals("Missing required creator property 'firstField' (index 0)\n" +
-                " at [Source: (String)\"{\"x\":\"value\"}\"; line: 1, column: 13] (through reference chain: lv.nixx.samples.json.jackson.DeserializationStrictTest$Alpha[\"firstField\"])", ex.getMessage());
+                " at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 13] (through reference chain: lv.nixx.samples.json.jackson.DeserializationStrictTest$Alpha[\"firstField\"])", ex.getMessage());
     }
 
     @Getter
