@@ -18,7 +18,11 @@ public class Account {
     @Column(name = "sName")
     private String name;
 
-    public Account(String name) {
+    @Column(name = "CustomerId")
+    private Long customerId;
+
+    public Account(String name, Long customerId) {
         this.name = name;
+        this.customerId = customerId;
     }
 }

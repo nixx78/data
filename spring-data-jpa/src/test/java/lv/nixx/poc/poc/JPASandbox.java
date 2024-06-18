@@ -1,9 +1,11 @@
 package lv.nixx.poc.poc;
 
 import lv.nixx.poc.orm.Account;
+import lv.nixx.poc.orm.Customer;
 import lv.nixx.poc.orm.Transaction;
 import lv.nixx.poc.orm.TransactionType;
 import lv.nixx.poc.repository.AccountRepository;
+import lv.nixx.poc.repository.CustomerRepository;
 import lv.nixx.poc.repository.TransactionRepository;
 import lv.nixx.poc.repository.TypeRepository;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -31,12 +34,17 @@ class JPASandbox {
     @Autowired
     private TypeRepository typeRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Test
     void test() {
 
+        Customer cust1 = customerRepository.save(new Customer("Name1", "Surname1", LocalDate.parse("1978-06-12")));
+
         Map<String, Account> byAccountName = accountRepository.saveAll(List.of(
-                        new Account("account1"),
-                        new Account("account2")
+                        new Account("account1", cust1.getId()),
+                        new Account("account2", cust1.getId())
                 ))
                 .stream()
                 .collect(toMap(Account::getName, Function.identity()));
@@ -74,8 +82,12 @@ class JPASandbox {
         System.out.println(transactionRepository.findAll());
 
         Collection<Transaction> latestTransaction = transactionRepository.getLatestTransaction();
-
         latestTransaction.forEach(System.out::println);
+
+        System.out.println("----------------------");
+
+        Collection<Customer> allCustomers = customerRepository.findAll();
+        allCustomers.forEach(System.out::println);
     }
 
 
