@@ -31,13 +31,21 @@ public class Transaction {
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "accountId", referencedColumnName = "id")
-    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "accountId", referencedColumnName = "id", nullable = false, updatable = false)
     private Account account;
 
     @ManyToOne
     @JoinColumn(name = "typeId", referencedColumnName = "id")
-    @Fetch(FetchMode.JOIN)
     private TransactionType type;
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", timestamp=" + timestamp +
+                ", account=" + account == null ? null : account.getName() +
+                ", type=" + type +
+                '}';
+    }
 }

@@ -2,12 +2,16 @@ package lv.nixx.poc.orm;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "ACCOUNT_TBL")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Account {
 
     @Id
@@ -18,11 +22,21 @@ public class Account {
     @Column(name = "sName")
     private String name;
 
-    @Column(name = "CustomerId")
-    private Long customerId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customerId", referencedColumnName = "id", updatable = false, nullable = false)
+    private Customer customer;
 
-    public Account(String name, Long customerId) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "typeId", referencedColumnName = "id")
+    private AccountType type;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "accountId", referencedColumnName = "id", updatable = false)
+    private Set<Transaction> transactions;
+
+    public Account(String name, Customer customer, AccountType type) {
         this.name = name;
-        this.customerId = customerId;
+        this.customer = customer;
+        this.type = type;
     }
 }
