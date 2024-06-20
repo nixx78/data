@@ -30,7 +30,7 @@ public class Account {
     @JoinColumn(name = "typeId", referencedColumnName = "id")
     private AccountType type;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "accountId", referencedColumnName = "id", updatable = false)
     private Set<Transaction> transactions;
 
