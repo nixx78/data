@@ -40,7 +40,9 @@ class OptimisticLockSample {
             log.error(e.getMessage(), e);
         }
 
+
         List<EntityWithVersion> all = repository.findAll();
+        log.info("Data in table after update");
         all.forEach(t -> log.info(t.toString()));
     }
 
@@ -59,11 +61,13 @@ class OptimisticLockSample {
         @Override
         public void run() {
             try {
+                // получаем данные из таблицы
                 EntityWithVersion entity = repository.findById(id).orElseThrow(() -> new RuntimeException("Entity not found"));
                 entity.setData(newValue);
 
                 log.info("Try to update entity: {}", entity);
 
+                // перед сохранением, опять запрашиваем данные, чтобы проверить, что версия не изменилась
                 EntityWithVersion saved = repository.save(entity);
                 log.info("Entity updated to: {}", saved);
             } catch (ObjectOptimisticLockingFailureException e) {

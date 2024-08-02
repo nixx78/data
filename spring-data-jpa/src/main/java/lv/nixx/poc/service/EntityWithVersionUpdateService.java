@@ -6,8 +6,8 @@ import lv.nixx.poc.repository.EntityWithVersionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class EntityWithVersionUpdateService {
@@ -16,23 +16,20 @@ public class EntityWithVersionUpdateService {
 
     private final EntityWithVersionRepository repository;
 
-    private final TransactionTemplate template;
-
-    public EntityWithVersionUpdateService(EntityWithVersionRepository repository, PlatformTransactionManager transactionManager) {
+    public EntityWithVersionUpdateService(EntityWithVersionRepository repository) {
         this.repository = repository;
-        this.template = new TransactionTemplate(transactionManager);
     }
 
     @Transactional
     public void updateEntityWithLock(Long id, String newName) {
         try {
+            log.info("Try to lock table for id [{}]", id);
 
             EntityWithVersion entityForUpdate = repository.findByIdWithLock(id);
 
             log.info("Entity for update {}", entityForUpdate);
 
-            // !!! TimeUnit.SECONDS.sleep(2);
-
+            TimeUnit.MILLISECONDS.sleep(2000);
             // Если установить задержку, то будет ошибка, поскольку запись заблокирована другим потоком:
             // org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table "ENTITY_WITH_VERSION"; SQL statement:
             // select ewv1_0.id,ewv1_0.data,ewv1_0.version from ENTITY_WITH_VERSION ewv1_0 where ewv1_0.id=? for update [50200-224]
