@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.*;
 
+import lv.nixx.poc.db.TablePrinter;
 import org.junit.Test;
 
 import lv.nixx.poc.db.mappingsamples.tableperclass.BonusedClient;
@@ -29,7 +30,7 @@ public class TablePerClassTest {
 		entityManager.merge(new Student("Ivan", "Petrov", "This client is student", 76543210L));
 		
 		entityManager.merge(new VisaGoldClient("John", "Smith", 10L, BigDecimal.valueOf(10000)));
-		
+
 		entityManager.merge(new SalaryProjectClient("Marija", "Cury", "This client is salary project client", BigDecimal.valueOf(20000)));
 		entityManager.merge(new SalaryProjectClient("Ivan", "Ivan", "This client is salary project client", BigDecimal.valueOf(30000)));
 		entityManager.merge(new SalaryProjectClient("John", "Rembo", "This client is salary project client", BigDecimal.valueOf(40000)));

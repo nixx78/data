@@ -6,12 +6,14 @@ Swagger Endpoint: http://localhost:8080/swagger-ui/index.html
  - Сохранение / изменение связанных случаев
  - Примеры оптимизации запросов (JOIN FETCH / @EntityGraph)
  - Использование @Modifying запросов
+ - Предоставление доступа к данным через REST (Spring-Data-Rest)
+ - Использование Specification в репозитории
 
 ## Полезные ссылки
 https://spring.io/projects/spring-data-rest
 https://spring.io/projects/spring-data-jpa
 
-## Docker (DB песочница)
+## Docker (MySQL DB песочница)
 Запуск Docker c базой данных:
 - docker-compose up -d
 - Остановка Docker: docker-compose down

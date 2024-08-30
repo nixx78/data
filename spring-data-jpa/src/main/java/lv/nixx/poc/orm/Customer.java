@@ -31,6 +31,9 @@ public class Customer {
     @Column(name = "dtDateOfBirth")
     private LocalDate dateOfBirth;
 
+    @Column(name = "sType")
+    private String type;
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts = new HashSet<>();
 
@@ -48,6 +51,7 @@ public class Customer {
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", accounts=" + accounts == null ? null : accounts.stream().map(Account::getName).collect(Collectors.joining()) +
+                ", type=" + type +
                 '}';
     }
 }
