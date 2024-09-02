@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
 
-//public interface CustomerRepository extends JpaRepository<Customer, Long> {
-
     @Query("SELECT c FROM Customer c JOIN FETCH c.accounts  WHERE c.id=:id")
     Customer findCustomerWithAccounts(@Param("id") Long id);
 

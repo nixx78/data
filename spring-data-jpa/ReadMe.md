@@ -3,11 +3,12 @@
 Swagger Endpoint: http://localhost:8080/swagger-ui/index.html
 
 ## Основные случае использования 
- - Сохранение / изменение связанных случаев
+ - Сохранение / изменение связанных сущностей
  - Примеры оптимизации запросов (JOIN FETCH / @EntityGraph)
  - Использование @Modifying запросов
  - Предоставление доступа к данным через REST (Spring-Data-Rest)
  - Использование Specification в репозитории
+ - Создание Custom Repository (Criteria Builder)
 
 ## Полезные ссылки
 https://spring.io/projects/spring-data-rest

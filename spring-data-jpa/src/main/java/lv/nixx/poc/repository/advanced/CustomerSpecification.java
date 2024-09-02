@@ -1,4 +1,4 @@
-package lv.nixx.poc.repository.specification;
+package lv.nixx.poc.repository.advanced;
 
 import lv.nixx.poc.orm.Customer;
 import org.springframework.data.jpa.domain.Specification;

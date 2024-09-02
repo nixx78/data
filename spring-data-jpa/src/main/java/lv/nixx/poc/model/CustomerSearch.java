@@ -15,5 +15,4 @@ public class CustomerSearch {
         this.type = type;
     }
 
-
 }
