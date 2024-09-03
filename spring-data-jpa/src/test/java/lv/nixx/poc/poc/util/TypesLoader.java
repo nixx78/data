@@ -3,7 +3,7 @@ package lv.nixx.poc.poc.util;
 import lv.nixx.poc.orm.AccountType;
 import lv.nixx.poc.orm.TransactionType;
 import lv.nixx.poc.repository.AccountTypeRepository;
-import lv.nixx.poc.repository.TypeRepository;
+import lv.nixx.poc.repository.TransactionTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +17,16 @@ import static java.util.stream.Collectors.toMap;
 public class TypesLoader {
 
     private final AccountTypeRepository accountTypeRepository;
-    private final TypeRepository typeRepository;
+    private final TransactionTypeRepository transactionTypeRepository;
 
     private final AtomicBoolean isAlreadyLoaded = new AtomicBoolean(false);
 
     private Map<String, TransactionType> txnTypeByName;
     private Map<String, AccountType> accountTypeByName;
 
-    public TypesLoader(AccountTypeRepository accountTypeRepository, TypeRepository typeRepository) {
+    public TypesLoader(AccountTypeRepository accountTypeRepository, TransactionTypeRepository transactionTypeRepository) {
         this.accountTypeRepository = accountTypeRepository;
-        this.typeRepository = typeRepository;
+        this.transactionTypeRepository = transactionTypeRepository;
     }
 
     public void loadTypes() {
@@ -35,7 +35,7 @@ public class TypesLoader {
             return;
         }
 
-        this.txnTypeByName = typeRepository.saveAll(List.of(
+        this.txnTypeByName = transactionTypeRepository.saveAll(List.of(
                         new TransactionType("type1"),
                         new TransactionType("type2")
                 ))

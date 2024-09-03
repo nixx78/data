@@ -1,7 +1,7 @@
-insert into TRANSACTION_TYPE_TBL (id, sTypeName) VALUES
-(1, 'Type1'),
-(2, 'Type3'),
-(3, 'Type4');
+--insert into TRANSACTION_TYPE_TBL (id, sTypeName) VALUES
+-- (1, 'Type1'),
+-- (2, 'Type3'),
+-- (3, 'Type4');
 
 insert into CUSTOMER_TBL(id, sName, sSurname, dtDateOfBirth, sType) VALUES
 (1, 'Name1', 'Surname1', '1990-01-02', 'Simple'),

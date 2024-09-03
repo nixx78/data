@@ -3,17 +3,13 @@ package lv.nixx.poc.orm;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import lv.nixx.poc.repository.useraware.UserAware;
 
 @Entity
 @Table(name = "TRANSACTION_TYPE_TBL")
 @Data
 @NoArgsConstructor
-public class TransactionType {
+public class TransactionType implements UserAware {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +19,11 @@ public class TransactionType {
     @Column(name = "sTypeName")
     private String typeName;
 
+    @Column(name = "sUser")
+    private String user;
+
     public TransactionType(String typeName) {
         this.typeName = typeName;
     }
+
 }
