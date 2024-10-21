@@ -10,7 +10,8 @@ Swagger Endpoint: http://localhost:8080/swagger-ui/index.html
  - Использование @Modifying запросов
  - Предоставление доступа к данным через REST (Spring-Data-Rest)
  - Использование Specification в репозитории
-
+ - Использование Projection в репозитории
+ 
 ### Custom Repository
 * Создание запроса используя Criteria Builder
 Создание запроса к базе на основе полей, которые приходят в запросе с UI
