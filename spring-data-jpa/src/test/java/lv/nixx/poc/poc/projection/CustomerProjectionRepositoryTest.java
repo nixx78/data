@@ -7,9 +7,12 @@ import lv.nixx.poc.repository.projection.CustomerProjectionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class CustomerProjectionRepositoryTest extends BaseTest {
 
@@ -27,20 +30,21 @@ class CustomerProjectionRepositoryTest extends BaseTest {
                 new Customer()
                         .setName("Name2")
                         .setSurname("Surname2")
-                        .setType("Type1")
+                        .setType("Type2")
         ));
 
-        List<CustomerProjection> customersAsProjections = customerProjectionRepository.findAllCustomersAsProjection();
+        Collection<CustomerProjection> customersAsProjections = customerProjectionRepository.findAllCustomersAsProjection()
+                .stream()
+                .sorted(Comparator.comparingLong(CustomerProjection::getId))
+                .toList();
 
-        CustomerProjection firstCustomer = customersAsProjections.get(0);
+        assertThat(customersAsProjections)
+                .extracting(CustomerProjection::getNameSurname, CustomerProjection::getType)
+                .containsExactly(
+                        tuple("Name1 Surname1", "Type1"),
+                        tuple("Name2 Surname2", "Type2")
+                );
 
-        assertAll(
-                () -> assertEquals(2, customersAsProjections.size()),
-                () -> assertAll(
-                        () -> assertNotNull(firstCustomer.getId()),
-                        () -> assertEquals("Name1 Surname1", firstCustomer.getNameSurname())
-                )
-        );
     }
 
 }

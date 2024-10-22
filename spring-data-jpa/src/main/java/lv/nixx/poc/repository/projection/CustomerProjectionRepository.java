@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Collection;
 
 /*
 Использование представлений (Projection) позволяет избежать использования DTO.
@@ -20,7 +20,8 @@ import java.util.List;
 @Repository
 public interface CustomerProjectionRepository extends JpaRepository<Customer, Long> {
 
-    @Query("Select c.id as id, CONCAT(c.name, ' ', c.surname) AS nameSurname from Customer c order by c.id")
-    List<CustomerProjection> findAllCustomersAsProjection();
+    @Query("Select c.id as id, CONCAT(c.name, ' ', c.surname) AS nameSurname, type as type" +
+            " from Customer c")
+    Collection<CustomerProjection> findAllCustomersAsProjection();
 
 }
