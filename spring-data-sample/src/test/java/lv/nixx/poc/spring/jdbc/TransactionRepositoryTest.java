@@ -1,6 +1,7 @@
 package lv.nixx.poc.spring.jdbc;
 
 import lv.nixx.poc.spring.jdbc.model.Transaction;
+import lv.nixx.poc.spring.jdbc.model.TransactionDTO;
 import lv.nixx.poc.spring.jdbc.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -97,6 +99,15 @@ class TransactionRepositoryTest {
 
         transactionRepository.deleteAllById(List.of(anotherTxnId));
         assertFalse(transactionRepository.existsById(anotherTxnId));
+
+        Collection<TransactionDTO> usingBeanRowMapper = transactionDao.getUsingBeanRowMapper();
+
+        assertThat(usingBeanRowMapper)
+                .usingRecursiveComparison()
+                .isEqualTo(List.of(
+                        new TransactionDTO(1L, "accountId"),
+                        new TransactionDTO(2L, "AnotherAccountId")
+                ));
     }
 
 }

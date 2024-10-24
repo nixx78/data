@@ -1,8 +1,9 @@
 package lv.nixx.poc.spring.jdbc;
 
 import lv.nixx.poc.spring.jdbc.model.Transaction;
-import lv.nixx.poc.spring.jdbc.repository.TransactionRepository;
+import lv.nixx.poc.spring.jdbc.model.TransactionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -16,20 +17,19 @@ import java.util.Collection;
 public class TransactionDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public TransactionDao(JdbcTemplate jdbcTemplate, TransactionRepository transactionRepository) {
+    public TransactionDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.transactionRepository = transactionRepository;
     }
 
-    public Transaction save(Transaction txn) {
-        return transactionRepository.save(txn);
-    }
 
     public Collection<Transaction> getAllTransactions() {
         return jdbcTemplate.query("select * from TRANSACTION_TBL", new TransactionMapper());
+    }
+
+    public Collection<TransactionDTO> getUsingBeanRowMapper() {
+        return jdbcTemplate.query("select ID as id, ACCOUNT_ID as accountId from TRANSACTION_TBL", new BeanPropertyRowMapper<>(TransactionDTO.class));
     }
 
     static class TransactionMapper implements RowMapper<Transaction> {
