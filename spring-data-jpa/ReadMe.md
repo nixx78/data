@@ -2,6 +2,16 @@
 
 Swagger Endpoint: http://localhost:8080/swagger-ui/index.html
 
+## База данных
+### Live
+В live среде используется MySQL (образ из /db/docker/)
+Для создания таблиц необходимо запустить приложение с параметром:
+spring.jpa.hibernate.ddl-auto=**create**  
+После этого, параметр можно заменить на **validate**  
+Скрипты с данными находятся в файле: data.sql, запускать можно через MySqlWorkbench
+### Unit test
+В тестовой среде используется Embedded H2. Cхема создается в файле schema.sql, таблицы создаются автоматически - Hibernate
+
 ## Случаи использования 
 
 ### Основные
@@ -26,4 +36,9 @@ https://spring.io/projects/spring-data-jpa
 Запуск Docker c базой данных:
 - docker-compose up -d
 - Остановка Docker: docker-compose down
-- Остановка Docker и удаление данных из Volume: docker-compose down -v 
+- Остановка Docker и удаление данных из Volume: docker-compose down -v
+
+## ToDo
+* Переделать домен на Task Manager?, более приближенных к жизни ?
+* Проект переименовать в TaskManager ?
+* Установить схемы для всех таблиц

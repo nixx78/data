@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS customer_tbl(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    sName VARCHAR(20) NOT NULL,
-    sSurname VARCHAR(20) NOT NULL,
-    dtDateOfBirth DATE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-

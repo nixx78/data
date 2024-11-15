@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Entity
-@Table(name = "ACCOUNT_TBL")
+@Table(schema = "db_sandbox", name = "ACCOUNT_TBL")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
