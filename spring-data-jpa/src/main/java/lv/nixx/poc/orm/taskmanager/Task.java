@@ -2,6 +2,7 @@ package lv.nixx.poc.orm.taskmanager;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "TASK")
+@EqualsAndHashCode(of = "taskId")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
