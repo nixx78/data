@@ -80,7 +80,4 @@ public class TransactionSandboxService {
 
     }
 
-    //TODO Add Transaction inside transaction sample Transactional.TxType.REQUIRES_NEW
-
-
 }
