@@ -11,7 +11,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.Collection;
 
 @Transactional
-@RepositoryRestResource(exported = false)
+@RepositoryRestResource
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     @Query(value = "SELECT t.* FROM TRANSACTION_TBL t JOIN (SELECT accountId, MAX(dtTimestamp) as maxTimestamp FROM " +

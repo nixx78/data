@@ -1,8 +1,9 @@
+name: db-sandbox
 services:
   db:
     image: mysql:8.0
     restart: always
-    container_name: spring-jpa-db-db-sandbox
+    container_name: db
     environment:
       MYSQL_DATABASE: db_sandbox
       MYSQL_USER: user
