@@ -37,8 +37,3 @@ https://spring.io/projects/spring-data-jpa
 - docker-compose up -d
 - Остановка Docker: docker-compose down
 - Остановка Docker и удаление данных из Volume: docker-compose down -v
-
-## ToDo
-* Переделать домен на Task Manager?, более приближенных к жизни ?
-* Проект переименовать в TaskManager ?
-* Установить схемы для всех таблиц
