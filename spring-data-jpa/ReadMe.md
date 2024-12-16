@@ -28,7 +28,7 @@ spring.jpa.hibernate.ddl-auto=**create**
 * Сохранение сущности при помощи специального метода  
 Показано, как можно вынести общую логику (добавление пользователя) в отдельный класс и использовать ее в нескольких репозиториях
 
-### Transaction
+### Transaction - основные случаи использования
 * Управление транзакцией при использовании EntityManager
 * Управление транзакцией при использовании Repository (@Transactional)
 * Управление транзакцией при использовании Transaction Template
@@ -43,5 +43,3 @@ https://spring.io/projects/spring-data-jpa
 - Остановка Docker: docker-compose down
 - Остановка Docker и удаление данных из Volume: docker-compose down -v
 
-# ToDo
-- Сделать тесты, для Transactional
