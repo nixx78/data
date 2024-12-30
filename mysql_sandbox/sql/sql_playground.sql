@@ -1,6 +1,18 @@
 -- Get top record with max amont
 select * from transaction order by amount desc limit 1;
 
+-- Get second largest transaction by amound
+select max(amount) from transaction where amount < (select max(amount) from transaction);
+
+-- Get second largerst amount for each date
+SELECT DATE(t1.date_time), MAX(t1.amount) AS second_max_amount
+FROM transaction t1
+WHERE t1.amount < (
+    SELECT MAX(t2.amount)
+    FROM transaction t2
+    WHERE DATE(t2.date_time) = DATE(t1.date_time)
+) GROUP BY DATE(t1.date_time);
+
 -- Get transaction statistics for each date for transaction amount more than 10
 SELECT count(id) as TxnCount, DATE(date_time) as TxnDate, SUM(amount) as Total
 FROM transaction

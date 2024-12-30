@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS customer(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS account(
+CREATE TABLE IF NOT EXISTS account(transaction
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id int,
     account_name VARCHAR(20) NOT NULL,
