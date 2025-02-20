@@ -31,11 +31,12 @@ class CustomerCustomRepositoryTest extends BaseTest {
 
     @Test
     void saveAllWithUserTest() {
-
-        customerCustomRepository.saveAllWithUser(List.of(
+        Iterable<Customer> customers = customerCustomRepository.saveAllWithUser(List.of(
                 new Customer().setName("Name.Value1").setSurname("SurnameValue1"),
                 new Customer().setName("Name.Value2").setSurname("SurnameValue2")
         ));
+
+        customers.forEach(System.out::println);
 
         assertThat(customerCustomRepository.findAll()
                 .stream()

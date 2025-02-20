@@ -54,8 +54,9 @@ public class Customer implements UserAware {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", accounts=" + accounts == null ? null : accounts.stream().map(Account::getName).collect(Collectors.joining()) +
+                ", accounts=" + (accounts == null ? null : accounts.stream().map(Account::getName).collect(Collectors.joining())) +
                 ", type=" + type +
+                ", user=" + getUser() +
                 '}';
     }
 
