@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import lv.nixx.poc.repository.useraware.UserAware;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Customer {
+public class Customer implements UserAware {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +38,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts = new HashSet<>();
 
+    @Column(name = "sUser")
+    private String user;
+
     public Customer(String name, String surname, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
@@ -53,5 +57,15 @@ public class Customer {
                 ", accounts=" + accounts == null ? null : accounts.stream().map(Account::getName).collect(Collectors.joining()) +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public String getUser() {
+        return user;
+    }
+
+    @Override
+    public void setUser(String user) {
+        this.user = user;
     }
 }

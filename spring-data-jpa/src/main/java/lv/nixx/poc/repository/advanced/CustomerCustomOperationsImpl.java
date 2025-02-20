@@ -1,12 +1,13 @@
 package lv.nixx.poc.repository.advanced;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lv.nixx.poc.orm.Customer;
+import lv.nixx.poc.repository.useraware.CustomUserAwareRepositoryImpl;
+import lv.nixx.poc.service.UserLoginProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
@@ -14,10 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Repository
-public class CustomerCustomOperationsImpl implements CustomerCustomOperations {
+public class CustomerCustomOperationsImpl extends CustomUserAwareRepositoryImpl<Customer> implements CustomerCustomOperations {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    public CustomerCustomOperationsImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
+        super(entityManager, userLoginProvider);
+    }
 
     @Override
     public Collection<Customer> findCustomersUsingCustomCondition(String name, String type) {

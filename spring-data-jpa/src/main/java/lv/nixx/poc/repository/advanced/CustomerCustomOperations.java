@@ -1,10 +1,12 @@
 package lv.nixx.poc.repository.advanced;
 
 import lv.nixx.poc.orm.Customer;
+import lv.nixx.poc.repository.useraware.CustomUserAwareRepository;
 
 import java.util.Collection;
 
-//TODO реализовать общий механизм заполнения поля пользователя (common interface UserAware)
-public interface CustomerCustomOperations {
+public interface CustomerCustomOperations extends CustomUserAwareRepository<Customer> {
+
     Collection<Customer> findCustomersUsingCustomCondition(String name, String type);
+
 }
