@@ -7,12 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class CustomUserAwareRepositoryImpl<T extends UserAware> implements CustomUserAwareRepository<T> {
+public class UserAwareOperationsImpl<T extends UserAware> implements UserAwareOperations<T> {
 
     protected final EntityManager entityManager;
     private final UserLoginProvider userLoginProvider;
 
-    public CustomUserAwareRepositoryImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
+    public UserAwareOperationsImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
         this.entityManager = entityManager;
         this.userLoginProvider = userLoginProvider;
     }
