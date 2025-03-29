@@ -23,6 +23,7 @@ spring.jpa.hibernate.ddl-auto=**create**
  - Предоставление доступа к данным через REST (Spring-Data-Rest)
  - Использование Specification в репозитории
  - Использование Projection в репозитории
+ - Использование Optimistic/Pessimistic Lock
  
 ### Custom Repository
 * Создание запроса используя Criteria Builder - запроса к базе на основание полей, которые приходят в запросе с UI
