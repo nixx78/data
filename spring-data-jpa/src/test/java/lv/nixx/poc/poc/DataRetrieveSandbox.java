@@ -83,15 +83,24 @@ class DataRetrieveSandbox {
     }
 
     @Test
-    void findAllCustomers() {
-        System.out.println("----Find all ------------------");
-        Customer c = customerRepository.findById(customer1.getId()).orElse(null);
+    void findAllNplusOneProblem() {
+        System.out.println("---- Find all N+1 problem ------------------");
+        Collection<Customer> all = customerRepository.findAll();
 
-        assertNotNull(c);
+        System.out.println("Customers count [" + all.size()+ "]");
     }
 
     @Test
-    void findAllCustomersUsingEntityGraph() {
+    void findAllUsingEntityGraphCustomers() {
+        System.out.println("----Find all using EntityGraph------------------");
+
+        Collection<Customer> all = customerRepository.findCustomersWithAccounts();
+
+        System.out.println("Customers count [" + all.size()+ "]");
+    }
+
+    @Test
+    void findCustomerUsingEntityGraph() {
         System.out.println("---- @EntityGraph ------------------");
         Customer c = customerRepository.findUsingEntityGraph(customer1.getId());
 
@@ -111,6 +120,17 @@ class DataRetrieveSandbox {
         Collection<Transaction> latestTransaction = transactionRepository.getLatestTransactionForEachCustomerAccount(customer1.getId());
 
         assertEquals(2, latestTransaction.size());
+    }
+
+    @Test
+    void findById() {
+        Long id = customer1.getId();
+        System.out.printf("Customer Id [%s]%n", id);
+        Customer c = customerRepository.findById(id).orElse(null);
+
+        assertNotNull(c);
+
+        c.getAccounts().forEach(t -> System.out.println(t.getName()));
     }
 
 
