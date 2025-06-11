@@ -9,4 +9,6 @@ public interface CustomerCustomOperations extends UserAwareOperations<Customer> 
 
     Collection<Customer> findCustomersUsingCustomCondition(String name, String type);
 
+    Collection<Customer> findCustomersByTypes(String... type);
+
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public class CustomerCustomOperationsImpl extends UserAwareOperationsImpl<Customer> implements CustomerCustomOperations {
@@ -43,6 +44,17 @@ public class CustomerCustomOperationsImpl extends UserAwareOperationsImpl<Custom
             query.select(customer);
         }
 
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Override
+    public Collection<Customer> findCustomersByTypes(String... type) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
+        Root<Customer> customer = query.from(Customer.class);
+
+        query.select(customer).where(customer.get("type").in(List.of(type)));
         return entityManager.createQuery(query).getResultList();
     }
 

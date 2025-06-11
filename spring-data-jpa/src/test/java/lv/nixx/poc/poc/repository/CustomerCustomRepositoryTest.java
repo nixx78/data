@@ -80,4 +80,38 @@ class CustomerCustomRepositoryTest extends BaseTest {
 
     }
 
+    @Test
+    void findCustomersByTypes() {
+        customerCustomRepository.saveAll(List.of(
+                new Customer()
+                        .setName("NameT1")
+                        .setType("Type1"),
+                new Customer()
+                        .setName("NameT21")
+                        .setType("Type2"),
+                new Customer()
+                        .setName("NameT22")
+                        .setType("Type2"),
+                new Customer()
+                        .setName("Name_xyz_1")
+                        .setType("Type3"),
+                new Customer()
+                        .setName("xyz_1")
+                        .setType("Type4")
+        ));
+
+        List<String> names = customerCustomRepository.findCustomersByTypes("Type1", "Type2")
+                .stream()
+                .map(Customer::getName)
+                .toList();
+
+        assertThat(names).isEqualTo(List.of("NameT1", "NameT21", "NameT22"));
+
+        assertThat(customerCustomRepository.findCustomerNamesByTypes(List.of("Type1", "Type2")))
+                .isEqualTo(List.of("NameT1", "NameT21", "NameT22"));
+
+    }
+
+
+
 }

@@ -55,4 +55,43 @@ class CustomerSpecificationTest extends BaseTest {
 
     }
 
+    @Test
+    void findByTypesUsingSpecificationTest() {
+
+        customerRepository.saveAll(List.of(
+                new Customer()
+                        .setName("NameT1")
+                        .setType("Type1"),
+                new Customer()
+                        .setName("NameT21")
+                        .setType("Type2"),
+                new Customer()
+                        .setName("NameT22")
+                        .setType("Type2"),
+                new Customer()
+                        .setName("Name_xyz_1")
+                        .setType("Type3"),
+                new Customer()
+                        .setName("xyz_1")
+                        .setType("Type4")
+        ));
+
+        List<String> names = customerRepository.findAll(typeIn("Type1", "Type2"))
+                .stream()
+                .map(Customer::getName)
+                .toList();
+
+        assertThat(names).isEqualTo(List.of("NameT1", "NameT21", "NameT22"));
+    }
+
+    private static Specification<Customer> typeIn(String... types) {
+        return (root, query, cb) -> {
+            if (types == null || types.length == 0) {
+                return cb.conjunction();
+            } else {
+                return root.get("type").in(List.of(types));
+            }
+        };
+    }
+
 }
