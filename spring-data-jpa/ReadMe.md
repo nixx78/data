@@ -1,4 +1,8 @@
-# Проект с примером использования Spring-Data-JPA & Spring-Data-Rest
+# Проект с примерами использования Spring для доступа до баз данных 
+
+* Spring-Data-JPA
+* Spring-Data-Rest
+* Spring-Data-JDBC
 
 Swagger Endpoint: http://localhost:8080/swagger-ui/index.html
 
