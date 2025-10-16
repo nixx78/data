@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NamedParameterJdbcTemplateSandbox extends BaseTest {
 
@@ -69,6 +70,10 @@ class NamedParameterJdbcTemplateSandbox extends BaseTest {
         Long totalCount = template.queryForObject("SELECT count(*) FROM CUSTOMER_TBL", Map.of(), Long.class);
 
         assertThat(totalCount).isEqualTo(5L);
+
+        List<Map<String, Object>> aggregates = template.query("SELECT sType, count(*) AS count FROM CUSTOMER_TBL GROUP BY sType", new ColumnMapRowMapper());
+
+        assertEquals(4, aggregates.size());
     }
 
 }

@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lv.nixx.poc.repository.useraware.UserAware;
+import lv.nixx.poc.repository.auditable.Auditable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Customer implements UserAware {
+public class Customer implements Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +42,9 @@ public class Customer implements UserAware {
     @Column(name = "sUser")
     private String user;
 
+    @Column(name = "dtTimestamp")
+    private LocalDateTime timestamp;
+
     public Customer(String name, String surname, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
@@ -61,12 +65,22 @@ public class Customer implements UserAware {
     }
 
     @Override
-    public String getUser() {
+    public void setUpdatedBy(String user) {
+        this.user = user;
+    }
+
+    @Override
+    public String getUpdatedBy() {
         return user;
     }
 
     @Override
-    public void setUser(String user) {
-        this.user = user;
+    public void setUpdatedAt(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public LocalDateTime getUpdatedAt() {
+        return timestamp;
     }
 }

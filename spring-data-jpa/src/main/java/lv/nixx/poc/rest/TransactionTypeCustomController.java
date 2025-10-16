@@ -20,7 +20,7 @@ public class TransactionTypeCustomController {
 
     @PostMapping("/transactionType")
     public TransactionType saveTransactionType(@RequestBody TransactionType transactionType) {
-        return transactionTypeRepository.saveWithUser(transactionType);
+        return transactionTypeRepository.saveWithAuditable(transactionType);
     }
 
     @GetMapping("/transactionType")

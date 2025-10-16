@@ -1,32 +1,35 @@
-package lv.nixx.poc.repository.useraware;
+package lv.nixx.poc.repository.auditable;
 
 import jakarta.persistence.EntityManager;
 import lv.nixx.poc.service.UserLoginProvider;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Repository
 @Transactional
-public class UserAwareOperationsImpl<T extends UserAware> implements UserAwareOperations<T> {
+public class AuditableAwareOperationsImpl<T extends Auditable> implements AuditableAwareOperations<T> {
 
     protected final EntityManager entityManager;
     private final UserLoginProvider userLoginProvider;
 
-    public UserAwareOperationsImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
+    public AuditableAwareOperationsImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
         this.entityManager = entityManager;
         this.userLoginProvider = userLoginProvider;
     }
 
     @Override
-    public T saveWithUser(T entity) {
-        entity.setUser(userLoginProvider.getCurrentUser());
+    public T saveWithAuditable(T entity) {
+        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setUpdatedBy(userLoginProvider.getCurrentUser());
         return entityManager.merge(entity);
     }
 
     @Override
-    public Iterable<T> saveAllWithUser(Iterable<T> entities) {
+    public Iterable<T> saveAllWithAuditable(Iterable<T> entities) {
         for (T entity : entities) {
-            saveWithUser(entity);
+            saveWithAuditable(entity);
         }
         return entities;
     }

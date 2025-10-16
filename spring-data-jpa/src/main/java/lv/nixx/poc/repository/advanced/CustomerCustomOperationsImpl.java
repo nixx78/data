@@ -6,7 +6,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lv.nixx.poc.orm.Customer;
-import lv.nixx.poc.repository.useraware.UserAwareOperationsImpl;
+import lv.nixx.poc.repository.auditable.AuditableAwareOperationsImpl;
 import lv.nixx.poc.service.UserLoginProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public class CustomerCustomOperationsImpl extends UserAwareOperationsImpl<Customer> implements CustomerCustomOperations {
+public class CustomerCustomOperationsImpl extends AuditableAwareOperationsImpl<Customer> implements CustomerCustomOperations {
 
     public CustomerCustomOperationsImpl(EntityManager entityManager, UserLoginProvider userLoginProvider) {
         super(entityManager, userLoginProvider);

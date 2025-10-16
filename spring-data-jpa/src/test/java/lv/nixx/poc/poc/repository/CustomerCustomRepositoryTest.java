@@ -25,13 +25,13 @@ class CustomerCustomRepositoryTest extends BaseTest {
 
     @Test
     void saveWithUserTest() {
-        Customer customer = customerCustomRepository.saveWithUser(new Customer().setName("Name.Value").setSurname("SurnameValue"));
+        Customer customer = customerCustomRepository.saveWithAuditable(new Customer().setName("Name.Value").setSurname("SurnameValue"));
         assertEquals("user.name", customer.getUser());
     }
 
     @Test
     void saveAllWithUserTest() {
-        Iterable<Customer> customers = customerCustomRepository.saveAllWithUser(List.of(
+        Iterable<Customer> customers = customerCustomRepository.saveAllWithAuditable(List.of(
                 new Customer().setName("Name.Value1").setSurname("SurnameValue1"),
                 new Customer().setName("Name.Value2").setSurname("SurnameValue2")
         ));
