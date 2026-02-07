@@ -3,20 +3,18 @@ package lv.nixx.samples.json.jackson;
 import lv.nixx.samples.json.ObjectMapperService;
 import lv.nixx.samples.json.domain.AdditionalProperties;
 import lv.nixx.samples.json.domain.Customer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomerConversionSample {
+class CustomerConversionSample {
 
     private final ObjectMapperService om = new ObjectMapperService();
 
     @Test
-    public void toJsonFromJson() throws Exception {
+    void toJsonFromJson() throws Exception {
 
         Customer c = new Customer(100L, "Name.value", null);
-
         c.addAdditionalProperty("p1", "v1");
         c.addAdditionalProperty("p2", "v2");
 
@@ -27,14 +25,17 @@ public class CustomerConversionSample {
         System.out.println(s);
 
         final Customer customer = om.readValue(s, Customer.class);
-        assertEquals(Long.valueOf(100), customer.getId());
-        assertEquals("Name.value", customer.getName());
-
         final AdditionalProperties parsedAddProps = customer.getAdditionalProperties();
-        assertEquals("v1", parsedAddProps.getProperty("p1"));
-        assertEquals("v2", parsedAddProps.getProperty("p2"));
 
-        assertEquals(2, parsedAddProps.getAdditionalProperties().size());
+        assertAll(
+                () -> assertEquals(Long.valueOf(100), customer.getId()),
+                () -> assertEquals("Name.value", customer.getName()),
+
+                () -> assertEquals("v1", parsedAddProps.getProperty("p1")),
+                () -> assertEquals("v2", parsedAddProps.getProperty("p2")),
+
+                () -> assertEquals(2, parsedAddProps.getAdditionalProperties().size())
+        );
     }
 
 }
