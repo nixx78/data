@@ -37,6 +37,7 @@ spring.jpa.hibernate.ddl-auto=**create**
 * Управление транзакцией при использовании EntityManager
 * Управление транзакцией при использовании Repository (@Transactional)
 * Управление транзакцией при использовании Transaction Template
+* Использование TransactionSynchronizationManager для перехватывания например afterCommit
 
 ## Полезные ссылки
 https://spring.io/projects/spring-data-rest
