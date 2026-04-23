@@ -110,7 +110,7 @@ class DataRetrieveSandbox {
     @Test
     void findCustomerWithAccounts_JOIN_FETCH() {
         System.out.println("--- JOIN FETCH ----------------");
-        Customer c = customerRepository.findCustomerWithAccounts(1L);
+        Customer c = customerRepository.findCustomerWithAccounts(customer1.getId());
 
         assertNotNull(c);
     }

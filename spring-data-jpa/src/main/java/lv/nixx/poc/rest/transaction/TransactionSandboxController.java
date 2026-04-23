@@ -2,10 +2,7 @@ package lv.nixx.poc.rest.transaction;
 
 import lombok.RequiredArgsConstructor;
 import lv.nixx.poc.model.SaveResult;
-import lv.nixx.poc.service.transaction.ServiceWithTransactionSynchronization;
-import lv.nixx.poc.service.transaction.TransactionUsingEntityManagerSandbox;
-import lv.nixx.poc.service.transaction.TransactionUsingTemplate;
-import lv.nixx.poc.service.transaction.TransactionWithRepoSandbox;
+import lv.nixx.poc.service.transaction.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +17,7 @@ public class TransactionSandboxController {
     private final TransactionUsingEntityManagerSandbox transactionWithEntityManager;
     private final TransactionUsingTemplate transactionUsingTemplate;
     private final ServiceWithTransactionSynchronization serviceWithTransactionSynchronization;
+    private final ServiceWithTransactionalEventListener serviceWithTransactionalEventListener;
 
     @PostMapping("/addUsingTransactional")
     public SaveResult addAccountUsingTransactional(
@@ -61,5 +59,12 @@ public class TransactionSandboxController {
         return serviceWithTransactionSynchronization.createNewAccountInTransaction(accountName, customerId);
     }
 
+    @PostMapping("/addUsingTransactionalEventListener")
+    public SaveResult addUsingTransactionalEventListener(
+            @RequestParam String accountName,
+            @RequestParam Long customerId
+    ) {
+        return serviceWithTransactionalEventListener.createNewAccountInTransaction(accountName, customerId);
+    }
 
 }
