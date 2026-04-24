@@ -48,8 +48,15 @@ class DataRetrieveSandbox {
 
         typesLoader.loadTypes();
 
-        this.customer1 = customerRepository.save(new Customer("Name1", "Surname1", LocalDate.parse("1978-06-12")));
-        customerRepository.save(new Customer("Name2", "Surname2", LocalDate.parse("1978-07-12")));
+        Customer c1 = new Customer("Name1", "Surname1", LocalDate.parse("1978-06-12"));
+        c1.setType("CustomerType1");
+
+        this.customer1 = customerRepository.save(c1);
+
+        Customer c2 = new Customer("Name2", "Surname2", LocalDate.parse("1978-07-12"));
+        c2.setType("CustomerType2");
+
+        customerRepository.save(c2);
 
         Map<String, Account> byAccountName = accountRepository.saveAll(List.of(
                         new Account("account1", customer1, typesLoader.getCurrentAccount()),
@@ -92,7 +99,7 @@ class DataRetrieveSandbox {
 
     @Test
     void findAllUsingEntityGraphCustomers() {
-        System.out.println("----Find all using EntityGraph------------------");
+        System.out.println("----Find all using NamedEntityGraph------------------");
 
         Collection<Customer> all = customerRepository.findCustomersWithAccounts();
 

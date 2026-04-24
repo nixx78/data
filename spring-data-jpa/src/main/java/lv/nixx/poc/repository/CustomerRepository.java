@@ -16,9 +16,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
     @Query("SELECT c FROM Customer c JOIN FETCH c.accounts  WHERE c.id=:id")
     Customer findCustomerWithAccounts(@Param("id") Long id);
 
-    @EntityGraph(
-            attributePaths = {"accounts", "accounts.type", "accounts.transactions", "accounts.transactions.type"}
-    )
+    @EntityGraph(value = "Customer.allFields")
     @Query("SELECT c FROM Customer c")
     Collection<Customer> findCustomersWithAccounts();
 

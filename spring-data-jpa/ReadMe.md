@@ -22,7 +22,7 @@ spring.jpa.hibernate.ddl-auto=**create**
 
 ### Основные
  - Сохранение / изменение связанных сущностей
- - Примеры оптимизации запросов (JOIN FETCH / @EntityGraph)
+ - Примеры оптимизации запросов (JOIN FETCH / @EntityGraph / @NamedEntityGraph)
  - Использование @Modifying запросов
  - Предоставление доступа к данным через REST (Spring-Data-Rest)
  - Использование Specification в репозитории

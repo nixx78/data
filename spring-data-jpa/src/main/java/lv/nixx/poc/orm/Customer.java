@@ -17,6 +17,24 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
+@NamedEntityGraph(name = "Customer.allFields",
+        attributeNodes = {
+                @NamedAttributeNode(value = "accounts", subgraph = "accountSubgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(name = "accountSubgraph",
+                        attributeNodes = {
+                            @NamedAttributeNode("type"),
+                            @NamedAttributeNode(value = "transactions", subgraph = "transactionSubgraph")
+                        }
+                ),
+                @NamedSubgraph(name = "transactionSubgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("type"),
+                        }
+                )
+        }
+)
 public class Customer implements Auditable {
 
     @Id
